@@ -14,7 +14,13 @@ Trabajo práctico para la materia Bases de Datos aplicada (Martes - Noche) relac
 | 3        | 09-06-2026       | El modelo no permite almacenar obligaciones de pago y las relaciones ciclicas pueden causar problemas |
 | 4        | 09-06-2026       | APROBADO    |
 
+ ### Documentos varios  
+- [Actividad](./docs/TP-Miel.pdf) 
+- [Entregable 3ro](./docs/3TP_[DER]_Com2900_G12.pdf)
+- [Entregable 4to](./docs/4TP_[Instalación_y_Configuración]_Com2900_G12.pdf)
+- [Diagrama de Entidad Relación](https://dbdiagram.io/e/6a29bb805c789b8acb58847f/6a29f6e19340ecc065700fba)
+
 ### Notas adicionales
 
  - El trabajo debe ser entregado como una solucion de MS SQLSMS
- - Es posible realizar modificaciones al DER tras haber sido aprobado, pero en ese caso se debe presentar el DER aprobado, el DER final, y una lista de todas las modificaciones realizadas y su justificativo. El DER debe coincidir con el modelo de datos entregado al final del proyecto.
+ - Es posible realizar modificaciones al DER tras haber sido aprobado, pero en ese caso se debe presentar el DER aprobado, el DER final, y una lista de todas las modificaciones realizadas y su justificativo. El DER debe coincidir con el modelo de datos entregado al final del proyecto.   

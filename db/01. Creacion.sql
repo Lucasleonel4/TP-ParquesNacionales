@@ -1,5 +1,17 @@
 
-
+/* ------------------------------------------------------ *
+ | LUEGO:
+    SE PIDE VALIDAR POR NO EXISTENCIA Y CREAR LOS DIFERENTES ELEMENTOS
+    I.E. 
+        USAR IF NOT EXISTS PARA CREAR ESQUEMAS
+            IF NOT EXISTS (SELECT 1 FROM SYS.SCHEMAS WHERE NAME='PARQUE')
+                CREATE SCHEMA [PARQUE]
+            
+        USAR IF NOT EXISTS PARA CREAR TABLAS
+            IF NOT EXISTS (SELECT 1 FROM SYS.TABLES WHERE NAME='EspecialidadGuia')
+                CREATE TABLE [Personal].[EspecialidadGuia](...)
+ * ------------------------------------------------------ */
+ 
 USE master;
 GO
 
@@ -29,31 +41,34 @@ GO
  * ------------------------------------------------------ */
 
 CREATE TABLE parque.Provincia (
-    ID INT NOT NULL,
-    Nombre VARCHAR(200) NOT NULL,
+    ID      INT             NOT NULL,
+    Nombre  VARCHAR(200)    NOT NULL,
+    
     CONSTRAINT PK_Provincia PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE parque.TipoParque (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(50) NULL,
-    Descripcion VARCHAR(200) NULL,
+    ID          INT IDENTITY(1,1)   NOT NULL,
+    Nombre      VARCHAR(50)         NULL,
+    Descripcion VARCHAR(200)        NULL,
+    
     CONSTRAINT PK_TipoParque PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE parque.ParqueNacional (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_TipoParque INT NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    Superficie DECIMAL(12,2) NULL,
-    Info_Operativa VARCHAR(250) NULL,
-    Info_General VARCHAR(250) NULL,
-    Calle_Entrada VARCHAR(100) NULL,
-    Nro_Entrada VARCHAR(20) NULL,
-    Latitud DECIMAL(12,9) NULL,
-    Longitud DECIMAL(12,9) NULL,
+    ID              INT IDENTITY(1,1)   NOT NULL,
+    ID_TipoParque   INT                 NOT NULL,
+    Nombre          VARCHAR(100)        NOT NULL,
+    Superficie      DECIMAL(12,2)       NULL,
+    Info_Operativa  VARCHAR(250)        NULL,
+    Info_General    VARCHAR(250)        NULL,
+    Calle_Entrada   VARCHAR(100)        NULL,
+    Nro_Entrada     VARCHAR(20)         NULL,
+    Latitud         DECIMAL(12,9)       NULL,
+    Longitud        DECIMAL(12,9)       NULL,
+    
     CONSTRAINT PK_ParqueNacional PRIMARY KEY (ID),
     CONSTRAINT FK_ParqueNacional_TipoParque FOREIGN KEY (ID_TipoParque)
         REFERENCES parque.TipoParque(ID)
@@ -61,9 +76,10 @@ CREATE TABLE parque.ParqueNacional (
 GO
 
 CREATE TABLE parque.PuntoDeVenta (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    Descripcion VARCHAR(100) NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_ParqueNacional   INT                 NOT NULL,
+    Descripcion         VARCHAR(100)        NULL,
+    
     CONSTRAINT PK_PuntoDeVenta PRIMARY KEY (ID),
     CONSTRAINT FK_PuntoDeVenta_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
         REFERENCES parque.ParqueNacional(ID)
@@ -71,8 +87,9 @@ CREATE TABLE parque.PuntoDeVenta (
 GO
 
 CREATE TABLE parque.ProvinciaContieneParque (
-    ID_Provincia INT NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
+    ID_Provincia        INT NOT NULL,
+    ID_ParqueNacional   INT NOT NULL,
+    
     CONSTRAINT PK_ProvinciaContieneParque PRIMARY KEY (ID_Provincia, ID_ParqueNacional),
     CONSTRAINT FK_ProvinciaContieneParque_Provincia FOREIGN KEY (ID_Provincia)
         REFERENCES parque.Provincia(ID),
@@ -86,25 +103,28 @@ GO
  * ------------------------------------------------------ */
 
 CREATE TABLE venta.Divisa (
-    COD_ISO CHAR(3) NOT NULL,
-    Pais VARCHAR(50) NULL,
-    ValorEnPesos DECIMAL(12,3) NULL,
+    COD_ISO         CHAR(3)         NOT NULL,
+    Pais            VARCHAR(50)     NULL,
+    ValorEnPesos    DECIMAL(12,3)   NULL,
+    
     CONSTRAINT PK_Divisa PRIMARY KEY (COD_ISO)
 );
 GO
 
 CREATE TABLE venta.TipoEntrada (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
+    ID      INT IDENTITY(1,1)   NOT NULL,
+    Nombre  VARCHAR(100)        NOT NULL,
+    
     CONSTRAINT PK_TipoEntrada PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE venta.TipoEntradaParque (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    ID_TipoEntrada INT NOT NULL,
-    Precio DECIMAL(12,2) NOT NULL,
+    ID                  INT IDENTITY(1,1) NOT NULL,
+    ID_ParqueNacional   INT NOT NULL,
+    ID_TipoEntrada      INT NOT NULL,
+    Precio              DECIMAL(12,2) NOT NULL,
+
     CONSTRAINT PK_TipoEntradaParque PRIMARY KEY (ID),
     CONSTRAINT UQ_TipoEntradaParque_Parque_Tipo UNIQUE (ID_ParqueNacional, ID_TipoEntrada),
     CONSTRAINT FK_TipoEntradaParque_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
@@ -115,12 +135,13 @@ CREATE TABLE venta.TipoEntradaParque (
 GO
 
 CREATE TABLE venta.Comprobante (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_PuntoDeVenta INT NOT NULL,
-    COD_ISO_Divisa CHAR(3) NOT NULL,
-    MedioDePago VARCHAR(20) NOT NULL,
-    FechaHora DATETIME NOT NULL,
-    Total DECIMAL(12,2) NOT NULL,
+    ID              INT IDENTITY(1,1)   NOT NULL,
+    ID_PuntoDeVenta INT                 NOT NULL,
+    COD_ISO_Divisa  CHAR(3)             NOT NULL,
+    MedioDePago     VARCHAR(20)         NOT NULL,
+    FechaHora       DATETIME            NOT NULL,
+    Total           DECIMAL(12,2)       NOT NULL,
+
     CONSTRAINT PK_Comprobante PRIMARY KEY (ID),
     CONSTRAINT CK_Comprobante_MedioDePago CHECK (MedioDePago IN ('Efectivo', 'Tarjeta', 'Transferencia')),
     CONSTRAINT FK_Comprobante_PuntoDeVenta FOREIGN KEY (ID_PuntoDeVenta)
@@ -131,11 +152,12 @@ CREATE TABLE venta.Comprobante (
 GO
 
 CREATE TABLE venta.Entrada (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_TipoEntradaParque INT NOT NULL,
-    ID_Comprobante INT NOT NULL,
-    FechaHora DATETIME NULL,
-    PrecioCobrado DECIMAL(12,2) NULL,
+    ID                      INT IDENTITY(1,1)   NOT NULL,
+    ID_TipoEntradaParque    INT                 NOT NULL,
+    ID_Comprobante          INT                 NOT NULL,
+    FechaHora               DATETIME            NOT NULL,
+    PrecioCobrado           DECIMAL(12,2)       NOT NULL,
+    
     CONSTRAINT PK_Entrada PRIMARY KEY (ID),
     CONSTRAINT FK_Entrada_TipoEntradaParque FOREIGN KEY (ID_TipoEntradaParque)
         REFERENCES venta.TipoEntradaParque(ID),
@@ -149,45 +171,50 @@ GO
  * ------------------------------------------------------ */
 
 CREATE TABLE personal.GuiaAutorizado (
-    CUIL BIGINT NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellido VARCHAR(100) NOT NULL,
-    Autorizado BIT NOT NULL,
+    CUIL        BIGINT          NOT NULL,
+    Nombre      VARCHAR(100)    NOT NULL,
+    Apellido    VARCHAR(100)    NOT NULL,
+    Autorizado  BIT             NOT NULL,
+
     CONSTRAINT PK_GuiaAutorizado PRIMARY KEY (CUIL)
 );
 GO
 
 CREATE TABLE personal.TituloAcademico (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    Entidad_Otorga VARCHAR(100) NOT NULL,
+    ID              INT IDENTITY(1,1)   NOT NULL,
+    Nombre          VARCHAR(100)        NOT NULL,
+    Entidad_Otorga  VARCHAR(100)        NOT NULL,
     Tipo VARCHAR(50) NOT NULL,
     Area VARCHAR(50) NOT NULL,
+
     CONSTRAINT PK_TituloAcademico PRIMARY KEY (ID),
     CONSTRAINT UQ_TituloAcademico_Nombre_Entidad UNIQUE (Nombre, Entidad_Otorga)
 );
 GO
 
 CREATE TABLE personal.HabilitacionGuia (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(50) NOT NULL,
-    Descripcion VARCHAR(200) NOT NULL,
+    ID          INT IDENTITY(1,1)   NOT NULL,
+    Nombre      VARCHAR(50)         NOT NULL,
+    Descripcion VARCHAR(200)        NOT NULL,
+
     CONSTRAINT PK_HabilitacionGuia PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE personal.EspecialidadGuia (
-    ID INT NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    Descripcion VARCHAR(200) NOT NULL,
+    ID          INT             NOT NULL,
+    Nombre      VARCHAR(100)    NOT NULL,
+    Descripcion VARCHAR(200)    NOT NULL,
+
     CONSTRAINT PK_EspecialidadGuia PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE personal.GuiaConTitulo (
-    CUIL_GuiaAutorizado BIGINT NOT NULL,
-    ID_TituloAcademico INT NOT NULL,
-    FechaObtenido DATE NOT NULL,
+    CUIL_GuiaAutorizado BIGINT  NOT NULL,
+    ID_TituloAcademico  INT     NOT NULL,
+    FechaObtenido       DATE    NOT NULL,
+    
     CONSTRAINT PK_GuiaConTitulo PRIMARY KEY (CUIL_GuiaAutorizado, ID_TituloAcademico),
     CONSTRAINT FK_GuiaConTitulo_Guia FOREIGN KEY (CUIL_GuiaAutorizado)
         REFERENCES personal.GuiaAutorizado(CUIL),
@@ -197,10 +224,11 @@ CREATE TABLE personal.GuiaConTitulo (
 GO
 
 CREATE TABLE personal.GuiaConHabilitacion (
-    CUIL_GuiaAutorizado BIGINT NOT NULL,
-    ID_HabilitacionGuia INT NOT NULL,
-    FechaObtenido DATE NOT NULL,
-    FechaExpiracion DATE NOT NULL,
+    CUIL_GuiaAutorizado     BIGINT  NOT NULL,
+    ID_HabilitacionGuia     INT     NOT NULL,
+    FechaObtenido           DATE    NOT NULL,
+    FechaExpiracion         DATE    NOT NULL,
+
     CONSTRAINT PK_GuiaConHabilitacion PRIMARY KEY (CUIL_GuiaAutorizado, ID_HabilitacionGuia),
     CONSTRAINT FK_GuiaConHabilitacion_Guia FOREIGN KEY (CUIL_GuiaAutorizado)
         REFERENCES personal.GuiaAutorizado(CUIL),
@@ -210,9 +238,10 @@ CREATE TABLE personal.GuiaConHabilitacion (
 GO
 
 CREATE TABLE personal.GuiaConEspecialidad (
-    CUIL_GuiaAutorizado BIGINT NOT NULL,
-    ID_EspecialidadGuia INT NOT NULL,
-    FechaObtenida DATE NOT NULL,
+    CUIL_GuiaAutorizado BIGINT  NOT NULL,
+    ID_EspecialidadGuia INT     NOT NULL,
+    FechaObtenida       DATE    NOT NULL,
+
     CONSTRAINT PK_GuiaConEspecialidad PRIMARY KEY (CUIL_GuiaAutorizado, ID_EspecialidadGuia),
     CONSTRAINT FK_GuiaConEspecialidad_Guia FOREIGN KEY (CUIL_GuiaAutorizado)
         REFERENCES personal.GuiaAutorizado(CUIL),
@@ -222,23 +251,25 @@ CREATE TABLE personal.GuiaConEspecialidad (
 GO
 
 CREATE TABLE personal.Guardaparques (
-    CUIL BIGINT NOT NULL,
-    Nombre VARCHAR(100) NOT NULL,
-    Apellido VARCHAR(100) NOT NULL,
-    FechaNacimiento DATE NOT NULL,
-    FechaIngreso DATE NOT NULL,
-    FechaEgreso DATE NULL,
-    MotivoEgreso VARCHAR(255) NULL,
+    CUIL            BIGINT       NOT NULL,
+    Nombre          VARCHAR(100) NOT NULL,
+    Apellido        VARCHAR(100) NOT NULL,
+    FechaNacimiento DATE         NOT NULL,
+    FechaIngreso    DATE         NOT NULL,
+    FechaEgreso     DATE         NULL,
+    MotivoEgreso    VARCHAR(255) NULL,
+
     CONSTRAINT PK_Guardaparques PRIMARY KEY (CUIL)
 );
 GO
 
 CREATE TABLE personal.ContratoTrabajo (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    CUIL_Guardaparques BIGINT NOT NULL,
-    FechaInicio DATE NOT NULL,
-    FechaFin DATE NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_ParqueNacional   INT                 NOT NULL,
+    CUIL_Guardaparques  BIGINT              NOT NULL,
+    FechaInicio         DATE                NOT NULL,
+    FechaFin            DATE                NULL,
+
     CONSTRAINT PK_ContratoTrabajo PRIMARY KEY (ID),
     CONSTRAINT FK_ContratoTrabajo_Parque FOREIGN KEY (ID_ParqueNacional)
         REFERENCES parque.ParqueNacional(ID),
@@ -248,11 +279,12 @@ CREATE TABLE personal.ContratoTrabajo (
 GO
 
 CREATE TABLE personal.PermisoDeTrabajo (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    CUIL_GuiaAutorizado BIGINT NOT NULL,
-    FechaInicio DATE NOT NULL,
-    FechaFin DATE NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_ParqueNacional   INT                 NOT NULL,
+    CUIL_GuiaAutorizado BIGINT              NOT NULL,
+    FechaInicio         DATE                NOT NULL,
+    FechaFin            DATE                NULL,
+
     CONSTRAINT PK_PermisoDeTrabajo PRIMARY KEY (ID),
     CONSTRAINT FK_PermisoDeTrabajo_Parque FOREIGN KEY (ID_ParqueNacional)
         REFERENCES parque.ParqueNacional(ID),
@@ -266,20 +298,21 @@ GO
  * ------------------------------------------------------ */
 
 CREATE TABLE actividad.TipoActividad (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(50) NOT NULL,
+    ID      INT IDENTITY(1,1) NOT NULL,
+    Nombre  VARCHAR(50)       NOT NULL,
     CONSTRAINT PK_TipoActividad PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE actividad.Actividad (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    ID_TipoActividad INT NOT NULL,
-    Nombre VARCHAR(50) NOT NULL,
-    Duracion INT NULL,
-    Costo DECIMAL(12,2) NOT NULL,
-    CupoMaximo INT NULL,
+    ID                  INT IDENTITY(1,1) NOT NULL,
+    ID_ParqueNacional   INT               NOT NULL,
+    ID_TipoActividad    INT               NOT NULL,
+    Nombre              VARCHAR(50)       NOT NULL,
+    Duracion            INT               NULL,
+    Costo               DECIMAL(12,2)     NOT NULL,
+    CupoMaximo          INT               NULL,
+
     CONSTRAINT PK_Actividad PRIMARY KEY (ID),
     CONSTRAINT FK_Actividad_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
         REFERENCES parque.ParqueNacional(ID),
@@ -289,11 +322,12 @@ CREATE TABLE actividad.Actividad (
 GO
 
 CREATE TABLE actividad.InscripcionActividad (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_Actividad INT NOT NULL,
-    ID_Comprobante INT NULL,
-    FechaHora DATETIME NULL,
-    PrecioCobrado DECIMAL(12,2) NULL,
+    ID              INT IDENTITY(1,1)   NOT NULL,
+    ID_Actividad    INT                 NOT NULL,
+    ID_Comprobante  INT                 NULL,
+    FechaHora       DATETIME            NULL,
+    PrecioCobrado   DECIMAL(12,2)       NULL,
+
     CONSTRAINT PK_InscripcionActividad PRIMARY KEY (ID),
     CONSTRAINT FK_InscripcionActividad_Actividad FOREIGN KEY (ID_Actividad)
         REFERENCES actividad.Actividad(ID),
@@ -303,8 +337,9 @@ CREATE TABLE actividad.InscripcionActividad (
 GO
 
 CREATE TABLE actividad.GuiaAsignadoTour (
-    ID_Actividad INT NOT NULL,
-    CUIL_GuiaAutorizado BIGINT NOT NULL,
+    ID_Actividad        INT     NOT NULL,
+    CUIL_GuiaAutorizado BIGINT  NOT NULL,
+
     CONSTRAINT PK_GuiaAsignadoTour PRIMARY KEY (ID_Actividad, CUIL_GuiaAutorizado),
     CONSTRAINT FK_GuiaAsignadoTour_Actividad FOREIGN KEY (ID_Actividad)
         REFERENCES actividad.Actividad(ID),
@@ -318,23 +353,26 @@ GO
  * ------------------------------------------------------ */
 
 CREATE TABLE concesion.ActividadFiscal (
-    ID INT IDENTITY(1,1) NOT NULL,
-    Nombre VARCHAR(100) NULL,
+    ID          INT IDENTITY(1,1)   NOT NULL,
+    Nombre      VARCHAR(100)        NULL,
+
     CONSTRAINT PK_ActividadFiscal PRIMARY KEY (ID)
 );
 GO
 
 CREATE TABLE concesion.Empresa (
-    CUIT BIGINT NOT NULL,
-    Nombre VARCHAR(150) NULL,
+    CUIT    BIGINT       NOT NULL,
+    Nombre  VARCHAR(150) NULL,
+
     CONSTRAINT PK_Empresa PRIMARY KEY (CUIT)
 );
 GO
 
 CREATE TABLE concesion.TipoConcesion (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ActividadFiscal INT NOT NULL,
-    Nombre VARCHAR(100) NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_ActividadFiscal  INT                 NOT NULL,
+    Nombre              VARCHAR(100)        NOT NULL,
+
     CONSTRAINT PK_TipoConcesion PRIMARY KEY (ID),
     CONSTRAINT FK_TipoConcesion_ActividadFiscal FOREIGN KEY (ID_ActividadFiscal)
         REFERENCES concesion.ActividadFiscal(ID)
@@ -342,9 +380,9 @@ CREATE TABLE concesion.TipoConcesion (
 GO
 
 CREATE TABLE concesion.ActividadFiscalInscriptaEmpresa (
-    CUIT_Empresa BIGINT NOT NULL,
-    ID_ActividadFiscal INT NOT NULL,
-    Principal BIT NOT NULL CONSTRAINT DF_ActividadFiscalInscriptaEmpresa_Principal DEFAULT (0),
+    CUIT_Empresa        BIGINT  NOT NULL,
+    ID_ActividadFiscal  INT     NOT NULL,
+    Principal           BIT     NOT NULL CONSTRAINT DF_ActividadFiscalInscriptaEmpresa_Principal DEFAULT (0),
     CONSTRAINT PK_ActividadFiscalInscriptaEmpresa PRIMARY KEY (CUIT_Empresa, ID_ActividadFiscal),
     CONSTRAINT FK_ActividadFiscalInscriptaEmpresa_Empresa FOREIGN KEY (CUIT_Empresa)
         REFERENCES concesion.Empresa(CUIT),
@@ -354,13 +392,14 @@ CREATE TABLE concesion.ActividadFiscalInscriptaEmpresa (
 GO
 
 CREATE TABLE concesion.Concesion (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional INT NOT NULL,
-    CUIT_Empresa BIGINT NOT NULL,
-    ID_TipoConcesion INT NOT NULL,
-    FechaInicio DATE NULL,
-    FechaFin DATE NULL,
-    Canon DECIMAL(20,2) NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_ParqueNacional   INT                 NOT NULL,
+    CUIT_Empresa        BIGINT              NOT NULL,
+    ID_TipoConcesion    INT                 NOT NULL,
+    FechaInicio         DATE                NOT NULL,
+    FechaFin            DATE                NOT NULL,
+    Canon               DECIMAL(20,2)       NOT NULL,
+
     CONSTRAINT PK_Concesion PRIMARY KEY (ID),
     CONSTRAINT FK_Concesion_Parque FOREIGN KEY (ID_ParqueNacional)
         REFERENCES parque.ParqueNacional(ID),
@@ -372,11 +411,12 @@ CREATE TABLE concesion.Concesion (
 GO
 
 CREATE TABLE concesion.FacturaConcesion (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_Concesion INT NOT NULL,
-    FechaEmision DATE NOT NULL,
-    FechaVencimiento DATE NOT NULL,
-    MontoEsperado DECIMAL(20,2) NOT NULL,
+    ID                  INT IDENTITY(1,1)   NOT NULL,
+    ID_Concesion        INT                 NOT NULL,
+    FechaEmision        DATE                NOT NULL,
+    FechaVencimiento    DATE                NOT NULL,
+    MontoEsperado       DECIMAL(20,2)       NOT NULL,
+
     CONSTRAINT PK_FacturaConcesion PRIMARY KEY (ID),
     CONSTRAINT FK_FacturaConcesion_Concesion FOREIGN KEY (ID_Concesion)
         REFERENCES concesion.Concesion(ID)
@@ -384,10 +424,11 @@ CREATE TABLE concesion.FacturaConcesion (
 GO
 
 CREATE TABLE concesion.PagoConcesion (
-    ID INT IDENTITY(1,1) NOT NULL,
-    ID_Factura INT NOT NULL,
-    FechaPago DATE NOT NULL,
-    MontoPagado DECIMAL(20,2) NOT NULL,
+    ID          INT IDENTITY(1,1)   NOT NULL,
+    ID_Factura  INT                 NOT NULL,
+    FechaPago   DATE                NOT NULL,
+    MontoPagado DECIMAL(20,2)       NOT NULL,
+
     CONSTRAINT PK_PagoConcesion PRIMARY KEY (ID),
     CONSTRAINT FK_PagoConcesion_Factura FOREIGN KEY (ID_Factura)
         REFERENCES concesion.FacturaConcesion(ID)
