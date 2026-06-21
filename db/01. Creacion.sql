@@ -58,20 +58,19 @@ CREATE TABLE parque.TipoParque (
 GO
 
 CREATE TABLE parque.ParqueNacional (
-    ID              INT IDENTITY(1,1)   NOT NULL,
-    ID_TipoParque   INT                 NOT NULL,
-    Nombre          VARCHAR(100)        NOT NULL,
-    Superficie      DECIMAL(12,2)       NULL,
-    Info_Operativa  VARCHAR(250)        NULL,
-    Info_General    VARCHAR(250)        NULL,
-    Calle_Entrada   VARCHAR(100)        NULL,
-    Nro_Entrada     VARCHAR(20)         NULL,
-    Latitud         DECIMAL(12,9)       NULL,
-    Longitud        DECIMAL(12,9)       NULL,
+    ID              INT                NOT NULL, -- IMPORTABLE
+    TipoParque      varchar(50)        NOT NULL, -- IMPORTABLE
+    Nombre          VARCHAR(100)       NOT NULL, -- IMPORTABLE
+    Superficie      DECIMAL(12,2)      NULL, -- IMPORTABLE
+    Info_Operativa  VARCHAR(250)       NULL, -- VER DE DONDE OBTENER¿¿
+    Info_General    VARCHAR(250)       NULL, -- VER DE DONDE OBTENER¿¿
+    Calle_Entrada   VARCHAR(100)       NULL, -- VER SI QUITAR, NO RELEVANTE
+    Nro_Entrada     VARCHAR(20)        NULL, -- VER SI QUITAR, NO RELEVANTE
+    Latitud         DECIMAL(12,9)      NULL, -- ESTABLECER MEDIANTE CENTROIDES -> VER SI AÑADIR CAMPO FK A PROVINCIA RELACIONANDO ESE CAMPO A LA PROVINCIA DEL CENTROIDE (CON UNA API¿).
+    Longitud        DECIMAL(12,9)      NULL, -- ESTABLECER MEDIANTE CENTROIDES -> VER SI AÑADIR CAMPO FK A PROVINCIA RELACIONANDO ESE CAMPO A LA PROVINCIA DEL CENTROIDE (CON UNA API¿).
     
     CONSTRAINT PK_ParqueNacional PRIMARY KEY (ID),
-    CONSTRAINT FK_ParqueNacional_TipoParque FOREIGN KEY (ID_TipoParque)
-        REFERENCES parque.TipoParque(ID)
+    CONSTRAINT CK_ParqueNacional_Tipo CHECK (TipoParque IN ('Parque Nacional', 'Reserva Nacional','Monumento Natural', 'Parque Nacional Marino'))
 );
 GO
 
