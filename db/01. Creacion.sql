@@ -61,13 +61,13 @@ CREATE TABLE parque.AreaProtegida (
     Longitud        DECIMAL(12,9)      NULL, -- ESTABLECER MEDIANTE CENTROIDES -> VER SI AÑADIR CAMPO FK A PROVINCIA RELACIONANDO ESE CAMPO A LA PROVINCIA DEL CENTROIDE (CON UNA API¿).
     
     CONSTRAINT PK_AreaProtegida PRIMARY KEY (ID),
-    CONSTRAINT CK_AreaProtegida_Tipo CHECK (TipoParque IN ('Parque Nacional', 'Reserva Nacional','Monumento Natural', 'Parque Nacional Marino'))
+    CONSTRAINT CK_AreaProtegida_Tipo CHECK (TipoArea IN ('Parque Nacional', 'Reserva Nacional','Monumento Natural', 'Parque Nacional Marino'))
 );
 GO
 
 CREATE TABLE parque.PuntoDeVenta (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_AreaProtegida    INT                 NOT NULL,
+    ID_AreaProtegida    BIGINT              NOT NULL,
     Descripcion         VARCHAR(100)        NULL,
     
     CONSTRAINT PK_PuntoDeVenta PRIMARY KEY (ID),
@@ -77,8 +77,8 @@ CREATE TABLE parque.PuntoDeVenta (
 GO
 
 CREATE TABLE parque.ProvinciaContieneParque ( -- PODRIA NO HACER FALTA
-    ID_Provincia        INT NOT NULL,
-    ID_AreaProtegida    INT NOT NULL,
+    ID_Provincia        INT    NOT NULL,
+    ID_AreaProtegida    BIGINT NOT NULL,
     
     CONSTRAINT PK_ProvinciaContieneParque PRIMARY KEY (ID_Provincia, ID_AreaProtegida),
     CONSTRAINT FK_ProvinciaContieneParque_Provincia FOREIGN KEY (ID_Provincia)
@@ -111,9 +111,9 @@ GO
 
 CREATE TABLE venta.TipoEntradaParque (
     ID                  INT IDENTITY(1,1) NOT NULL,
-    ID_AreaProtegida    INT NOT NULL,
-    ID_TipoEntrada      INT NOT NULL,
-    Precio              DECIMAL(12,2) NOT NULL,
+    ID_AreaProtegida    BIGINT            NOT NULL,
+    ID_TipoEntrada      INT               NOT NULL,
+    Precio              DECIMAL(12,2)     NOT NULL,
 
     CONSTRAINT PK_TipoEntradaParque PRIMARY KEY (ID),
     CONSTRAINT UQ_TipoEntradaParque_Parque_Tipo UNIQUE (ID_AreaProtegida, ID_TipoEntrada),
@@ -174,8 +174,8 @@ CREATE TABLE personal.TituloAcademico (
     ID              INT IDENTITY(1,1)   NOT NULL,
     Nombre          VARCHAR(100)        NOT NULL,
     Entidad_Otorga  VARCHAR(100)        NOT NULL,
-    Tipo VARCHAR(50) NOT NULL,
-    Area VARCHAR(50) NOT NULL,
+    Tipo            VARCHAR(50)         NOT NULL,
+    Area            VARCHAR(50)         NOT NULL,
 
     CONSTRAINT PK_TituloAcademico PRIMARY KEY (ID),
     CONSTRAINT UQ_TituloAcademico_Nombre_Entidad UNIQUE (Nombre, Entidad_Otorga)
@@ -192,9 +192,9 @@ CREATE TABLE personal.HabilitacionGuia (
 GO
 
 CREATE TABLE personal.EspecialidadGuia (
-    ID          INT             NOT NULL,
-    Nombre      VARCHAR(100)    NOT NULL,
-    Descripcion VARCHAR(200)    NOT NULL,
+    ID          INT IDENTITY(1,1)   NOT NULL,
+    Nombre      VARCHAR(100)        NOT NULL,
+    Descripcion VARCHAR(200)        NOT NULL,
 
     CONSTRAINT PK_EspecialidadGuia PRIMARY KEY (ID)
 );
@@ -255,7 +255,7 @@ GO
 
 CREATE TABLE personal.ContratoTrabajo (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_AreaProtegida    INT                 NOT NULL,
+    ID_AreaProtegida    BIGINT              NOT NULL,
     CUIL_Guardaparques  BIGINT              NOT NULL,
     FechaInicio         DATE                NOT NULL,
     FechaFin            DATE                NULL,
@@ -270,7 +270,7 @@ GO
 
 CREATE TABLE personal.PermisoDeTrabajo (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_AreaProtegida    INT                 NOT NULL,
+    ID_AreaProtegida    BIGINT              NOT NULL,
     CUIL_GuiaAutorizado BIGINT              NOT NULL,
     FechaInicio         DATE                NOT NULL,
     FechaFin            DATE                NULL,
@@ -296,7 +296,7 @@ GO
 
 CREATE TABLE actividad.Actividad (
     ID                  INT IDENTITY(1,1) NOT NULL,
-    ID_AreaProtegida    INT               NOT NULL,
+    ID_AreaProtegida    BIGINT            NOT NULL,
     ID_TipoActividad    INT               NOT NULL,
     Nombre              VARCHAR(50)       NOT NULL,
     Duracion            INT               NULL,
@@ -350,7 +350,7 @@ CREATE TABLE concesion.ActividadFiscal (
 );
 GO
 
-CREATE TABLE concesion.Empresa (
+CREATE TABLE concesion.Empresa ( -- SE PUEDE QUITAR SI SOLO ES UNA TABLA PARA GUARDAR EL NOMBRE DE LA EMPRESA
     CUIT    BIGINT       NOT NULL,
     Nombre  VARCHAR(150) NULL,
 
@@ -383,7 +383,7 @@ GO
 
 CREATE TABLE concesion.Concesion (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_AreaProtegida    INT                 NOT NULL,
+    ID_AreaProtegida    BIGINT              NOT NULL,
     CUIT_Empresa        BIGINT              NOT NULL,
     ID_TipoConcesion    INT                 NOT NULL,
     FechaInicio         DATE                NOT NULL,

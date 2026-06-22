@@ -2,7 +2,7 @@ USE com2900
 GO
 
 -- Importacion de Provincias desde JSON
-	CREATE OR ALTER PROCEDURE SP_importarActualizarProvincias
+	CREATE OR ALTER PROCEDURE [parque].[SP_importarActualizarProvincias]
 		@sourceData nvarchar(MAX)
 	AS
 	BEGIN
@@ -93,12 +93,12 @@ GO
 			UPDATE P
 			SET 
 				P.Nombre     = T.NAME,
-				P.TipoParque = T.DESIG,
+				P.TipoArea	 = T.DESIG,
 				P.Superficie = TRY_CAST(T.REP_AREA AS DECIMAL(12,2))
 			FROM [parque].[AreaProtegida] as P JOIN #TempAreasProtegidas as T on P.ID = TRY_CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT)
-			WHERE P.Nombre<>T.NAME AND P.TipoParque<>T.DESIG AND P.Superficie<>TRY_CAST(T.REP_AREA AS DECIMAL(12,2))
+			WHERE P.Nombre<>T.NAME OR P.TipoArea<>T.DESIG OR P.Superficie<>TRY_CAST(T.REP_AREA AS DECIMAL(12,2))
 			
-			INSERT INTO [parque].[AreaProtegida](ID, TipoParque, Nombre, Superficie)
+			INSERT INTO [parque].[AreaProtegida](ID, TipoArea, Nombre, Superficie)
 			SELECT TRY_CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT), T.DESIG, T.NAME, TRY_CAST(T.REP_AREA AS DECIMAL(12,2)) 
 			FROM #TempAreasProtegidas T
 			WHERE T.DESIG IN ('Parque Nacional', 'Reserva Nacional', 'Monumento Natural', 'Parque Nacional Marino')
