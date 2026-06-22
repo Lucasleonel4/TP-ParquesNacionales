@@ -53,7 +53,7 @@ GO
 	GO
 	
 -- IMPORTACION DE AREAS PROTEGIDAS DESDE CSV
-	CREATE OR ALTER PROCEDURE SP_importarActualizarParquesNacionales
+	CREATE OR ALTER PROCEDURE [parque].[SP_importarActualizarAreasProtegidas]
 		@sourceData VARCHAR(MAX)
 	AS
 	BEGIN
@@ -89,19 +89,21 @@ GO
 			)'
 		
 			EXEC sp_executesql @SQLDin
-
+		
 			UPDATE P
 			SET 
-				P.Nombre     = T.Name,
-				P.TipoParque = T.Desig,
+				P.Nombre     = T.NAME,
+				P.TipoParque = T.DESIG,
 				P.Superficie = TRY_CAST(T.REP_AREA AS DECIMAL(12,2))
-			FROM [parque].[ParqueNacional] as P JOIN #TempAreasProtegidas as T on P.ID = TRY_CAST(T.SITE_ID AS INT)
+			FROM [parque].[AreaProtegida] as P JOIN #TempAreasProtegidas as T on P.ID = TRY_CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT)
+			WHERE P.Nombre<>T.NAME AND P.TipoParque<>T.DESIG AND P.Superficie<>TRY_CAST(T.REP_AREA AS DECIMAL(12,2))
 			
-			INSERT INTO [parque].[ParqueNacional](ID, TipoParque, Nombre, Superficie)
-			SELECT TRY_CAST(T.SITE_ID AS INT), T.DESIG, T.NAME, TRY_CAST(T.REP_AREA AS DECIMAL(12,2)) FROM #TempAreasProtegidas T
+			INSERT INTO [parque].[AreaProtegida](ID, TipoParque, Nombre, Superficie)
+			SELECT TRY_CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT), T.DESIG, T.NAME, TRY_CAST(T.REP_AREA AS DECIMAL(12,2)) 
+			FROM #TempAreasProtegidas T
 			WHERE T.DESIG IN ('Parque Nacional', 'Reserva Nacional', 'Monumento Natural', 'Parque Nacional Marino')
-			AND NOT EXISTS (SELECT 1 FROM [parque].[ParqueNacional] P WHERE P.ID = TRY_CAST(T.SITE_ID AS INT));
-
+			AND NOT EXISTS (SELECT 1 FROM [parque].[AreaProtegida] P WHERE P.ID = TRY_CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT));
+			
 			DROP TABLE #TempAreasProtegidas
 
 		END TRY
@@ -157,7 +159,6 @@ GO
 							FIELDQUOTE = ''"''
 						);
 						'
-	
 					EXEC sp_executesql @SQLDin
 				END TRY
 			BEGIN CATCH
@@ -175,15 +176,18 @@ GO
 			GO
 
 -- VINCULACION DE CENTROIDES IMPORTADOS Y CREACION DE TABLA GLOBAL
-	CREATE OR ALTER PROCEDURE [parque].[VincularCentroidesAreas] AS
+	CREATE OR ALTER PROCEDURE [parque].[SP_VincularCentroidesAreas] AS
 	BEGIN
 		BEGIN TRY
+			if not exists (select 1 from tempdb.sys.tables where name like '##tempCentroides%')
+				THROW 50001, 'La tabla temporal ##tempCentroides no existe.', 1
+
 			UPDATE P
 			SET
 				P.Longitud = CAST(T.longitude AS DECIMAL(12,9)),
 				P.Latitud  = CAST(T.latitude AS DECIMAL(12,9))
-			FROM [parque].[VincularCentroidesAreas] 
-			JOIN ##tempCentroides T ON T.SITE_ID = P.ID
+			FROM [parque].[AreaProtegida] P 
+			JOIN ##tempCentroides T ON CAST(REPLACE(T.SITE_PID,'_','') AS BIGINT) = P.ID
 			--EXEC [parque].[SP_EliminarTablaTemporalCentroides]
 		END TRY
 		BEGIN CATCH

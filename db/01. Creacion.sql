@@ -48,18 +48,9 @@ CREATE TABLE parque.Provincia (
 );
 GO
 
-CREATE TABLE parque.TipoParque (
-    ID          INT IDENTITY(1,1)   NOT NULL,
-    Nombre      VARCHAR(50)         NULL,
-    Descripcion VARCHAR(200)        NULL,
-    
-    CONSTRAINT PK_TipoParque PRIMARY KEY (ID)
-);
-GO
-
-CREATE TABLE parque.ParqueNacional (
-    ID              INT                NOT NULL, -- IMPORTABLE
-    TipoParque      varchar(50)        NOT NULL, -- IMPORTABLE
+CREATE TABLE parque.AreaProtegida (
+    ID              BIGINT             NOT NULL, -- IMPORTABLE
+    TipoArea        VARCHAR(50)        NOT NULL, -- IMPORTABLE
     Nombre          VARCHAR(100)       NOT NULL, -- IMPORTABLE
     Superficie      DECIMAL(12,2)      NULL, -- IMPORTABLE
     Info_Operativa  VARCHAR(250)       NULL, -- VER DE DONDE OBTENER¿¿
@@ -69,31 +60,31 @@ CREATE TABLE parque.ParqueNacional (
     Latitud         DECIMAL(12,9)      NULL, -- ESTABLECER MEDIANTE CENTROIDES -> VER SI AÑADIR CAMPO FK A PROVINCIA RELACIONANDO ESE CAMPO A LA PROVINCIA DEL CENTROIDE (CON UNA API¿).
     Longitud        DECIMAL(12,9)      NULL, -- ESTABLECER MEDIANTE CENTROIDES -> VER SI AÑADIR CAMPO FK A PROVINCIA RELACIONANDO ESE CAMPO A LA PROVINCIA DEL CENTROIDE (CON UNA API¿).
     
-    CONSTRAINT PK_ParqueNacional PRIMARY KEY (ID),
-    CONSTRAINT CK_ParqueNacional_Tipo CHECK (TipoParque IN ('Parque Nacional', 'Reserva Nacional','Monumento Natural', 'Parque Nacional Marino'))
+    CONSTRAINT PK_AreaProtegida PRIMARY KEY (ID),
+    CONSTRAINT CK_AreaProtegida_Tipo CHECK (TipoParque IN ('Parque Nacional', 'Reserva Nacional','Monumento Natural', 'Parque Nacional Marino'))
 );
 GO
 
 CREATE TABLE parque.PuntoDeVenta (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_ParqueNacional   INT                 NOT NULL,
+    ID_AreaProtegida    INT                 NOT NULL,
     Descripcion         VARCHAR(100)        NULL,
     
     CONSTRAINT PK_PuntoDeVenta PRIMARY KEY (ID),
-    CONSTRAINT FK_PuntoDeVenta_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID)
+    CONSTRAINT FK_PuntoDeVenta_AreaProtegida FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID)
 );
 GO
 
-CREATE TABLE parque.ProvinciaContieneParque (
+CREATE TABLE parque.ProvinciaContieneParque ( -- PODRIA NO HACER FALTA
     ID_Provincia        INT NOT NULL,
-    ID_ParqueNacional   INT NOT NULL,
+    ID_AreaProtegida    INT NOT NULL,
     
-    CONSTRAINT PK_ProvinciaContieneParque PRIMARY KEY (ID_Provincia, ID_ParqueNacional),
+    CONSTRAINT PK_ProvinciaContieneParque PRIMARY KEY (ID_Provincia, ID_AreaProtegida),
     CONSTRAINT FK_ProvinciaContieneParque_Provincia FOREIGN KEY (ID_Provincia)
         REFERENCES parque.Provincia(ID),
-    CONSTRAINT FK_ProvinciaContieneParque_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID)
+    CONSTRAINT FK_ProvinciaContieneParque_AreaProtegida FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID)
 );
 GO
 
@@ -120,14 +111,14 @@ GO
 
 CREATE TABLE venta.TipoEntradaParque (
     ID                  INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional   INT NOT NULL,
+    ID_AreaProtegida    INT NOT NULL,
     ID_TipoEntrada      INT NOT NULL,
     Precio              DECIMAL(12,2) NOT NULL,
 
     CONSTRAINT PK_TipoEntradaParque PRIMARY KEY (ID),
-    CONSTRAINT UQ_TipoEntradaParque_Parque_Tipo UNIQUE (ID_ParqueNacional, ID_TipoEntrada),
-    CONSTRAINT FK_TipoEntradaParque_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID),
+    CONSTRAINT UQ_TipoEntradaParque_Parque_Tipo UNIQUE (ID_AreaProtegida, ID_TipoEntrada),
+    CONSTRAINT FK_TipoEntradaParque_AreaProtegida FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID),
     CONSTRAINT FK_TipoEntradaParque_TipoEntrada FOREIGN KEY (ID_TipoEntrada)
         REFERENCES venta.TipoEntrada(ID)
 );
@@ -264,14 +255,14 @@ GO
 
 CREATE TABLE personal.ContratoTrabajo (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_ParqueNacional   INT                 NOT NULL,
+    ID_AreaProtegida    INT                 NOT NULL,
     CUIL_Guardaparques  BIGINT              NOT NULL,
     FechaInicio         DATE                NOT NULL,
     FechaFin            DATE                NULL,
 
     CONSTRAINT PK_ContratoTrabajo PRIMARY KEY (ID),
-    CONSTRAINT FK_ContratoTrabajo_Parque FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID),
+    CONSTRAINT FK_ContratoTrabajo_Parque FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID),
     CONSTRAINT FK_ContratoTrabajo_Guardaparques FOREIGN KEY (CUIL_Guardaparques)
         REFERENCES personal.Guardaparques(CUIL)
 );
@@ -279,14 +270,14 @@ GO
 
 CREATE TABLE personal.PermisoDeTrabajo (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_ParqueNacional   INT                 NOT NULL,
+    ID_AreaProtegida    INT                 NOT NULL,
     CUIL_GuiaAutorizado BIGINT              NOT NULL,
     FechaInicio         DATE                NOT NULL,
     FechaFin            DATE                NULL,
 
     CONSTRAINT PK_PermisoDeTrabajo PRIMARY KEY (ID),
-    CONSTRAINT FK_PermisoDeTrabajo_Parque FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID),
+    CONSTRAINT FK_PermisoDeTrabajo_Parque FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID),
     CONSTRAINT FK_PermisoDeTrabajo_Guia FOREIGN KEY (CUIL_GuiaAutorizado)
         REFERENCES personal.GuiaAutorizado(CUIL)
 );
@@ -305,7 +296,7 @@ GO
 
 CREATE TABLE actividad.Actividad (
     ID                  INT IDENTITY(1,1) NOT NULL,
-    ID_ParqueNacional   INT               NOT NULL,
+    ID_AreaProtegida    INT               NOT NULL,
     ID_TipoActividad    INT               NOT NULL,
     Nombre              VARCHAR(50)       NOT NULL,
     Duracion            INT               NULL,
@@ -313,8 +304,8 @@ CREATE TABLE actividad.Actividad (
     CupoMaximo          INT               NULL,
 
     CONSTRAINT PK_Actividad PRIMARY KEY (ID),
-    CONSTRAINT FK_Actividad_ParqueNacional FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID),
+    CONSTRAINT FK_Actividad_AreaProtegida FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID),
     CONSTRAINT FK_Actividad_TipoActividad FOREIGN KEY (ID_TipoActividad)
         REFERENCES actividad.TipoActividad(ID)
 );
@@ -392,7 +383,7 @@ GO
 
 CREATE TABLE concesion.Concesion (
     ID                  INT IDENTITY(1,1)   NOT NULL,
-    ID_ParqueNacional   INT                 NOT NULL,
+    ID_AreaProtegida    INT                 NOT NULL,
     CUIT_Empresa        BIGINT              NOT NULL,
     ID_TipoConcesion    INT                 NOT NULL,
     FechaInicio         DATE                NOT NULL,
@@ -400,8 +391,8 @@ CREATE TABLE concesion.Concesion (
     Canon               DECIMAL(20,2)       NOT NULL,
 
     CONSTRAINT PK_Concesion PRIMARY KEY (ID),
-    CONSTRAINT FK_Concesion_Parque FOREIGN KEY (ID_ParqueNacional)
-        REFERENCES parque.ParqueNacional(ID),
+    CONSTRAINT FK_Concesion_Parque FOREIGN KEY (ID_AreaProtegida)
+        REFERENCES parque.AreaProtegida(ID),
     CONSTRAINT FK_Concesion_Empresa FOREIGN KEY (CUIT_Empresa)
         REFERENCES concesion.Empresa(CUIT),
     CONSTRAINT FK_Concesion_TipoConcesion FOREIGN KEY (ID_TipoConcesion)
