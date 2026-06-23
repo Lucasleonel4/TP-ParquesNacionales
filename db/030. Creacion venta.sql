@@ -1,4 +1,5 @@
 /*
+* Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
@@ -7,6 +8,7 @@
 *  - Mancilla Muñoz, Emanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
+* Fecha: 23/06/2026
 * Script: 030. Creacion venta
  * Descripción: Crea el esquema venta, sus tablas, procedimientos almacenados ABM y funciones de consulta sobre campos.
 */

@@ -1,4 +1,5 @@
 /*
+* Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
@@ -7,6 +8,7 @@
 *  - Mancilla Muñoz, Emanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
+* Fecha: 23/06/2026
  * Script: 040. Creacion personal
  * Descripción: Crea el esquema personal, sus tablas y los procedimientos almacenados ABM para todas las tablas del esquema
 */
