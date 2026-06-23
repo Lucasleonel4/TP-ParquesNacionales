@@ -52,17 +52,71 @@
           <FullPath>050. Creacion actividad.sql</FullPath>
         </FileNode>
         <FileNode Name="060. Creacion concesion.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>060. Creacion concesion.sql</FullPath>
-        </FileNode>
-<FileNode Name="080. Importaciones.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>080. Importaciones.sql</FullPath>
-        </FileNode>
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>060. Creacion concesion.sql</FullPath>
+         </FileNode>
+        <FileNode Name="070. Venta de entradas.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>070. Venta de entradas.sql</FullPath>
+         </FileNode>
+        <FileNode Name="075. Test venta entradas.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>075. Test venta entradas.sql</FullPath>
+         </FileNode>
+        <FileNode Name="080. Registro de entradas.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>080. Registro de entradas.sql</FullPath>
+         </FileNode>
+        <FileNode Name="085. Test registro de entradas.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>085. Test registro de entradas.sql</FullPath>
+         </FileNode>
+        <FileNode Name="090. Asignacion de guias.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>090. Asignacion de guias.sql</FullPath>
+         </FileNode>
+        <FileNode Name="095. Test asignacion de guias.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>095. Test asignacion de guias.sql</FullPath>
+         </FileNode>
+        <FileNode Name="100. Gestion de concesiones.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>100. Gestion de concesiones.sql</FullPath>
+         </FileNode>
+        <FileNode Name="105. Test gestion de concesiones.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>105. Test gestion de concesiones.sql</FullPath>
+         </FileNode>
+        <FileNode Name="110. Importacion de datos.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>110. Importacion de datos.sql</FullPath>
+         </FileNode>
+        <FileNode Name="115. Test importacion de datos.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>115. Test importacion de datos.sql</FullPath>
+         </FileNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
