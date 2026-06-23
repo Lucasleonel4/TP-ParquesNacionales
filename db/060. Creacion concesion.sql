@@ -1,11 +1,11 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Muñoz, Emanuel Américo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
@@ -987,3 +987,5 @@ BEGIN
 	SELECT SCOPE_IDENTITY() AS ID;
 END;
 GO
+
+

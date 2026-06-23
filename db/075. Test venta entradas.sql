@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 075. Test venta de entradas
-* Descripcion: Pruebas exitosas y fallidas para la venta de entradas.
+* Descripción: Pruebas exitosas y fallidas para la venta de entradas.
 */
 
 USE com2900;
@@ -121,3 +121,5 @@ SELECT
 	@EntradasAntes AS EntradasAntes,
 	(SELECT COUNT(*) FROM venta.Entrada) AS EntradasDespues;
 GO
+
+

@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 110. Importacion de datos
-* Descripcion: Procedimientos de importacion/upsert desde archivos externos usando tablas temporales.
+* Descripción: Procedimientos de importacion/upsert desde archivos externos usando tablas temporales.
 */
 
 USE com2900;
@@ -265,3 +265,5 @@ BEGIN
 	PRINT('INFO: La vinculacion de centroides se realiza directamente en parque.SP_ImportarCentroides.');
 END
 GO
+
+

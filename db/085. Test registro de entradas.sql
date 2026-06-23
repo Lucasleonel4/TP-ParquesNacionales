@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 085. Test registro de actividades
-* Descripcion: Pruebas exitosas y fallidas para registro/contratacion de actividades.
+* Descripción: Pruebas exitosas y fallidas para registro/contratacion de actividades.
 */
 
 USE com2900;
@@ -107,3 +107,5 @@ SELECT @Antes AS InscripcionesAntes, COUNT(*) AS InscripcionesDespues
 FROM actividad.InscripcionActividad
 WHERE ID_Actividad = @IDActividad;
 GO
+
+

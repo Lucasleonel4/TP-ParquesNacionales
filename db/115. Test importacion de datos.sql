@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 115. Test importacion de datos
-* Descripcion: Pruebas repetibles para importacion/upsert de datos externos.
+* Descripción: Pruebas repetibles para importacion/upsert de datos externos.
 */
 
 USE com2900;
@@ -52,3 +52,5 @@ BEGIN CATCH
 	SELECT ERROR_NUMBER() AS NumeroError, ERROR_MESSAGE() AS MensajeObtenido;
 END CATCH;
 GO
+
+

@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 080. Registro de actividades
-* Descripcion: Procedimientos de negocio para registrar/contratar actividades dentro de un parque.
+* Descripción: Procedimientos de negocio para registrar/contratar actividades dentro de un parque.
 */
 
 USE com2900;
@@ -102,3 +102,5 @@ BEGIN
 	END CATCH
 END
 GO
+
+

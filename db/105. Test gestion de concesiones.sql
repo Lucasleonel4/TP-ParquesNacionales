@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 105. Test gestion de concesiones
-* Descripcion: Pruebas exitosas y fallidas para gestion de concesiones.
+* Descripción: Pruebas exitosas y fallidas para gestion de concesiones.
 */
 
 USE com2900;
@@ -95,3 +95,5 @@ SELECT
 	@FacturasAntes AS FacturasAntes,
 	(SELECT COUNT(*) FROM concesion.FacturaConcesion) AS FacturasDespues;
 GO
+
+

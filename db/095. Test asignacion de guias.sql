@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 095. Test asignacion de guias
-* Descripcion: Pruebas exitosas y fallidas para asignacion de guias.
+* Descripción: Pruebas exitosas y fallidas para asignacion de guias.
 */
 
 USE com2900;
@@ -92,3 +92,5 @@ END CATCH;
 SELECT @Antes AS AsignacionesAntes, COUNT(*) AS AsignacionesDespues
 FROM actividad.GuiaAsignadoTour;
 GO
+
+

@@ -1,16 +1,16 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 090. Asignacion de guias
-* Descripcion: Procedimientos de negocio para asignar guias autorizados a actividades/tours.
+* Descripción: Procedimientos de negocio para asignar guias autorizados a actividades/tours.
 */
 
 USE com2900;
@@ -107,3 +107,5 @@ BEGIN
 	END CATCH
 END
 GO
+
+
