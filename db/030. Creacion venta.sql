@@ -8,7 +8,7 @@
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Script: 030. Creacion venta
- * Descripción: Crea el esquema venta, sus tablas y los procedimientos almacenados ABM
+ * Descripción: Crea el esquema venta, sus tablas, procedimientos almacenados ABM y funciones de consulta sobre campos.
 */
 
 USE com2900;
@@ -197,10 +197,12 @@ CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Insert]
 	@COD_ISO_Divisa  CHAR(3),
 	@MedioDePago     VARCHAR(20),
 	@FechaHora       DATETIME,
-	@Total           DECIMAL(12,2)
+	@Total           DECIMAL(12,2),
+	@IDComprobante	 INT OUTPUT
 AS
 	INSERT INTO [venta].[Comprobante](ID_PuntoDeVenta, COD_ISO_Divisa, MedioDePago, FechaHora, Total)
 	VALUES(@ID_PuntoDeVenta, @COD_ISO_Divisa, @MedioDePago, @FechaHora, @Total)
+	SET @IDComprobante = SCOPE_IDENTITY()
 GO
 
 CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Update]
@@ -262,3 +264,35 @@ AS
 	DELETE FROM [venta].[Entrada]
 	WHERE ID = @ID;
 GO
+
+-- FUNCIÓN DE CONSULTA: 
+	
+	-- FUNCION QUE DEVUELVE EL ID DE UN TIPOENTRADAPARQUE (TIPO DE ENTRADA VINCULADA A UN PARQUE Y A UN TIPO DE ENTRADA GENERAL)
+		CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerID] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
+		RETURNS DECIMAL(12,2)
+		AS
+		BEGIN 
+			DECLARE @Precio DECIMAL(12,2)
+
+			SELECT @Precio = ID
+			FROM [venta].[TipoEntradaParque]
+			WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
+
+			RETURN @Precio;
+		END;
+		GO
+
+	-- FUNCION QUE DEVUELVE EL PRECIO DE UNA ENTRADA POR ID DE TIPO ENTRADA E ID PARQUE
+		CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerPrecio] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
+		RETURNS DECIMAL(12,2)
+		AS
+		BEGIN 
+			DECLARE @Precio DECIMAL(12,2)
+
+			SELECT @Precio = Precio
+			FROM [venta].[TipoEntradaParque]
+			WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
+
+			RETURN @Precio;
+		END;
+		GO

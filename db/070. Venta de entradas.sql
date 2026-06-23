@@ -1,55 +1,53 @@
--- PUNTO DE VENTA OPERACIONES - SIN PROBAR:
-
--- PUNTO DE VENTA: INSERT
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Insert]
-	@ID_AreaProtegida	BIGINT,
-	@Descripcion		VARCHAR(100) = NULL
-AS
-BEGIN
-	BEGIN TRY 
-		INSERT INTO [parque].[PuntoDeVenta](ID_AreaProtegida, Descripcion)
-		VALUES (@ID_AreaProtegida, @Descripcion)
-	END TRY
-	BEGIN CATCH
-		THROW;
-	END CATCH
-END
+USE com2900;
 GO
 
--- PUNTO DE VENTA: UPDATE
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Update]
-	@ID					INT,
-	@ID_AreaProtegida	BIGINT			=	NULL,
-	@Descripcion		VARCHAR(100)	=	NULL
+CREATE OR ALTER PROCEDURE [venta].[SP_VentaEntradas]
+	@ID_PuntoDeVenta		INT,
+	@COD_ISO_Divisa			CHAR(3),
+	@MedioDePago			VARCHAR(30),
+	@FechaHora				DATETIME,
+	@ID_AreaProtegida		BIGINT,
+    @ID_TipoEntrada			INT,
+    @Cantidad				INT
 AS
 BEGIN
 	BEGIN TRY
-		UPDATE [parque].[PuntoDeVenta]
-		SET
-			ID_AreaProtegida	= ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
-			Descripcion			= CASE
-										WHEN @Descripcion = 'SD' THEN NULL
-										ELSE ISNULL(@Descripcion, Descripcion)
-								  END
-		WHERE ID = @ID
-	END TRY
-	BEGIN CATCH
-		THROW;
-	END CATCH
-END
-GO
+		BEGIN TRANSACTION 
+			DECLARE	@IDComprobante			INT
+			DECLARE @IDTipoEntradaParque	INT
+			DECLARE @Precio					DECIMAL(12,2)
+			DECLARE @Total					DECIMAL(12,2)
 
--- PUNTO DE VENTA: DELETE
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Delete]
-	@ID INT
-AS
-BEGIN
-	BEGIN TRY
-		DELETE FROM [parque].[PuntoDeVenta]
-		WHERE ID = @ID
+			SET @Precio					= [venta].[FN_TipoEntradaParque_ObtenerPrecio](@ID_AreaProtegida, @ID_TipoEntrada)
+			SET @Total					= @Precio * @Cantidad
+			SET @IDTipoEntradaParque	= [venta].[FN_TipoEntradaParque_ObtenerID](@ID_AreaProtegida, @ID_TipoEntrada)
+
+			-- CREO EL COMPROBANTE
+			EXEC [venta].[SP_Comprobante_Insert]
+				@ID_PuntoDeVenta = @ID_PuntoDeVenta,
+				@COD_ISO_Divisa  = @COD_ISO_Divisa,
+				@MedioDePago     = @MedioDePago,
+				@FechaHora       = @FechaHora,
+				@Total           = @Total,
+				@IDComprobante	 = @IDComprobante OUTPUT
+			
+			-- CREO LA ENTRADA USANDO SP DE INSERCION DE ENTRADAS
+				DECLARE @i INT = 1
+
+				WHILE @i <= @Cantidad
+				BEGIN
+					EXEC [venta].[SP_Entrada_Insert]
+						@ID_TipoEntradaParque = @IDTipoEntradaParque,
+						@ID_Comprobante       = @IDComprobante,
+						@FechaHora            = @FechaHora,
+						@PrecioCobrado        = @Total
+
+					SET @i = @i + 1
+				END
+			COMMIT
 	END TRY
 	BEGIN CATCH
+		ROLLBACK;
 		THROW;
 	END CATCH
 END
-GO
