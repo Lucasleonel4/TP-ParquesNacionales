@@ -47,6 +47,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Actividad' AND schema_id =
 			Duracion            INT               NULL,
 			Costo               DECIMAL(12,2)     NOT NULL,
 			CupoMaximo          INT               NULL,
+			CupoLibre			INT				  NULL,
 
 			CONSTRAINT PK_Actividad PRIMARY KEY (ID),
 			CONSTRAINT FK_Actividad_AreaProtegida FOREIGN KEY (ID_AreaProtegida) REFERENCES parque.AreaProtegida(ID),
@@ -123,8 +124,8 @@ CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Insert]
 	@Costo            DECIMAL(12,2),
 	@CupoMaximo       INT          = NULL
 AS
-	INSERT INTO [actividad].[Actividad](ID_AreaProtegida, ID_TipoActividad, Nombre, Duracion, Costo, CupoMaximo)
-	VALUES(@ID_AreaProtegida, @ID_TipoActividad, @Nombre, @Duracion, @Costo, @CupoMaximo)
+	INSERT INTO [actividad].[Actividad](ID_AreaProtegida, ID_TipoActividad, Nombre, Duracion, Costo, CupoMaximo, CupoLibre)
+	VALUES(@ID_AreaProtegida, @ID_TipoActividad, @Nombre, @Duracion, @Costo, @CupoMaximo, @CupoMaximo)
 GO
 
 CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Update]
@@ -134,7 +135,8 @@ CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Update]
 	@Nombre             VARCHAR(50)    = NULL,
 	@Duracion           INT            = NULL,
 	@Costo              DECIMAL(12,2)  = NULL,
-	@CupoMaximo         INT            = NULL
+	@CupoMaximo         INT            = NULL,
+	@CupoLibre          INT            = NULL
 AS
 	UPDATE [actividad].[Actividad]
 	SET
@@ -143,7 +145,8 @@ AS
 		Nombre           = ISNULL(@Nombre, Nombre),
 		Duracion         = CASE WHEN @Duracion = -1 THEN NULL ELSE ISNULL(@Duracion, Duracion) END,
 		Costo            = ISNULL(@Costo, Costo),
-		CupoMaximo       = CASE WHEN @CupoMaximo = -1 THEN NULL ELSE ISNULL(@CupoMaximo, CupoMaximo) END
+		CupoMaximo       = CASE WHEN @CupoMaximo = -1 THEN NULL ELSE ISNULL(@CupoMaximo, CupoMaximo) END,
+		CupoLibre        = CASE WHEN @CupoLibre  = -1 THEN NULL ELSE ISNULL(@CupoLibre, CupoLibre) END
 	WHERE ID = @ID
 GO
 
@@ -206,3 +209,53 @@ AS
 	DELETE FROM [actividad].[GuiaAsignadoTour]
 	WHERE ID_Actividad = @ID_Actividad AND CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
 GO
+
+-- ============================================================
+-- FUNCIONES
+-- ============================================================
+
+-- DEVUELVE EL PRECIO DE UNA ACTIVIDAD
+	CREATE OR ALTER FUNCTION [actividad].[FN_Actividad_ObtenerPrecio] (@ID_Actividad INT)
+	RETURNS DECIMAL(12,2)
+	AS
+	BEGIN 
+		DECLARE @Precio DECIMAL(12,2)
+
+		SELECT @Precio = Costo
+		FROM [actividad].[Actividad]
+		WHERE ID  = @ID_Actividad
+
+		RETURN @Precio;
+	END;
+	GO
+
+-- DEVUELVE EL CUPO LIBRE DE UNA ACTIVIDAD
+	CREATE OR ALTER FUNCTION [actividad].[FN_Actividad_ObtenerCupoLibre] (@ID_Actividad INT)
+	RETURNS INT
+	AS
+	BEGIN 
+		DECLARE @CupoLibre INT
+
+		SELECT @CupoLibre = CupoLibre
+		FROM [actividad].[Actividad]
+		WHERE ID  = @ID_Actividad
+
+		RETURN @CupoLibre;
+	END;
+	GO
+
+-- CONSULTA SI ES POSIBLE INSCRIBIRSE A UNA ACTIVIDAD PARA EL CUPO DADO
+	CREATE OR ALTER FUNCTION [actividad].[FN_Actividad_TieneCupo] (@ID_Actividad INT, @Cantidad INT)
+	RETURNS BIT
+	AS
+	BEGIN
+		DECLARE @resultado BIT = 0
+		IF EXISTS (
+			SELECT 1 FROM [actividad].[Actividad]
+			WHERE ID = @ID_Actividad
+			AND CupoLibre >= @Cantidad
+		)
+			SET @resultado = 1
+		RETURN @resultado
+	END
+	GO
