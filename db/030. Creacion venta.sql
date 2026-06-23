@@ -8,7 +8,7 @@
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Script: 030. Creacion venta
-* Descripción: Crea el esquema venta y sus tablas
+ * Descripción: Crea el esquema venta, sus tablas y los procedimientos almacenados ABM
 */
 
 USE com2900;
@@ -35,7 +35,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Divisa' AND schema_id = SC
 		);
 		PRINT('OK: tabla Divisa creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Divisa ya existe')
+ELSE PRINT('INFO: tabla Divisa ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoEntrada' AND schema_id = SCHEMA_ID('venta'))
 	BEGIN
@@ -47,7 +47,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoEntrada' AND schema_id
 		);
 		PRINT('OK: tabla TipoEntrada creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla TipoEntrada ya existe')
+ELSE PRINT('INFO: tabla TipoEntrada ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoEntradaParque' AND schema_id = SCHEMA_ID('venta'))
 	BEGIN
@@ -64,7 +64,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoEntradaParque' AND sch
 		);
 		PRINT('OK: tabla TipoEntradaParque creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla TipoEntradaParque ya existe')
+ELSE PRINT('INFO: tabla TipoEntradaParque ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Comprobante' AND schema_id = SCHEMA_ID('venta'))
 	BEGIN
@@ -83,7 +83,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Comprobante' AND schema_id
 		);
 		PRINT('OK: tabla Comprobante creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Comprobante ya existe')
+ELSE PRINT('INFO: tabla Comprobante ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Entrada' AND schema_id = SCHEMA_ID('venta'))
 	BEGIN
@@ -100,4 +100,164 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Entrada' AND schema_id = S
 		);
 		PRINT('OK: tabla Entrada creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Entrada ya existe')
+ELSE PRINT('INFO: tabla Entrada ya existe');
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: DIVISA
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Insert]
+	@COD_ISO      CHAR(3),
+	@Pais         VARCHAR(50)     = NULL,
+	@ValorEnPesos DECIMAL(12,3)   = NULL
+AS
+	INSERT INTO [venta].[Divisa](COD_ISO, Pais, ValorEnPesos)
+	VALUES(@COD_ISO, @Pais, @ValorEnPesos)
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Update]
+	@COD_ISO      CHAR(3),
+	@Pais         VARCHAR(50)     = NULL,
+	@ValorEnPesos DECIMAL(12,3)   = NULL
+AS
+	UPDATE [venta].[Divisa]
+	SET
+		Pais         = CASE WHEN @Pais = 'SD' THEN NULL ELSE ISNULL(@Pais, Pais) END,
+		ValorEnPesos = CASE WHEN @ValorEnPesos = -1 THEN NULL ELSE ISNULL(@ValorEnPesos, ValorEnPesos) END
+	WHERE COD_ISO = @COD_ISO;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Delete]
+	@COD_ISO CHAR(3)
+AS
+	DELETE FROM [venta].[Divisa]
+	WHERE COD_ISO = @COD_ISO;
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Insert]
+	@Nombre VARCHAR(100)
+AS
+	INSERT INTO [venta].[TipoEntrada](Nombre)
+	VALUES(@Nombre)
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Update]
+	@ID     INT,
+	@Nombre VARCHAR(100) = NULL
+AS
+	UPDATE [venta].[TipoEntrada]
+	SET Nombre = ISNULL(@Nombre, Nombre)
+	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Delete]
+	@ID INT
+AS
+	DELETE FROM [venta].[TipoEntrada]
+	WHERE ID = @ID;
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA PARQUE
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Insert]
+	@ID_AreaProtegida BIGINT,
+	@ID_TipoEntrada   INT,
+	@Precio           DECIMAL(12,2)
+AS
+	INSERT INTO [venta].[TipoEntradaParque](ID_AreaProtegida, ID_TipoEntrada, Precio)
+	VALUES(@ID_AreaProtegida, @ID_TipoEntrada, @Precio)
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Update]
+	@ID               INT,
+	@ID_AreaProtegida BIGINT         = NULL,
+	@ID_TipoEntrada   INT            = NULL,
+	@Precio           DECIMAL(12,2)  = NULL
+AS
+	UPDATE [venta].[TipoEntradaParque]
+	SET
+		ID_AreaProtegida = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
+		ID_TipoEntrada   = ISNULL(@ID_TipoEntrada, ID_TipoEntrada),
+		Precio           = ISNULL(@Precio, Precio)
+	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Delete]
+	@ID INT
+AS
+	DELETE FROM [venta].[TipoEntradaParque]
+	WHERE ID = @ID;
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: COMPROBANTE
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Insert]
+	@ID_PuntoDeVenta INT,
+	@COD_ISO_Divisa  CHAR(3),
+	@MedioDePago     VARCHAR(20),
+	@FechaHora       DATETIME,
+	@Total           DECIMAL(12,2)
+AS
+	INSERT INTO [venta].[Comprobante](ID_PuntoDeVenta, COD_ISO_Divisa, MedioDePago, FechaHora, Total)
+	VALUES(@ID_PuntoDeVenta, @COD_ISO_Divisa, @MedioDePago, @FechaHora, @Total)
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Update]
+	@ID              INT,
+	@ID_PuntoDeVenta INT          = NULL,
+	@COD_ISO_Divisa  CHAR(3)     = NULL,
+	@MedioDePago     VARCHAR(20) = NULL,
+	@FechaHora       DATETIME    = NULL,
+	@Total           DECIMAL(12,2) = NULL
+AS
+	UPDATE [venta].[Comprobante]
+	SET
+		ID_PuntoDeVenta = ISNULL(@ID_PuntoDeVenta, ID_PuntoDeVenta),
+		COD_ISO_Divisa  = ISNULL(@COD_ISO_Divisa, COD_ISO_Divisa),
+		MedioDePago     = ISNULL(@MedioDePago, MedioDePago),
+		FechaHora       = ISNULL(@FechaHora, FechaHora),
+		Total           = ISNULL(@Total, Total)
+	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Delete]
+	@ID INT
+AS
+	DELETE FROM [venta].[Comprobante]
+	WHERE ID = @ID;
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: ENTRADA
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Insert]
+	@ID_TipoEntradaParque INT,
+	@ID_Comprobante       INT,
+	@FechaHora            DATETIME,
+	@PrecioCobrado        DECIMAL(12,2)
+AS
+	INSERT INTO [venta].[Entrada](ID_TipoEntradaParque, ID_Comprobante, FechaHora, PrecioCobrado)
+	VALUES(@ID_TipoEntradaParque, @ID_Comprobante, @FechaHora, @PrecioCobrado)
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Update]
+	@ID                   INT,
+	@ID_TipoEntradaParque INT          = NULL,
+	@ID_Comprobante       INT          = NULL,
+	@FechaHora            DATETIME     = NULL,
+	@PrecioCobrado        DECIMAL(12,2) = NULL
+AS
+	UPDATE [venta].[Entrada]
+	SET
+		ID_TipoEntradaParque = ISNULL(@ID_TipoEntradaParque, ID_TipoEntradaParque),
+		ID_Comprobante       = ISNULL(@ID_Comprobante, ID_Comprobante),
+		FechaHora            = ISNULL(@FechaHora, FechaHora),
+		PrecioCobrado        = ISNULL(@PrecioCobrado, PrecioCobrado)
+	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Delete]
+	@ID INT
+AS
+	DELETE FROM [venta].[Entrada]
+	WHERE ID = @ID;
+GO
