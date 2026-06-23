@@ -120,6 +120,105 @@ SELECT
 	(SELECT COUNT(*) FROM venta.Comprobante) AS ComprobantesDespues,
 	@EntradasAntes AS EntradasAntes,
 	(SELECT COUNT(*) FROM venta.Entrada) AS EntradasDespues;
+
+PRINT('Caso exitoso: venta conjunta de entradas y actividades');
+
+DECLARE @IDTipoActividad INT;
+DECLARE @IDActividad INT;
+DECLARE @ComprobanteConjunto TABLE (ID_Comprobante INT, Total DECIMAL(12,2));
+
+IF NOT EXISTS (SELECT 1 FROM actividad.TipoActividad WHERE Nombre = 'Actividad Venta Test')
+	EXEC actividad.SP_TipoActividad_Insert @Nombre = 'Actividad Venta Test';
+
+SELECT @IDTipoActividad = ID
+FROM actividad.TipoActividad
+WHERE Nombre = 'Actividad Venta Test';
+
+IF NOT EXISTS (SELECT 1 FROM actividad.Actividad WHERE ID_AreaProtegida = @IDParque AND Nombre = 'Excursion Venta Test')
+	EXEC actividad.SP_Actividad_Insert
+		@ID_AreaProtegida = @IDParque,
+		@ID_TipoActividad = @IDTipoActividad,
+		@Nombre = 'Excursion Venta Test',
+		@Duracion = 60,
+		@Costo = 750,
+		@CupoMaximo = 20;
+
+SELECT @IDActividad = ID
+FROM actividad.Actividad
+WHERE ID_AreaProtegida = @IDParque
+  AND Nombre = 'Excursion Venta Test';
+
+EXEC actividad.SP_Actividad_Update @ID = @IDActividad, @Costo = 750, @CupoMaximo = 20, @CupoLibre = 20;
+
+DECLARE @EntradasConjuntas venta.TipoTablaDetalleEntradas;
+DECLARE @ActividadesConjuntas actividad.TipoTablaDetalleActividad;
+
+INSERT INTO @EntradasConjuntas(ID_TipoEntrada, Cantidad)
+VALUES (@IDTipoGeneral, 1);
+
+INSERT INTO @ActividadesConjuntas(ID_Actividad, Cantidad)
+VALUES (@IDActividad, 2);
+
+INSERT INTO @ComprobanteConjunto
+EXEC venta.SP_Negocio_VenderEntradasYActividades
+	@ID_PuntoDeVenta = @IDPuntoVenta,
+	@COD_ISO_Divisa = 'ARS',
+	@MedioDePago = 'Transferencia',
+	@FechaHora = '2026-06-23T20:30:00',
+	@ID_AreaProtegida = @IDParque,
+	@DetalleEntrada = @EntradasConjuntas,
+	@DetalleActividad = @ActividadesConjuntas;
+
+SELECT
+	C.ID,
+	C.Total,
+	COUNT(DISTINCT E.ID) AS CantidadEntradas,
+	COUNT(DISTINCT IA.ID) AS CantidadActividades
+FROM @ComprobanteConjunto R
+JOIN venta.Comprobante C ON C.ID = R.ID_Comprobante
+LEFT JOIN venta.Entrada E ON E.ID_Comprobante = C.ID
+LEFT JOIN actividad.InscripcionActividad IA ON IA.ID_Comprobante = C.ID
+GROUP BY C.ID, C.Total;
+
+PRINT('Caso fallido: venta conjunta sin cupo suficiente');
+
+SELECT @ComprobantesAntes = COUNT(*) FROM venta.Comprobante;
+SELECT @EntradasAntes = COUNT(*) FROM venta.Entrada;
+DECLARE @InscripcionesAntes INT;
+SELECT @InscripcionesAntes = COUNT(*) FROM actividad.InscripcionActividad;
+
+EXEC actividad.SP_Actividad_Update @ID = @IDActividad, @CupoLibre = 1;
+
+BEGIN TRY
+	DECLARE @EntradasSinCupo venta.TipoTablaDetalleEntradas;
+	DECLARE @ActividadesSinCupo actividad.TipoTablaDetalleActividad;
+
+	INSERT INTO @EntradasSinCupo(ID_TipoEntrada, Cantidad)
+	VALUES (@IDTipoGeneral, 1);
+
+	INSERT INTO @ActividadesSinCupo(ID_Actividad, Cantidad)
+	VALUES (@IDActividad, 2);
+
+	EXEC venta.SP_Negocio_VenderEntradasYActividades
+		@ID_PuntoDeVenta = @IDPuntoVenta,
+		@COD_ISO_Divisa = 'ARS',
+		@MedioDePago = 'Tarjeta',
+		@FechaHora = '2026-06-23T20:40:00',
+		@ID_AreaProtegida = @IDParque,
+		@DetalleEntrada = @EntradasSinCupo,
+		@DetalleActividad = @ActividadesSinCupo;
+END TRY
+BEGIN CATCH
+	SELECT ERROR_NUMBER() AS NumeroError, ERROR_MESSAGE() AS MensajeObtenido;
+END CATCH;
+
+SELECT
+	@ComprobantesAntes AS ComprobantesAntes,
+	(SELECT COUNT(*) FROM venta.Comprobante) AS ComprobantesDespues,
+	@EntradasAntes AS EntradasAntes,
+	(SELECT COUNT(*) FROM venta.Entrada) AS EntradasDespues,
+	@InscripcionesAntes AS InscripcionesAntes,
+	(SELECT COUNT(*) FROM actividad.InscripcionActividad) AS InscripcionesDespues;
 GO
 
 
