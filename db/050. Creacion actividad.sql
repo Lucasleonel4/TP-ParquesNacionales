@@ -86,6 +86,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaAsignadoTour' AND sche
 ELSE PRINT('INFO: tabla GuiaAsignadoTour ya existe')
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO ACTIVIDAD
+GO
 
 CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Insert]
 	@Nombre VARCHAR(50)

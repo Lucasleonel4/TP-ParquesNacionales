@@ -103,6 +103,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Entrada' AND schema_id = S
 ELSE PRINT('INFO: tabla Entrada ya existe');
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: DIVISA
+GO
 
 CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Insert]
 	@COD_ISO      CHAR(3),

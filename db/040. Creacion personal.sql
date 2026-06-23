@@ -180,6 +180,8 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 -- GUIA AUTORIZADO OPERACIONES - SIN PROBAR:
 		
 		-- GUIA AUTORIZADO: INSERT
+	GO
+
 			CREATE OR ALTER PROCEDURE [personal].[SP_GuiaAutorizado_Insert]
 				@CUIL		BIGINT,
 				@Nombre		VARCHAR(100),

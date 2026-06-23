@@ -86,6 +86,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ProvinciaContieneParque' A
 ELSE PRINT('INFO: tabla ProvinciaContieneParque ya existe')
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: PROVINCIA
+GO
 
 CREATE OR ALTER PROCEDURE [parque].[SP_Provincia_Insert]
 	@ID      INT,
