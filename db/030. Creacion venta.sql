@@ -269,16 +269,16 @@ GO
 	
 	-- FUNCION QUE DEVUELVE EL ID DE UN TIPOENTRADAPARQUE (TIPO DE ENTRADA VINCULADA A UN PARQUE Y A UN TIPO DE ENTRADA GENERAL)
 		CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerID] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
-		RETURNS DECIMAL(12,2)
+		RETURNS INT
 		AS
 		BEGIN 
-			DECLARE @Precio DECIMAL(12,2)
+			DECLARE @ID INT
 
-			SELECT @Precio = ID
+			SELECT @ID = ID
 			FROM [venta].[TipoEntradaParque]
 			WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
 
-			RETURN @Precio;
+			RETURN @ID;
 		END;
 		GO
 
