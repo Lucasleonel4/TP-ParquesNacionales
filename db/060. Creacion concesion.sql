@@ -7,8 +7,8 @@
 *  - Mancilla Muñoz, Emanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
-* Script: 060. Creacion concesion
-* Descripción: Crea el esquema concesion y sus tablas
+* Script: 060. Creación concesion
+* Descripción: Crea el esquema concesion, sus tablas y los stored procedures para las operaciones ABM de cada tabla
 */
 
 USE com2900;
@@ -126,3 +126,693 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PagoConcesion' AND schema_
 		PRINT('OK: tabla PagoConcesion creada exitosamente');
 	END
 ELSE PRINT('INFO: tabla PagoConcesion ya existe')
+
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.ActividadFiscal
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_ActividadFiscal_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscal_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscal_Alta
+	@Nombre      VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE Nombre = @Nombre)
+	BEGIN
+		RAISERROR('La actividad fiscal ya existe.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.ActividadFiscal (Nombre)
+	VALUES (@Nombre);
+
+	SELECT SCOPE_IDENTITY() AS ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_ActividadFiscal_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscal_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscal_Baja
+	@ID          INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La actividad fiscal no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID_ActividadFiscal = @ID)
+	BEGIN
+		RAISERROR('No se puede eliminar: la actividad fiscal está vinculada a tipos de concesión.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa WHERE ID_ActividadFiscal = @ID)
+	BEGIN
+		RAISERROR('No se puede eliminar: la actividad fiscal está vinculada a empresas.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.ActividadFiscal WHERE ID = @ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_ActividadFiscal_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscal_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscal_Modificacion
+	@ID          INT,
+	@Nombre      VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La actividad fiscal no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @Nombre IS NOT NULL AND EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE Nombre = @Nombre AND ID <> @ID)
+	BEGIN
+		RAISERROR('Ya existe otra actividad fiscal con ese nombre.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.ActividadFiscal
+	SET Nombre = ISNULL(@Nombre, Nombre)
+	WHERE ID = @ID;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.Empresa
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_Empresa_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Empresa_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_Empresa_Alta
+	@CUIT    BIGINT,
+	@Nombre  VARCHAR(150)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT)
+	BEGIN
+		RAISERROR('Ya existe una empresa con ese CUIT.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.Empresa (CUIT, Nombre)
+	VALUES (@CUIT, @Nombre);
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_Empresa_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Empresa_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_Empresa_Baja
+	@CUIT    BIGINT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT)
+	BEGIN
+		RAISERROR('La empresa no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa WHERE CUIT_Empresa = @CUIT)
+	BEGIN
+		RAISERROR('No se puede eliminar: la empresa tiene actividades fiscales inscriptas.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.Concesion WHERE CUIT_Empresa = @CUIT)
+	BEGIN
+		RAISERROR('No se puede eliminar: la empresa tiene concesiones vigentes.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.Empresa WHERE CUIT = @CUIT;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_Empresa_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Empresa_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_Empresa_Modificacion
+	@CUIT    BIGINT,
+	@Nombre  VARCHAR(150)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT)
+	BEGIN
+		RAISERROR('La empresa no existe.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.Empresa
+	SET Nombre = ISNULL(@Nombre, Nombre)
+	WHERE CUIT = @CUIT;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.TipoConcesion
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_TipoConcesion_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_TipoConcesion_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_TipoConcesion_Alta
+	@ID_ActividadFiscal  INT,
+	@Nombre              VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE ID = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La actividad fiscal especificada no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE Nombre = @Nombre AND ID_ActividadFiscal = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('Ya existe un tipo de concesión con ese nombre para esa actividad fiscal.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.TipoConcesion (ID_ActividadFiscal, Nombre)
+	VALUES (@ID_ActividadFiscal, @Nombre);
+
+	SELECT SCOPE_IDENTITY() AS ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_TipoConcesion_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_TipoConcesion_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_TipoConcesion_Baja
+	@ID          INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('El tipo de concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID_TipoConcesion = @ID)
+	BEGIN
+		RAISERROR('No se puede eliminar: el tipo de concesión está vinculado a concesiones.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.TipoConcesion WHERE ID = @ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_TipoConcesion_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_TipoConcesion_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_TipoConcesion_Modificacion
+	@ID                  INT,
+	@ID_ActividadFiscal  INT,
+	@Nombre              VARCHAR(100)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('El tipo de concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @ID_ActividadFiscal IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE ID = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La actividad fiscal especificada no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @Nombre IS NOT NULL AND EXISTS (SELECT 1 FROM concesion.TipoConcesion
+		WHERE Nombre = @Nombre
+		  AND ISNULL(@ID_ActividadFiscal, ID_ActividadFiscal) = ISNULL(@ID_ActividadFiscal, ID_ActividadFiscal)
+		  AND ID <> @ID)
+	BEGIN
+		RAISERROR('Ya existe un tipo de concesión con ese nombre para esa actividad fiscal.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.TipoConcesion
+	SET
+		ID_ActividadFiscal = ISNULL(@ID_ActividadFiscal, ID_ActividadFiscal),
+		Nombre             = ISNULL(@Nombre, Nombre)
+	WHERE ID = @ID;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.ActividadFiscalInscriptaEmpresa
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Alta
+	@CUIT_Empresa        BIGINT,
+	@ID_ActividadFiscal  INT,
+	@Principal           BIT = 0
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
+	BEGIN
+		RAISERROR('La empresa no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscal WHERE ID = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La actividad fiscal no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa
+		WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La empresa ya está inscripta en esa actividad fiscal.', 16, 1);
+		RETURN;
+	END
+
+	IF @Principal = 1 AND EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa
+		WHERE CUIT_Empresa = @CUIT_Empresa AND Principal = 1)
+	BEGIN
+		RAISERROR('La empresa ya tiene una actividad fiscal principal. Desactívela primero.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.ActividadFiscalInscriptaEmpresa (CUIT_Empresa, ID_ActividadFiscal, Principal)
+	VALUES (@CUIT_Empresa, @ID_ActividadFiscal, @Principal);
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Baja
+	@CUIT_Empresa        BIGINT,
+	@ID_ActividadFiscal  INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa
+		WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La inscripción no existe.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.ActividadFiscalInscriptaEmpresa
+	WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion
+	@CUIT_Empresa        BIGINT,
+	@ID_ActividadFiscal  INT,
+	@Principal           BIT = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa
+		WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La inscripción no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @Principal = 1 AND EXISTS (SELECT 1 FROM concesion.ActividadFiscalInscriptaEmpresa
+		WHERE CUIT_Empresa = @CUIT_Empresa AND Principal = 1
+		  AND ID_ActividadFiscal <> @ID_ActividadFiscal)
+	BEGIN
+		RAISERROR('La empresa ya tiene una actividad fiscal principal. Desactívela primero.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.ActividadFiscalInscriptaEmpresa
+	SET Principal = ISNULL(@Principal, Principal)
+	WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.Concesion
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_Concesion_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Concesion_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_Concesion_Alta
+	@ID_AreaProtegida    BIGINT,
+	@CUIT_Empresa        BIGINT,
+	@ID_TipoConcesion    INT,
+	@FechaInicio         DATE,
+	@FechaFin            DATE,
+	@Canon               DECIMAL(20,2)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
+	BEGIN
+		RAISERROR('El área protegida no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
+	BEGIN
+		RAISERROR('La empresa no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
+	BEGIN
+		RAISERROR('El tipo de concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @FechaFin < @FechaInicio
+	BEGIN
+		RAISERROR('La fecha de fin debe ser posterior o igual a la fecha de inicio.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.Concesion (ID_AreaProtegida, CUIT_Empresa, ID_TipoConcesion, FechaInicio, FechaFin, Canon)
+	VALUES (@ID_AreaProtegida, @CUIT_Empresa, @ID_TipoConcesion, @FechaInicio, @FechaFin, @Canon);
+
+	SELECT SCOPE_IDENTITY() AS ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_Concesion_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Concesion_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_Concesion_Baja
+	@ID          INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID_Concesion = @ID)
+	BEGIN
+		RAISERROR('No se puede eliminar: la concesión tiene facturas asociadas.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.Concesion WHERE ID = @ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_Concesion_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_Concesion_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_Concesion_Modificacion
+	@ID                  INT,
+	@ID_AreaProtegida    BIGINT         = NULL,
+	@CUIT_Empresa        BIGINT         = NULL,
+	@ID_TipoConcesion    INT            = NULL,
+	@FechaInicio         DATE           = NULL,
+	@FechaFin            DATE           = NULL,
+	@Canon               DECIMAL(20,2)  = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @ID_AreaProtegida IS NOT NULL AND NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
+	BEGIN
+		RAISERROR('El área protegida no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @CUIT_Empresa IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
+	BEGIN
+		RAISERROR('La empresa no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @ID_TipoConcesion IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
+	BEGIN
+		RAISERROR('El tipo de concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @FechaInicio IS NOT NULL AND @FechaFin IS NOT NULL AND @FechaFin < @FechaInicio
+	BEGIN
+		RAISERROR('La fecha de fin debe ser posterior o igual a la fecha de inicio.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.Concesion
+	SET
+		ID_AreaProtegida = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
+		CUIT_Empresa     = ISNULL(@CUIT_Empresa, CUIT_Empresa),
+		ID_TipoConcesion = ISNULL(@ID_TipoConcesion, ID_TipoConcesion),
+		FechaInicio      = ISNULL(@FechaInicio, FechaInicio),
+		FechaFin         = ISNULL(@FechaFin, FechaFin),
+		Canon            = ISNULL(@Canon, Canon)
+	WHERE ID = @ID;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.FacturaConcesion
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_FacturaConcesion_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_FacturaConcesion_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_FacturaConcesion_Alta
+	@ID_Concesion        INT,
+	@FechaEmision        DATE,
+	@FechaVencimiento    DATE,
+	@MontoEsperado       DECIMAL(20,2)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
+	BEGIN
+		RAISERROR('La concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @FechaVencimiento < @FechaEmision
+	BEGIN
+		RAISERROR('La fecha de vencimiento debe ser posterior o igual a la fecha de emisión.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.FacturaConcesion (ID_Concesion, FechaEmision, FechaVencimiento, MontoEsperado)
+	VALUES (@ID_Concesion, @FechaEmision, @FechaVencimiento, @MontoEsperado);
+
+	SELECT SCOPE_IDENTITY() AS ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_FacturaConcesion_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_FacturaConcesion_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_FacturaConcesion_Baja
+	@ID          INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La factura no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF EXISTS (SELECT 1 FROM concesion.PagoConcesion WHERE ID_Factura = @ID)
+	BEGIN
+		RAISERROR('No se puede eliminar: la factura tiene pagos asociados.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.FacturaConcesion WHERE ID = @ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_FacturaConcesion_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_FacturaConcesion_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_FacturaConcesion_Modificacion
+	@ID                  INT,
+	@ID_Concesion        INT            = NULL,
+	@FechaEmision        DATE           = NULL,
+	@FechaVencimiento    DATE           = NULL,
+	@MontoEsperado       DECIMAL(20,2)  = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('La factura no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @ID_Concesion IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
+	BEGIN
+		RAISERROR('La concesión no existe.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.FacturaConcesion
+	SET
+		ID_Concesion     = ISNULL(@ID_Concesion, ID_Concesion),
+		FechaEmision     = ISNULL(@FechaEmision, FechaEmision),
+		FechaVencimiento = ISNULL(@FechaVencimiento, FechaVencimiento),
+		MontoEsperado    = ISNULL(@MontoEsperado, MontoEsperado)
+	WHERE ID = @ID;
+END;
+GO
+
+-- ============================================================================
+-- Stored Procedures ABM para concesion.PagoConcesion
+-- ============================================================================
+
+IF OBJECT_ID('concesion.sp_PagoConcesion_Alta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_PagoConcesion_Alta;
+GO
+
+CREATE PROCEDURE concesion.sp_PagoConcesion_Alta
+	@ID_Factura    INT,
+	@FechaPago     DATE,
+	@MontoPagado   DECIMAL(20,2)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID_Factura)
+	BEGIN
+		RAISERROR('La factura no existe.', 16, 1);
+		RETURN;
+	END
+
+	INSERT INTO concesion.PagoConcesion (ID_Factura, FechaPago, MontoPagado)
+	VALUES (@ID_Factura, @FechaPago, @MontoPagado);
+
+	SELECT SCOPE_IDENTITY() AS ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_PagoConcesion_Baja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_PagoConcesion_Baja;
+GO
+
+CREATE PROCEDURE concesion.sp_PagoConcesion_Baja
+	@ID          INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.PagoConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('El pago no existe.', 16, 1);
+		RETURN;
+	END
+
+	DELETE FROM concesion.PagoConcesion WHERE ID = @ID;
+END;
+GO
+
+IF OBJECT_ID('concesion.sp_PagoConcesion_Modificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.sp_PagoConcesion_Modificacion;
+GO
+
+CREATE PROCEDURE concesion.sp_PagoConcesion_Modificacion
+	@ID              INT,
+	@ID_Factura      INT            = NULL,
+	@FechaPago       DATE           = NULL,
+	@MontoPagado     DECIMAL(20,2)  = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	IF NOT EXISTS (SELECT 1 FROM concesion.PagoConcesion WHERE ID = @ID)
+	BEGIN
+		RAISERROR('El pago no existe.', 16, 1);
+		RETURN;
+	END
+
+	IF @ID_Factura IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID_Factura)
+	BEGIN
+		RAISERROR('La factura no existe.', 16, 1);
+		RETURN;
+	END
+
+	UPDATE concesion.PagoConcesion
+	SET
+		ID_Factura  = ISNULL(@ID_Factura, ID_Factura),
+		FechaPago   = ISNULL(@FechaPago, FechaPago),
+		MontoPagado = ISNULL(@MontoPagado, MontoPagado)
+	WHERE ID = @ID;
+END;
+GO
