@@ -316,8 +316,8 @@ GO
 		AS
 		BEGIN
 			BEGIN TRY
-				BEGIN TRANSACTION
-
+				
+					DECLARE @Errores NVARCHAR(MAX) = N'';
 					DECLARE @IDComprobante       INT
 					DECLARE @Total               DECIMAL(12,2) = 0
 					DECLARE @ID_TipoEntrada      INT
@@ -326,6 +326,31 @@ GO
 					DECLARE @Precio              DECIMAL(12,2)
 					DECLARE @IDTipoEntradaParque INT
 					DECLARE @i                   INT
+
+					IF @FechaHora IS NULL
+						SET @Errores += N'- La fecha y hora de venta es obligatoria.' + CHAR(13) + CHAR(10);
+
+					IF NOT EXISTS (SELECT 1 FROM [parque].[AreaProtegida] WHERE ID = @ID_AreaProtegida)
+						SET @Errores += N'- El parque indicado no existe.' + CHAR(13) + CHAR(10);
+
+					IF NOT EXISTS (SELECT 1 FROM [parque].[PuntoDeVenta] WHERE ID = @ID_PuntoDeVenta)
+						SET @Errores += N'- El punto de venta indicado no existe.' + CHAR(13) + CHAR(10);
+					ELSE IF NOT EXISTS (SELECT 1 FROM [parque].[PuntoDeVenta] WHERE ID = @ID_PuntoDeVenta AND ID_AreaProtegida = @ID_AreaProtegida)
+						SET @Errores += N'- El punto de venta no corresponde al parque indicado.' + CHAR(13) + CHAR(10);
+
+					IF NOT EXISTS (SELECT 1 FROM [venta].[Divisa] WHERE COD_ISO = @COD_ISO_Divisa)
+						SET @Errores += N'- La divisa indicada no existe.' + CHAR(13) + CHAR(10);
+
+					IF @MedioDePago NOT IN ('Efectivo', 'Tarjeta', 'Transferencia')
+						SET @Errores += N'- El medio de pago debe ser Efectivo, Tarjeta o Transferencia.' + CHAR(13) + CHAR(10);
+
+					IF NOT EXISTS (SELECT 1 FROM @DetalleEntrada) AND NOT EXISTS (SELECT 1 FROM @DetalleActividad)
+						SET @Errores += N'- No existen datos para registrar.' + CHAR(13) + CHAR(10);
+
+					IF LEN(@Errores) > 0
+						THROW 50001, @Errores, 1;
+
+				BEGIN TRANSACTION
 
 					IF EXISTS (SELECT 1 FROM @DetalleEntrada)
 					BEGIN
@@ -407,8 +432,13 @@ GO
 							FROM #DetalleActividad 
 							WHERE Procesado = 0
 
+							SET @Errores = N''
+
 							IF [actividad].[FN_Actividad_TieneCupo](@ID_Actividad, @Cantidad) = 0
-								RAISERROR('No hay cupo suficiente para la actividad %d.', 16, 1, @ID_Actividad)
+								SET @Errores += N'- No hay cupo suficiente para la actividad.' + CHAR(13) + CHAR(10);
+
+							IF LEN(@Errores) > 0
+								THROW 50001, @Errores, 1;
 
 							SET @Precio = [actividad].[FN_Actividad_ObtenerPrecio](@ID_Actividad)
 							SET @i = 1
