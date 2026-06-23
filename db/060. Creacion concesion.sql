@@ -523,29 +523,31 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @Errores NVARCHAR(MAX) = N'';
+
 	IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
-	BEGIN
-		RAISERROR('El área protegida no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- El area protegida no existe.' + CHAR(13) + CHAR(10);
 
 	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
-	BEGIN
-		RAISERROR('La empresa no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- La empresa no existe.' + CHAR(13) + CHAR(10);
 
 	IF NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
-	BEGIN
-		RAISERROR('El tipo de concesión no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- El tipo de concesion no existe.' + CHAR(13) + CHAR(10);
 
-	IF @FechaFin < @FechaInicio
-	BEGIN
-		RAISERROR('La fecha de fin debe ser posterior o igual a la fecha de inicio.', 16, 1);
-		RETURN;
-	END
+	IF @FechaInicio IS NULL
+		SET @Errores += N'- La fecha de inicio es obligatoria.' + CHAR(13) + CHAR(10);
+
+	IF @FechaFin IS NULL
+		SET @Errores += N'- La fecha de fin es obligatoria.' + CHAR(13) + CHAR(10);
+
+	IF @FechaInicio IS NOT NULL AND @FechaFin IS NOT NULL AND @FechaFin < @FechaInicio
+		SET @Errores += N'- La fecha de fin debe ser posterior o igual a la fecha de inicio.' + CHAR(13) + CHAR(10);
+
+	IF @Canon IS NULL OR @Canon <= 0
+		SET @Errores += N'- El canon debe ser mayor que cero.' + CHAR(13) + CHAR(10);
+
+	IF LEN(@Errores) > 0
+		THROW 50001, @Errores, 1;
 
 	INSERT INTO concesion.Concesion (ID_AreaProtegida, CUIT_Empresa, ID_TipoConcesion, FechaInicio, FechaFin, Canon)
 	VALUES (@ID_AreaProtegida, @CUIT_Empresa, @ID_TipoConcesion, @FechaInicio, @FechaFin, @Canon);
@@ -596,35 +598,36 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @FechaInicioFinal DATE;
+	DECLARE @FechaFinFinal DATE;
+
 	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID)
-	BEGIN
-		RAISERROR('La concesión no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- La concesion no existe.' + CHAR(13) + CHAR(10);
 
 	IF @ID_AreaProtegida IS NOT NULL AND NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
-	BEGIN
-		RAISERROR('El área protegida no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- El area protegida no existe.' + CHAR(13) + CHAR(10);
 
 	IF @CUIT_Empresa IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
-	BEGIN
-		RAISERROR('La empresa no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- La empresa no existe.' + CHAR(13) + CHAR(10);
 
 	IF @ID_TipoConcesion IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
-	BEGIN
-		RAISERROR('El tipo de concesión no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- El tipo de concesion no existe.' + CHAR(13) + CHAR(10);
 
-	IF @FechaInicio IS NOT NULL AND @FechaFin IS NOT NULL AND @FechaFin < @FechaInicio
-	BEGIN
-		RAISERROR('La fecha de fin debe ser posterior o igual a la fecha de inicio.', 16, 1);
-		RETURN;
-	END
+	SELECT
+		@FechaInicioFinal = ISNULL(@FechaInicio, FechaInicio),
+		@FechaFinFinal = ISNULL(@FechaFin, FechaFin)
+	FROM concesion.Concesion
+	WHERE ID = @ID;
+
+	IF @FechaInicioFinal IS NOT NULL AND @FechaFinFinal IS NOT NULL AND @FechaFinFinal < @FechaInicioFinal
+		SET @Errores += N'- La fecha de fin debe ser posterior o igual a la fecha de inicio.' + CHAR(13) + CHAR(10);
+
+	IF @Canon IS NOT NULL AND @Canon <= 0
+		SET @Errores += N'- El canon debe ser mayor que cero.' + CHAR(13) + CHAR(10);
+
+	IF LEN(@Errores) > 0
+		THROW 50001, @Errores, 1;
 
 	UPDATE concesion.Concesion
 	SET
@@ -655,17 +658,25 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
-	BEGIN
-		RAISERROR('La concesión no existe.', 16, 1);
-		RETURN;
-	END
+	DECLARE @Errores NVARCHAR(MAX) = N'';
 
-	IF @FechaVencimiento < @FechaEmision
-	BEGIN
-		RAISERROR('La fecha de vencimiento debe ser posterior o igual a la fecha de emisión.', 16, 1);
-		RETURN;
-	END
+	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
+		SET @Errores += N'- La concesion no existe.' + CHAR(13) + CHAR(10);
+
+	IF @FechaEmision IS NULL
+		SET @Errores += N'- La fecha de emision es obligatoria.' + CHAR(13) + CHAR(10);
+
+	IF @FechaVencimiento IS NULL
+		SET @Errores += N'- La fecha de vencimiento es obligatoria.' + CHAR(13) + CHAR(10);
+
+	IF @FechaEmision IS NOT NULL AND @FechaVencimiento IS NOT NULL AND @FechaVencimiento < @FechaEmision
+		SET @Errores += N'- La fecha de vencimiento debe ser posterior o igual a la fecha de emision.' + CHAR(13) + CHAR(10);
+
+	IF @MontoEsperado IS NULL OR @MontoEsperado <= 0
+		SET @Errores += N'- El monto esperado debe ser mayor que cero.' + CHAR(13) + CHAR(10);
+
+	IF LEN(@Errores) > 0
+		THROW 50001, @Errores, 1;
 
 	INSERT INTO concesion.FacturaConcesion (ID_Concesion, FechaEmision, FechaVencimiento, MontoEsperado)
 	VALUES (@ID_Concesion, @FechaEmision, @FechaVencimiento, @MontoEsperado);
@@ -752,11 +763,19 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	DECLARE @Errores NVARCHAR(MAX) = N'';
+
 	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID_Factura)
-	BEGIN
-		RAISERROR('La factura no existe.', 16, 1);
-		RETURN;
-	END
+		SET @Errores += N'- La factura no existe.' + CHAR(13) + CHAR(10);
+
+	IF @FechaPago IS NULL
+		SET @Errores += N'- La fecha de pago es obligatoria.' + CHAR(13) + CHAR(10);
+
+	IF @MontoPagado IS NULL OR @MontoPagado <= 0
+		SET @Errores += N'- El monto pagado debe ser mayor que cero.' + CHAR(13) + CHAR(10);
+
+	IF LEN(@Errores) > 0
+		THROW 50001, @Errores, 1;
 
 	INSERT INTO concesion.PagoConcesion (ID_Factura, FechaPago, MontoPagado)
 	VALUES (@ID_Factura, @FechaPago, @MontoPagado);
@@ -816,175 +835,6 @@ BEGIN
 		FechaPago   = ISNULL(@FechaPago, FechaPago),
 		MontoPagado = ISNULL(@MontoPagado, MontoPagado)
 	WHERE ID = @ID;
-END;
-GO
-
--- ============================================================================
--- Ajustes Entrega 5: validaciones acumuladas en operaciones con varias reglas.
--- Se conservan los nombres de procedimientos existentes para no romper tests ni dependencias.
--- ============================================================================
-
-CREATE OR ALTER PROCEDURE concesion.sp_Concesion_Alta
-	@ID_AreaProtegida    BIGINT,
-	@CUIT_Empresa        BIGINT,
-	@ID_TipoConcesion    INT,
-	@FechaInicio         DATE,
-	@FechaFin            DATE,
-	@Canon               DECIMAL(20,2)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	DECLARE @Errores NVARCHAR(MAX) = N'';
-
-	IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
-		SET @Errores += N'- El area protegida no existe.' + CHAR(13) + CHAR(10);
-
-	IF NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
-		SET @Errores += N'- La empresa no existe.' + CHAR(13) + CHAR(10);
-
-	IF NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
-		SET @Errores += N'- El tipo de concesion no existe.' + CHAR(13) + CHAR(10);
-
-	IF @FechaInicio IS NULL
-		SET @Errores += N'- La fecha de inicio es obligatoria.' + CHAR(13) + CHAR(10);
-
-	IF @FechaFin IS NULL
-		SET @Errores += N'- La fecha de fin es obligatoria.' + CHAR(13) + CHAR(10);
-
-	IF @FechaInicio IS NOT NULL AND @FechaFin IS NOT NULL AND @FechaFin < @FechaInicio
-		SET @Errores += N'- La fecha de fin debe ser posterior o igual a la fecha de inicio.' + CHAR(13) + CHAR(10);
-
-	IF @Canon IS NULL OR @Canon <= 0
-		SET @Errores += N'- El canon debe ser mayor que cero.' + CHAR(13) + CHAR(10);
-
-	IF LEN(@Errores) > 0
-		THROW 50001, @Errores, 1;
-
-	INSERT INTO concesion.Concesion (ID_AreaProtegida, CUIT_Empresa, ID_TipoConcesion, FechaInicio, FechaFin, Canon)
-	VALUES (@ID_AreaProtegida, @CUIT_Empresa, @ID_TipoConcesion, @FechaInicio, @FechaFin, @Canon);
-
-	SELECT SCOPE_IDENTITY() AS ID;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE concesion.sp_Concesion_Modificacion
-	@ID                  INT,
-	@ID_AreaProtegida    BIGINT         = NULL,
-	@CUIT_Empresa        BIGINT         = NULL,
-	@ID_TipoConcesion    INT            = NULL,
-	@FechaInicio         DATE           = NULL,
-	@FechaFin            DATE           = NULL,
-	@Canon               DECIMAL(20,2)  = NULL
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	DECLARE @Errores NVARCHAR(MAX) = N'';
-	DECLARE @FechaInicioFinal DATE;
-	DECLARE @FechaFinFinal DATE;
-
-	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID)
-		SET @Errores += N'- La concesion no existe.' + CHAR(13) + CHAR(10);
-
-	IF @ID_AreaProtegida IS NOT NULL AND NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
-		SET @Errores += N'- El area protegida no existe.' + CHAR(13) + CHAR(10);
-
-	IF @CUIT_Empresa IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.Empresa WHERE CUIT = @CUIT_Empresa)
-		SET @Errores += N'- La empresa no existe.' + CHAR(13) + CHAR(10);
-
-	IF @ID_TipoConcesion IS NOT NULL AND NOT EXISTS (SELECT 1 FROM concesion.TipoConcesion WHERE ID = @ID_TipoConcesion)
-		SET @Errores += N'- El tipo de concesion no existe.' + CHAR(13) + CHAR(10);
-
-	SELECT
-		@FechaInicioFinal = ISNULL(@FechaInicio, FechaInicio),
-		@FechaFinFinal = ISNULL(@FechaFin, FechaFin)
-	FROM concesion.Concesion
-	WHERE ID = @ID;
-
-	IF @FechaInicioFinal IS NOT NULL AND @FechaFinFinal IS NOT NULL AND @FechaFinFinal < @FechaInicioFinal
-		SET @Errores += N'- La fecha de fin debe ser posterior o igual a la fecha de inicio.' + CHAR(13) + CHAR(10);
-
-	IF @Canon IS NOT NULL AND @Canon <= 0
-		SET @Errores += N'- El canon debe ser mayor que cero.' + CHAR(13) + CHAR(10);
-
-	IF LEN(@Errores) > 0
-		THROW 50001, @Errores, 1;
-
-	UPDATE concesion.Concesion
-	SET
-		ID_AreaProtegida = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
-		CUIT_Empresa     = ISNULL(@CUIT_Empresa, CUIT_Empresa),
-		ID_TipoConcesion = ISNULL(@ID_TipoConcesion, ID_TipoConcesion),
-		FechaInicio      = ISNULL(@FechaInicio, FechaInicio),
-		FechaFin         = ISNULL(@FechaFin, FechaFin),
-		Canon            = ISNULL(@Canon, Canon)
-	WHERE ID = @ID;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE concesion.sp_FacturaConcesion_Alta
-	@ID_Concesion        INT,
-	@FechaEmision        DATE,
-	@FechaVencimiento    DATE,
-	@MontoEsperado       DECIMAL(20,2)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	DECLARE @Errores NVARCHAR(MAX) = N'';
-
-	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
-		SET @Errores += N'- La concesion no existe.' + CHAR(13) + CHAR(10);
-
-	IF @FechaEmision IS NULL
-		SET @Errores += N'- La fecha de emision es obligatoria.' + CHAR(13) + CHAR(10);
-
-	IF @FechaVencimiento IS NULL
-		SET @Errores += N'- La fecha de vencimiento es obligatoria.' + CHAR(13) + CHAR(10);
-
-	IF @FechaEmision IS NOT NULL AND @FechaVencimiento IS NOT NULL AND @FechaVencimiento < @FechaEmision
-		SET @Errores += N'- La fecha de vencimiento debe ser posterior o igual a la fecha de emision.' + CHAR(13) + CHAR(10);
-
-	IF @MontoEsperado IS NULL OR @MontoEsperado <= 0
-		SET @Errores += N'- El monto esperado debe ser mayor que cero.' + CHAR(13) + CHAR(10);
-
-	IF LEN(@Errores) > 0
-		THROW 50001, @Errores, 1;
-
-	INSERT INTO concesion.FacturaConcesion (ID_Concesion, FechaEmision, FechaVencimiento, MontoEsperado)
-	VALUES (@ID_Concesion, @FechaEmision, @FechaVencimiento, @MontoEsperado);
-
-	SELECT SCOPE_IDENTITY() AS ID;
-END;
-GO
-
-CREATE OR ALTER PROCEDURE concesion.sp_PagoConcesion_Alta
-	@ID_Factura    INT,
-	@FechaPago     DATE,
-	@MontoPagado   DECIMAL(20,2)
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-	DECLARE @Errores NVARCHAR(MAX) = N'';
-
-	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID_Factura)
-		SET @Errores += N'- La factura no existe.' + CHAR(13) + CHAR(10);
-
-	IF @FechaPago IS NULL
-		SET @Errores += N'- La fecha de pago es obligatoria.' + CHAR(13) + CHAR(10);
-
-	IF @MontoPagado IS NULL OR @MontoPagado <= 0
-		SET @Errores += N'- El monto pagado debe ser mayor que cero.' + CHAR(13) + CHAR(10);
-
-	IF LEN(@Errores) > 0
-		THROW 50001, @Errores, 1;
-
-	INSERT INTO concesion.PagoConcesion (ID_Factura, FechaPago, MontoPagado)
-	VALUES (@ID_Factura, @FechaPago, @MontoPagado);
-
-	SELECT SCOPE_IDENTITY() AS ID;
 END;
 GO
 
