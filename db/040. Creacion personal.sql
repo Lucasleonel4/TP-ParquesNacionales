@@ -7,8 +7,8 @@
 *  - Mancilla Muñoz, Emanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
-* Script: 040. Creacion personal
-* Descripción: Crea el esquema personal y sus tablas
+ * Script: 040. Creacion personal
+ * Descripción: Crea el esquema personal, sus tablas y los procedimientos almacenados ABM para todas las tablas del esquema
 */
 
 USE com2900;
@@ -237,7 +237,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 	-- TITULO ACADEMICO OPERACIONES - SIN PROBAR: 
 		
 			-- TITULO ACADEMICO: INSERT
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcedemico_Insert]
+				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Insert]
 					@Nombre          VARCHAR(100),
 					@Entidad_Otorga  VARCHAR(100),
 					@Tipo			 VARCHAR(50),
@@ -255,7 +255,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- TITULO ACADEMICO: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcedemico_Update]
+				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Update]
 					@ID				 INT,
 					@Nombre          VARCHAR(100) = NULL,
 					@Entidad_Otorga  VARCHAR(100) = NULL,
@@ -279,7 +279,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- TITULO ACADEMICO: DELETE
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcedemico_Delete]
+				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Delete]
 					@ID INT
 				AS
 				BEGIN
@@ -351,7 +351,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 			
 			-- ESPECIALIDAD: Insert
 				CREATE OR ALTER PROCEDURE [personal].[SP_EspecialidadGuia_Insert]
-					@Nombre      VARCHAR(50),
+					@Nombre      VARCHAR(100),
 					@Descripcion VARCHAR(200)
 				AS
 				BEGIN
@@ -368,7 +368,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 			-- ESPECIALIDAD: UPDATE
 				CREATE OR ALTER PROCEDURE [personal].[SP_EspecialidadGuia_Update]
 					@ID          INT,
-					@Nombre      VARCHAR(50)         = NULL,
+					@Nombre      VARCHAR(100)        = NULL,
 					@Descripcion VARCHAR(200)        = NULL
 				AS
 				BEGIN
@@ -397,5 +397,372 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 					BEGIN CATCH
 						THROW;
 					END CATCH
-				END 
+				END
 				GO
+
+-- ========================================
+-- GUIA CON TITULO OPERACIONES
+-- ========================================
+
+-- GUIA CON TITULO: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Insert]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_TituloAcademico  INT,
+	@FechaObtenido       DATE
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[GuiaConTitulo](CUIL_GuiaAutorizado, ID_TituloAcademico, FechaObtenido)
+		VALUES (@CUIL_GuiaAutorizado, @ID_TituloAcademico, @FechaObtenido)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON TITULO: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Update]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_TituloAcademico  INT,
+	@FechaObtenido       DATE = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[GuiaConTitulo]
+		SET
+			FechaObtenido = ISNULL(@FechaObtenido, FechaObtenido)
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_TituloAcademico  = @ID_TituloAcademico
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON TITULO: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Delete]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_TituloAcademico  INT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[GuiaConTitulo]
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_TituloAcademico  = @ID_TituloAcademico
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- ========================================
+-- GUIA CON HABILITACION OPERACIONES
+-- ========================================
+
+-- GUIA CON HABILITACION: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Insert]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_HabilitacionGuia INT,
+	@FechaObtenido       DATE,
+	@FechaExpiracion     DATE
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[GuiaConHabilitacion](CUIL_GuiaAutorizado, ID_HabilitacionGuia, FechaObtenido, FechaExpiracion)
+		VALUES (@CUIL_GuiaAutorizado, @ID_HabilitacionGuia, @FechaObtenido, @FechaExpiracion)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON HABILITACION: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Update]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_HabilitacionGuia INT,
+	@FechaObtenido       DATE = NULL,
+	@FechaExpiracion     DATE = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[GuiaConHabilitacion]
+		SET
+			FechaObtenido   = ISNULL(@FechaObtenido, FechaObtenido),
+			FechaExpiracion = ISNULL(@FechaExpiracion, FechaExpiracion)
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_HabilitacionGuia = @ID_HabilitacionGuia
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON HABILITACION: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Delete]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_HabilitacionGuia INT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[GuiaConHabilitacion]
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_HabilitacionGuia = @ID_HabilitacionGuia
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- ========================================
+-- GUIA CON ESPECIALIDAD OPERACIONES
+-- ========================================
+
+-- GUIA CON ESPECIALIDAD: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Insert]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_EspecialidadGuia INT,
+	@FechaObtenida       DATE
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[GuiaConEspecialidad](CUIL_GuiaAutorizado, ID_EspecialidadGuia, FechaObtenida)
+		VALUES (@CUIL_GuiaAutorizado, @ID_EspecialidadGuia, @FechaObtenida)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON ESPECIALIDAD: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Update]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_EspecialidadGuia INT,
+	@FechaObtenida       DATE = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[GuiaConEspecialidad]
+		SET
+			FechaObtenida = ISNULL(@FechaObtenida, FechaObtenida)
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_EspecialidadGuia = @ID_EspecialidadGuia
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUIA CON ESPECIALIDAD: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Delete]
+	@CUIL_GuiaAutorizado BIGINT,
+	@ID_EspecialidadGuia INT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[GuiaConEspecialidad]
+		WHERE CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+		  AND ID_EspecialidadGuia = @ID_EspecialidadGuia
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- ========================================
+-- GUARDAPARQUES OPERACIONES
+-- ========================================
+
+-- GUARDAPARQUES: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Insert]
+	@CUIL            BIGINT,
+	@Nombre          VARCHAR(100),
+	@Apellido        VARCHAR(100),
+	@FechaNacimiento DATE,
+	@FechaIngreso    DATE,
+	@FechaEgreso     DATE         = NULL,
+	@MotivoEgreso    VARCHAR(255) = NULL
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[Guardaparques](CUIL, Nombre, Apellido, FechaNacimiento, FechaIngreso, FechaEgreso, MotivoEgreso)
+		VALUES (@CUIL, @Nombre, @Apellido, @FechaNacimiento, @FechaIngreso, @FechaEgreso, @MotivoEgreso)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUARDAPARQUES: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Update]
+	@CUIL            BIGINT       = NULL,
+	@Nombre          VARCHAR(100) = NULL,
+	@Apellido        VARCHAR(100) = NULL,
+	@FechaNacimiento DATE         = NULL,
+	@FechaIngreso    DATE         = NULL,
+	@FechaEgreso     DATE         = NULL,
+	@MotivoEgreso    VARCHAR(255) = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[Guardaparques]
+		SET
+			Nombre          = ISNULL(@Nombre, Nombre),
+			Apellido        = ISNULL(@Apellido, Apellido),
+			FechaNacimiento = ISNULL(@FechaNacimiento, FechaNacimiento),
+			FechaIngreso    = ISNULL(@FechaIngreso, FechaIngreso),
+			FechaEgreso     = ISNULL(@FechaEgreso, FechaEgreso),
+			MotivoEgreso    = ISNULL(@MotivoEgreso, MotivoEgreso)
+		WHERE CUIL = @CUIL
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- GUARDAPARQUES: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Delete]
+	@CUIL BIGINT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[Guardaparques]
+		WHERE CUIL = @CUIL
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- ========================================
+-- CONTRATO TRABAJO OPERACIONES
+-- ========================================
+
+-- CONTRATO TRABAJO: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Insert]
+	@ID_AreaProtegida  BIGINT,
+	@CUIL_Guardaparques BIGINT,
+	@FechaInicio       DATE,
+	@FechaFin          DATE = NULL
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[ContratoTrabajo](ID_AreaProtegida, CUIL_Guardaparques, FechaInicio, FechaFin)
+		VALUES (@ID_AreaProtegida, @CUIL_Guardaparques, @FechaInicio, @FechaFin)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- CONTRATO TRABAJO: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Update]
+	@ID                  INT          = NULL,
+	@ID_AreaProtegida    BIGINT       = NULL,
+	@CUIL_Guardaparques  BIGINT       = NULL,
+	@FechaInicio         DATE         = NULL,
+	@FechaFin            DATE         = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[ContratoTrabajo]
+		SET
+			ID_AreaProtegida   = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
+			CUIL_Guardaparques = ISNULL(@CUIL_Guardaparques, CUIL_Guardaparques),
+			FechaInicio        = ISNULL(@FechaInicio, FechaInicio),
+			FechaFin           = ISNULL(@FechaFin, FechaFin)
+		WHERE ID = @ID
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- CONTRATO TRABAJO: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Delete]
+	@ID INT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[ContratoTrabajo]
+		WHERE ID = @ID
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- ========================================
+-- PERMISO DE TRABAJO OPERACIONES
+-- ========================================
+
+-- PERMISO DE TRABAJO: INSERT
+CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Insert]
+	@ID_AreaProtegida    BIGINT,
+	@CUIL_GuiaAutorizado BIGINT,
+	@FechaInicio         DATE,
+	@FechaFin            DATE = NULL
+AS
+BEGIN
+	BEGIN TRY
+		INSERT INTO [personal].[PermisoDeTrabajo](ID_AreaProtegida, CUIL_GuiaAutorizado, FechaInicio, FechaFin)
+		VALUES (@ID_AreaProtegida, @CUIL_GuiaAutorizado, @FechaInicio, @FechaFin)
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- PERMISO DE TRABAJO: UPDATE
+CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Update]
+	@ID                    INT          = NULL,
+	@ID_AreaProtegida      BIGINT       = NULL,
+	@CUIL_GuiaAutorizado   BIGINT       = NULL,
+	@FechaInicio           DATE         = NULL,
+	@FechaFin              DATE         = NULL
+AS
+BEGIN
+	BEGIN TRY
+		UPDATE [personal].[PermisoDeTrabajo]
+		SET
+			ID_AreaProtegida    = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
+			CUIL_GuiaAutorizado = ISNULL(@CUIL_GuiaAutorizado, CUIL_GuiaAutorizado),
+			FechaInicio         = ISNULL(@FechaInicio, FechaInicio),
+			FechaFin            = ISNULL(@FechaFin, FechaFin)
+		WHERE ID = @ID
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
+
+-- PERMISO DE TRABAJO: DELETE
+CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Delete]
+	@ID INT
+AS
+BEGIN
+	BEGIN TRY
+		DELETE FROM [personal].[PermisoDeTrabajo]
+		WHERE ID = @ID
+	END TRY
+	BEGIN CATCH
+		THROW;
+	END CATCH
+END
+GO
