@@ -18,6 +18,6 @@ IF NOT EXISTS(SELECT 1 FROM sys.databases WHERE name = 'com2900')
 	END TRY
 	BEGIN CATCH;
 		PRINT('ERROR: No se pudo crear la base de datos com2900');
-		RETURN;
+		THROW;
 	END CATCH;
 ELSE PRINT('INFO: base de datos 2900 ya existe');
