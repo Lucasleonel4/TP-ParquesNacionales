@@ -265,36 +265,38 @@ AS
 	WHERE ID = @ID;
 GO
 
--- FUNCIÓN DE CONSULTA: 
+-- ============================================================
+-- FUNCIONES
+-- ============================================================
 	
-	-- DEVUELVE EL ID DE TIPOENTRADAPARQUE SEGÚN ÁREAPROTEGIDA Y TIPOENTRADA
+-- DEVUELVE EL ID DE TIPOENTRADAPARQUE SEGÚN ÁREAPROTEGIDA Y TIPOENTRADA
 
-		CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerID] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
-		RETURNS INT
-		AS
-		BEGIN 
-			DECLARE @ID INT
+	CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerID] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
+	RETURNS INT
+	AS
+	BEGIN 
+		DECLARE @ID INT
 
-			SELECT @ID = ID
-			FROM [venta].[TipoEntradaParque]
-			WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
+		SELECT @ID = ID
+		FROM [venta].[TipoEntradaParque]
+		WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
 
-			RETURN @ID;
-		END;
-		GO
+		RETURN @ID;
+	END;
+	GO
 
-	-- DEVUELVE EL PRECIO DE TIPOENTRADAPARQUE SEGÚN ÁREAPROTEGIDA Y TIPOENTRADA
+-- DEVUELVE EL PRECIO DE TIPOENTRADAPARQUE SEGÚN ÁREAPROTEGIDA Y TIPOENTRADA
 
-		CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerPrecio] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
-		RETURNS DECIMAL(12,2)
-		AS
-		BEGIN 
-			DECLARE @Precio DECIMAL(12,2)
+	CREATE OR ALTER FUNCTION [venta].[FN_TipoEntradaParque_ObtenerPrecio] (@ID_AreaProtegida BIGINT, @ID_TipoEntrada INT)
+	RETURNS DECIMAL(12,2)
+	AS
+	BEGIN 
+		DECLARE @Precio DECIMAL(12,2)
 
-			SELECT @Precio = Precio
-			FROM [venta].[TipoEntradaParque]
-			WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
+		SELECT @Precio = Precio
+		FROM [venta].[TipoEntradaParque]
+		WHERE ID_AreaProtegida = @ID_AreaProtegida AND ID_TipoEntrada = @ID_TipoEntrada
 
-			RETURN @Precio;
-		END;
-		GO
+		RETURN @Precio;
+	END;
+	GO
