@@ -57,13 +57,7 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>060. Creacion concesion.sql</FullPath>
         </FileNode>
-        <FileNode Name="070. SP.sql">
-          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
-          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
-          <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>070. SP.sql</FullPath>
-        </FileNode>
-        <FileNode Name="080. Importaciones.sql">
+<FileNode Name="080. Importaciones.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
