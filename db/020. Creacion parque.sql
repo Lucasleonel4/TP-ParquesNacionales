@@ -22,7 +22,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'parque')
 	END TRY
 	BEGIN CATCH
 		PRINT('ERROR: No se pudo crear el esquema parque')
-		RETURN
+		THROW
 	END CATCH
 ELSE PRINT('INFO: el esquema parque ya existe')
 
@@ -211,5 +211,4 @@ AS
 	DELETE FROM [parque].[ProvinciaContieneParque]
 	WHERE ID_Provincia = @ID_Provincia AND ID_AreaProtegida = @ID_AreaProtegida
 GO
-
 
