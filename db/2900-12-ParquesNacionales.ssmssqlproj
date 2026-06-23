@@ -21,11 +21,11 @@
     </LogicalFolder>
     <LogicalFolder Name="Queries" Type="0" Sorted="true">
       <Items>
-        <FileNode Name="01. Creacion.sql">
+        <FileNode Name="010. Creacion base.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
-          <FullPath>01. Creacion.sql</FullPath>
+          <FullPath>010. Creacion base.sql</FullPath>
         </FileNode>
         <FileNode Name="02. SP.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
@@ -33,11 +33,41 @@
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>02. SP.sql</FullPath>
         </FileNode>
+        <FileNode Name="020. Creacion parque.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>020. Creacion parque.sql</FullPath>
+        </FileNode>
         <FileNode Name="03. Importaciones.sql">
           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
           <AssociatedConnUserName>sa</AssociatedConnUserName>
           <FullPath>03. Importaciones.sql</FullPath>
+        </FileNode>
+        <FileNode Name="030. Creacion venta.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>030. Creacion venta.sql</FullPath>
+        </FileNode>
+        <FileNode Name="040. Creacion personal.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>040. Creacion personal.sql</FullPath>
+        </FileNode>
+        <FileNode Name="050. Creacion actividad.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>050. Creacion actividad.sql</FullPath>
+        </FileNode>
+        <FileNode Name="060. Creacion concesion.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName>sa</AssociatedConnUserName>
+          <FullPath>060. Creacion concesion.sql</FullPath>
         </FileNode>
       </Items>
     </LogicalFolder>
