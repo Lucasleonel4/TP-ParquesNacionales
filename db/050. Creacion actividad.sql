@@ -8,7 +8,7 @@
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Script: 050. Creacion actividad
-* Descripción: Crea el esquema actividad y sus tablas
+* Descripción: Crea el esquema actividad, sus tablas y los procedimientos almacenados ABM
 */
 
 USE com2900;
@@ -84,3 +84,122 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaAsignadoTour' AND sche
 		PRINT('OK: tabla GuiaAsignadoTour creada exitosamente');
 	END
 ELSE PRINT('INFO: tabla GuiaAsignadoTour ya existe')
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: TIPO ACTIVIDAD
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Insert]
+	@Nombre VARCHAR(50)
+AS
+	INSERT INTO [actividad].[TipoActividad](Nombre)
+	VALUES(@Nombre)
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Update]
+	@ID     INT,
+	@Nombre VARCHAR(50) = NULL
+AS
+	UPDATE [actividad].[TipoActividad]
+	SET Nombre = ISNULL(@Nombre, Nombre)
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Delete]
+	@ID INT
+AS
+	DELETE FROM [actividad].[TipoActividad]
+	WHERE ID = @ID
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: ACTIVIDAD
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Insert]
+	@ID_AreaProtegida BIGINT,
+	@ID_TipoActividad INT,
+	@Nombre           VARCHAR(50),
+	@Duracion         INT          = NULL,
+	@Costo            DECIMAL(12,2),
+	@CupoMaximo       INT          = NULL
+AS
+	INSERT INTO [actividad].[Actividad](ID_AreaProtegida, ID_TipoActividad, Nombre, Duracion, Costo, CupoMaximo)
+	VALUES(@ID_AreaProtegida, @ID_TipoActividad, @Nombre, @Duracion, @Costo, @CupoMaximo)
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Update]
+	@ID                 INT,
+	@ID_AreaProtegida   BIGINT         = NULL,
+	@ID_TipoActividad   INT            = NULL,
+	@Nombre             VARCHAR(50)    = NULL,
+	@Duracion           INT            = NULL,
+	@Costo              DECIMAL(12,2)  = NULL,
+	@CupoMaximo         INT            = NULL
+AS
+	UPDATE [actividad].[Actividad]
+	SET
+		ID_AreaProtegida = ISNULL(@ID_AreaProtegida, ID_AreaProtegida),
+		ID_TipoActividad = ISNULL(@ID_TipoActividad, ID_TipoActividad),
+		Nombre           = ISNULL(@Nombre, Nombre),
+		Duracion         = CASE WHEN @Duracion = -1 THEN NULL ELSE ISNULL(@Duracion, Duracion) END,
+		Costo            = ISNULL(@Costo, Costo),
+		CupoMaximo       = CASE WHEN @CupoMaximo = -1 THEN NULL ELSE ISNULL(@CupoMaximo, CupoMaximo) END
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Delete]
+	@ID INT
+AS
+	DELETE FROM [actividad].[Actividad]
+	WHERE ID = @ID
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: INSCRIPCION ACTIVIDAD
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Insert]
+	@ID_Actividad    INT,
+	@ID_Comprobante  INT        = NULL,
+	@FechaHora       DATETIME   = NULL,
+	@PrecioCobrado   DECIMAL(12,2) = NULL
+AS
+	INSERT INTO [actividad].[InscripcionActividad](ID_Actividad, ID_Comprobante, FechaHora, PrecioCobrado)
+	VALUES(@ID_Actividad, @ID_Comprobante, @FechaHora, @PrecioCobrado)
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Update]
+	@ID                INT,
+	@ID_Actividad      INT            = NULL,
+	@ID_Comprobante    INT            = NULL,
+	@FechaHora         DATETIME       = NULL,
+	@PrecioCobrado     DECIMAL(12,2)  = NULL
+AS
+	UPDATE [actividad].[InscripcionActividad]
+	SET
+		ID_Actividad   = ISNULL(@ID_Actividad, ID_Actividad),
+		ID_Comprobante = CASE WHEN @ID_Comprobante = -1 THEN NULL ELSE ISNULL(@ID_Comprobante, ID_Comprobante) END,
+		FechaHora      = CASE WHEN @FechaHora = '1900-01-01' THEN NULL ELSE ISNULL(@FechaHora, FechaHora) END,
+		PrecioCobrado  = CASE WHEN @PrecioCobrado = -1 THEN NULL ELSE ISNULL(@PrecioCobrado, PrecioCobrado) END
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Delete]
+	@ID INT
+AS
+	DELETE FROM [actividad].[InscripcionActividad]
+	WHERE ID = @ID
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: GUIA ASIGNADO TOUR
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_GuiaAsignadoTour_Insert]
+	@ID_Actividad        INT,
+	@CUIL_GuiaAutorizado BIGINT
+AS
+	INSERT INTO [actividad].[GuiaAsignadoTour](ID_Actividad, CUIL_GuiaAutorizado)
+	VALUES(@ID_Actividad, @CUIL_GuiaAutorizado)
+GO
+
+CREATE OR ALTER PROCEDURE [actividad].[SP_GuiaAsignadoTour_Delete]
+	@ID_Actividad        INT,
+	@CUIL_GuiaAutorizado BIGINT
+AS
+	DELETE FROM [actividad].[GuiaAsignadoTour]
+	WHERE ID_Actividad = @ID_Actividad AND CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
+GO
