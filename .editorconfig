@@ -1,0 +1,12 @@
+# EditorConfig is awesome: https://editorconfig.org
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = false
+
+# 4 space indentation
+[*.sql]
+indent_style = tab
+indent_size = 4
