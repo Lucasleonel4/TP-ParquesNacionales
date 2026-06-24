@@ -22,7 +22,7 @@ DECLARE @FacturasAntes INT;
 DECLARE @ConcesionesAntes INT;
 
 IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @IDParque)
-	EXEC parque.SP_AreaProtegida_Insert @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Concesion', @Superficie = 1000;
+	EXEC parque.AreaProtegidaAlta @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Concesion', @Superficie = 1000;
 
 PRINT('Caso exitoso: alta integral de concesion');
 
@@ -33,7 +33,7 @@ CREATE TABLE #ResultadoConcesion (
 );
 
 INSERT INTO #ResultadoConcesion
-EXEC concesion.sp_Negocio_AltaIntegralConcesion
+EXEC concesion.ConcesionAltaIntegral
 	@ID_AreaProtegida = @IDParque,
 	@CUIT_Empresa = 30999000111,
 	@NombreEmpresa = 'Empresa Test Concesion',
@@ -56,7 +56,7 @@ DROP TABLE #ResultadoConcesion;
 
 PRINT('Caso fallido: ABM con multiples validaciones acumuladas');
 BEGIN TRY
-	EXEC concesion.sp_Concesion_Alta
+	EXEC concesion.ConcesionAlta
 		@ID_AreaProtegida = -1,
 		@CUIT_Empresa = -1,
 		@ID_TipoConcesion = -1,
@@ -73,7 +73,7 @@ SELECT @FacturasAntes = COUNT(*) FROM concesion.FacturaConcesion;
 
 PRINT('Caso fallido: alta integral con multiples validaciones y evidencia de rollback');
 BEGIN TRY
-	EXEC concesion.sp_Negocio_AltaIntegralConcesion
+	EXEC concesion.ConcesionAltaIntegral
 		@ID_AreaProtegida = -1,
 		@CUIT_Empresa = 0,
 		@NombreEmpresa = '',

@@ -24,34 +24,34 @@ DECLARE @ComprobantesAntes INT;
 DECLARE @EntradasAntes INT;
 
 IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @IDParque)
-	EXEC parque.SP_AreaProtegida_Insert @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Venta', @Superficie = 1000;
+	EXEC parque.AreaProtegidaAlta @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Venta', @Superficie = 1000;
 
 IF NOT EXISTS (SELECT 1 FROM parque.PuntoDeVenta WHERE ID_AreaProtegida = @IDParque AND Descripcion = 'Boleteria Test')
-	EXEC parque.SP_PuntoDeVenta_Insert @ID_AreaProtegida = @IDParque, @Descripcion = 'Boleteria Test';
+	EXEC parque.PuntoDeVentaAlta @ID_AreaProtegida = @IDParque, @Descripcion = 'Boleteria Test';
 
 SELECT @IDPuntoVenta = ID FROM parque.PuntoDeVenta WHERE ID_AreaProtegida = @IDParque AND Descripcion = 'Boleteria Test';
 
 IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'ARS')
-	EXEC venta.SP_Divisa_Insert @COD_ISO = 'ARS', @Pais = 'Argentina', @ValorEnPesos = 1;
+	EXEC venta.DivisaAlta @COD_ISO = 'ARS', @Pais = 'Argentina', @ValorEnPesos = 1;
 
 IF NOT EXISTS (SELECT 1 FROM venta.TipoEntrada WHERE Nombre = 'General Test')
-	EXEC venta.SP_TipoEntrada_Insert @Nombre = 'General Test';
+	EXEC venta.TipoEntradaAlta @Nombre = 'General Test';
 
 IF NOT EXISTS (SELECT 1 FROM venta.TipoEntrada WHERE Nombre = 'Menor Test')
-	EXEC venta.SP_TipoEntrada_Insert @Nombre = 'Menor Test';
+	EXEC venta.TipoEntradaAlta @Nombre = 'Menor Test';
 
 SELECT @IDTipoGeneral = ID FROM venta.TipoEntrada WHERE Nombre = 'General Test';
 SELECT @IDTipoMenor = ID FROM venta.TipoEntrada WHERE Nombre = 'Menor Test';
 
 IF NOT EXISTS (SELECT 1 FROM venta.TipoEntradaParque WHERE ID_AreaProtegida = @IDParque AND ID_TipoEntrada = @IDTipoGeneral)
-	EXEC venta.SP_TipoEntradaParque_Insert @ID_AreaProtegida = @IDParque, @ID_TipoEntrada = @IDTipoGeneral, @Precio = 5000;
+	EXEC venta.TipoEntradaParqueAlta @ID_AreaProtegida = @IDParque, @ID_TipoEntrada = @IDTipoGeneral, @Precio = 5000;
 
 IF NOT EXISTS (SELECT 1 FROM venta.TipoEntradaParque WHERE ID_AreaProtegida = @IDParque AND ID_TipoEntrada = @IDTipoMenor)
-	EXEC venta.SP_TipoEntradaParque_Insert @ID_AreaProtegida = @IDParque, @ID_TipoEntrada = @IDTipoMenor, @Precio = 2500;
+	EXEC venta.TipoEntradaParqueAlta @ID_AreaProtegida = @IDParque, @ID_TipoEntrada = @IDTipoMenor, @Precio = 2500;
 
 PRINT('Caso exitoso: venta de entradas del mismo tipo');
 
-EXEC venta.SP_Negocio_RegistrarVentaEntradasMismoTipo
+EXEC venta.VentaEntradasMismoTipoRegistrar
 	@ID_PuntoDeVenta = @IDPuntoVenta,
 	@COD_ISO_Divisa = 'ARS',
 	@MedioDePago = 'Efectivo',
@@ -72,7 +72,7 @@ PRINT('Caso exitoso: venta de entradas de distinto tipo');
 DECLARE @Detalle venta.TipoTablaDetalleEntradas;
 INSERT INTO @Detalle(ID_TipoEntrada, Cantidad) VALUES (@IDTipoGeneral, 1), (@IDTipoMenor, 2);
 
-EXEC venta.SP_Negocio_RegistrarVentaEntradasDistintoTipo
+EXEC venta.VentaEntradasDistintoTipoRegistrar
 	@ID_PuntoDeVenta = @IDPuntoVenta,
 	@COD_ISO_Divisa = 'ARS',
 	@MedioDePago = 'Tarjeta',
@@ -82,7 +82,7 @@ EXEC venta.SP_Negocio_RegistrarVentaEntradasDistintoTipo
 
 PRINT('Caso fallido: cantidad invalida');
 BEGIN TRY
-	EXEC venta.SP_Negocio_RegistrarVentaEntradasMismoTipo
+	EXEC venta.VentaEntradasMismoTipoRegistrar
 		@ID_PuntoDeVenta = @IDPuntoVenta,
 		@COD_ISO_Divisa = 'ARS',
 		@MedioDePago = 'Efectivo',
@@ -103,7 +103,7 @@ BEGIN TRY
 	DECLARE @DetalleError venta.TipoTablaDetalleEntradas;
 	INSERT INTO @DetalleError(ID_TipoEntrada, Cantidad) VALUES (-1, 0), (-1, -2);
 
-	EXEC venta.SP_Negocio_RegistrarVentaEntradasDistintoTipo
+	EXEC venta.VentaEntradasDistintoTipoRegistrar
 		@ID_PuntoDeVenta = -1,
 		@COD_ISO_Divisa = 'ZZZ',
 		@MedioDePago = 'Cripto',
@@ -128,14 +128,14 @@ DECLARE @IDActividad INT;
 DECLARE @ComprobanteConjunto TABLE (ID_Comprobante INT, Total DECIMAL(12,2));
 
 IF NOT EXISTS (SELECT 1 FROM actividad.TipoActividad WHERE Nombre = 'Actividad Venta Test')
-	EXEC actividad.SP_TipoActividad_Insert @Nombre = 'Actividad Venta Test';
+	EXEC actividad.TipoActividadAlta @Nombre = 'Actividad Venta Test';
 
 SELECT @IDTipoActividad = ID
 FROM actividad.TipoActividad
 WHERE Nombre = 'Actividad Venta Test';
 
 IF NOT EXISTS (SELECT 1 FROM actividad.Actividad WHERE ID_AreaProtegida = @IDParque AND Nombre = 'Excursion Venta Test')
-	EXEC actividad.SP_Actividad_Insert
+	EXEC actividad.ActividadAlta
 		@ID_AreaProtegida = @IDParque,
 		@ID_TipoActividad = @IDTipoActividad,
 		@Nombre = 'Excursion Venta Test',
@@ -148,7 +148,7 @@ FROM actividad.Actividad
 WHERE ID_AreaProtegida = @IDParque
   AND Nombre = 'Excursion Venta Test';
 
-EXEC actividad.SP_Actividad_Update @ID = @IDActividad, @Costo = 750, @CupoMaximo = 20, @CupoLibre = 20;
+EXEC actividad.ActividadModificacion @ID = @IDActividad, @Costo = 750, @CupoMaximo = 20, @CupoLibre = 20;
 
 DECLARE @EntradasConjuntas venta.TipoTablaDetalleEntradas;
 DECLARE @ActividadesConjuntas actividad.TipoTablaDetalleActividad;
@@ -160,7 +160,7 @@ INSERT INTO @ActividadesConjuntas(ID_Actividad, Cantidad)
 VALUES (@IDActividad, 2);
 
 INSERT INTO @ComprobanteConjunto
-EXEC venta.SP_Negocio_VenderEntradasYActividades
+EXEC venta.VentaEntradasYActividadesRegistrar
 	@ID_PuntoDeVenta = @IDPuntoVenta,
 	@COD_ISO_Divisa = 'ARS',
 	@MedioDePago = 'Transferencia',
@@ -187,7 +187,7 @@ SELECT @EntradasAntes = COUNT(*) FROM venta.Entrada;
 DECLARE @InscripcionesAntes INT;
 SELECT @InscripcionesAntes = COUNT(*) FROM actividad.InscripcionActividad;
 
-EXEC actividad.SP_Actividad_Update @ID = @IDActividad, @CupoLibre = 1;
+EXEC actividad.ActividadModificacion @ID = @IDActividad, @CupoLibre = 1;
 
 BEGIN TRY
 	DECLARE @EntradasSinCupo venta.TipoTablaDetalleEntradas;
@@ -199,7 +199,7 @@ BEGIN TRY
 	INSERT INTO @ActividadesSinCupo(ID_Actividad, Cantidad)
 	VALUES (@IDActividad, 2);
 
-	EXEC venta.SP_Negocio_VenderEntradasYActividades
+	EXEC venta.VentaEntradasYActividadesRegistrar
 		@ID_PuntoDeVenta = @IDPuntoVenta,
 		@COD_ISO_Divisa = 'ARS',
 		@MedioDePago = 'Tarjeta',

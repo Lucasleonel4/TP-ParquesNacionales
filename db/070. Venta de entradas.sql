@@ -1,23 +1,23 @@
-/*
+﻿/*
 * Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
-* Comision: 2900 (Martes noche)
+* Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Munoz, Emanuel Americo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 070. Venta de Entradas
-* Descripcion: Se crean procedimientos almacenados que realizan las transacciones del negocio relacionadas a la venta de entradas.
+* Descripción: Se crean procedimientos almacenados que realizan las transacciones del negocio relacionadas a la venta de entradas.
 */
 
 USE com2900;
 GO
 
 -- PROCEDIMIENTO QUE REGISTRA LA VENTA DE ENTRADAS DEL MISMO TIPO: 1) GENERA EL COMPROBANTE - 2) GENERA LAS ENTRADAS
-CREATE OR ALTER PROCEDURE [venta].[SP_Negocio_RegistrarVentaEntradasMismoTipo]
+CREATE OR ALTER PROCEDURE [venta].[VentaEntradasMismoTipoRegistrar]
 	@ID_PuntoDeVenta		INT,
 	@COD_ISO_Divisa			CHAR(3),
 	@MedioDePago			VARCHAR(30),
@@ -80,7 +80,7 @@ BEGIN
 
 		SET @Total = @Precio * @Cantidad;
 
-		EXEC [venta].[SP_Comprobante_Insert]
+		EXEC [venta].[ComprobanteAlta]
 			@ID_PuntoDeVenta = @ID_PuntoDeVenta,
 			@COD_ISO_Divisa  = @COD_ISO_Divisa,
 			@MedioDePago     = @MedioDePago,
@@ -92,7 +92,7 @@ BEGIN
 
 		WHILE @i <= @Cantidad
 		BEGIN
-			EXEC [venta].[SP_Entrada_Insert]
+			EXEC [venta].[EntradaAlta]
 				@ID_TipoEntradaParque = @IDTipoEntradaParque,
 				@ID_Comprobante       = @IDComprobante,
 				@FechaHora            = @FechaHora,
@@ -131,7 +131,7 @@ GO
 	GO
 
 -- PROCEDIMIENTO
-	CREATE OR ALTER PROCEDURE [venta].[SP_Negocio_RegistrarVentaEntradasDistintoTipo]
+	CREATE OR ALTER PROCEDURE [venta].[VentaEntradasDistintoTipoRegistrar]
 		@ID_PuntoDeVenta  INT,
 		@COD_ISO_Divisa   CHAR(3),
 		@MedioDePago      VARCHAR(30),
@@ -228,7 +228,7 @@ GO
 			ON TEP.ID_AreaProtegida = @ID_AreaProtegida
 			AND TEP.ID_TipoEntrada = D.ID_TipoEntrada;
 
-			EXEC [venta].[SP_Comprobante_Insert]
+			EXEC [venta].[ComprobanteAlta]
 				@ID_PuntoDeVenta = @ID_PuntoDeVenta,
 				@COD_ISO_Divisa  = @COD_ISO_Divisa,
 				@MedioDePago     = @MedioDePago,
@@ -255,7 +255,7 @@ GO
 
 				WHILE @i <= @Cantidad
 				BEGIN
-					EXEC [venta].[SP_Entrada_Insert]
+					EXEC [venta].[EntradaAlta]
 						@ID_TipoEntradaParque = @IDTipoEntradaParque,
 						@ID_Comprobante       = @IDComprobante,
 						@FechaHora            = @FechaHora,
@@ -305,7 +305,7 @@ GO
 		GO
 
 	-- PROCEDIMIENTO
-		CREATE OR ALTER PROCEDURE [venta].[SP_Negocio_VenderEntradasYActividades]
+		CREATE OR ALTER PROCEDURE [venta].[VentaEntradasYActividadesRegistrar]
 			@ID_PuntoDeVenta  INT,
 			@COD_ISO_Divisa   CHAR(3),
 			@MedioDePago      VARCHAR(30),
@@ -383,7 +383,7 @@ GO
 					END
 					
 					-- Creo el comprobante
-					EXEC [venta].[SP_Comprobante_Insert]
+					EXEC [venta].[ComprobanteAlta]
 						@ID_PuntoDeVenta = @ID_PuntoDeVenta,
 						@COD_ISO_Divisa  = @COD_ISO_Divisa,
 						@MedioDePago     = @MedioDePago,
@@ -409,7 +409,7 @@ GO
 							-- Inserto N entradas del tipo actual
 							WHILE @i <= @Cantidad
 							BEGIN
-								EXEC [venta].[SP_Entrada_Insert]
+								EXEC [venta].[EntradaAlta]
 									@ID_TipoEntradaParque = @IDTipoEntradaParque,
 									@ID_Comprobante       = @IDComprobante,
 									@FechaHora            = @FechaHora,
@@ -446,7 +446,7 @@ GO
 							-- Inserto N entradas del tipo actual
 							WHILE @i <= @Cantidad
 							BEGIN
-								EXEC [actividad].[SP_InscripcionActividad_Insert]
+								EXEC [actividad].[InscripcionActividadAlta]
 									@ID_Actividad    = @ID_Actividad,
 									@ID_Comprobante  = @IDComprobante,
 									@FechaHora       = @FechaHora,
@@ -487,7 +487,7 @@ GO
 				INSERT INTO @actividades(ID_Actividad, Cantidad) VALUES (5, 3)
 				INSERT INTO @actividades(ID_Actividad, Cantidad) VALUES (8, 2)
 
-				EXEC [venta].[SP_Negocio_VenderEntradasYActividades]
+				EXEC [venta].[VentaEntradasYActividadesRegistrar]
 					@ID_PuntoDeVenta  = 1,
 					@COD_ISO_Divisa   = 'ARS',
 					@MedioDePago      = 'Tarjeta',
@@ -503,7 +503,7 @@ GO
 
 				INSERT INTO @entradas2(ID_TipoEntrada, Cantidad) VALUES (1, 4)
 
-				EXEC [venta].[SP_Negocio_VenderEntradasYActividades]
+				EXEC [venta].[VentaEntradasYActividadesRegistrar]
 					@ID_PuntoDeVenta  = 1,
 					@COD_ISO_Divisa   = 'ARS',
 					@MedioDePago      = 'Efectivo',

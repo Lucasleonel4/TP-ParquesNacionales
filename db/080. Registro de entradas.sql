@@ -16,7 +16,7 @@
 USE com2900;
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_Negocio_RegistrarActividad]
+CREATE OR ALTER PROCEDURE [actividad].[ActividadRegistrar]
 	@ID_AreaProtegida BIGINT,
 	@ID_Actividad     INT,
 	@ID_Comprobante   INT = NULL,
@@ -81,7 +81,7 @@ BEGIN
 
 		WHILE @i <= @Cantidad
 		BEGIN
-			EXEC actividad.SP_InscripcionActividad_Insert
+			EXEC actividad.InscripcionActividadAlta
 				@ID_Actividad = @ID_Actividad,
 				@ID_Comprobante = @ID_Comprobante,
 				@FechaHora = @FechaHora,

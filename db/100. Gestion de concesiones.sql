@@ -16,7 +16,7 @@
 USE com2900;
 GO
 
-CREATE OR ALTER PROCEDURE [concesion].[sp_Negocio_AltaIntegralConcesion]
+CREATE OR ALTER PROCEDURE [concesion].[ConcesionAltaIntegral]
 	@ID_AreaProtegida       BIGINT,
 	@CUIT_Empresa           BIGINT,
 	@NombreEmpresa          VARCHAR(150),

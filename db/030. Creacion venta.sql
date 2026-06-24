@@ -18,10 +18,10 @@ USE com2900;
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'venta')
 	BEGIN TRY
 		EXEC('CREATE SCHEMA venta')
-		PRINT('OK: esquema venta creado exitosamente')
+		PRINT('OK: esquema venta creado exitosamente');
 	END TRY
 	BEGIN CATCH
-		PRINT('ERROR: No se pudo crear el esquema venta')
+		PRINT('ERROR: No se pudo crear el esquema venta');
 		RETURN
 	END CATCH
 ELSE PRINT ('INFO: el esquema venta ya existe');
@@ -107,7 +107,7 @@ ELSE PRINT('INFO: tabla Entrada ya existe');
 -- PROCEDIMIENTOS ALMACENADOS ABM: DIVISA
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Insert]
+CREATE OR ALTER PROCEDURE [venta].[DivisaAlta]
 	@COD_ISO      CHAR(3),
 	@Pais         VARCHAR(50)     = NULL,
 	@ValorEnPesos DECIMAL(12,3)   = NULL
@@ -116,7 +116,7 @@ AS
 	VALUES(@COD_ISO, @Pais, @ValorEnPesos)
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Update]
+CREATE OR ALTER PROCEDURE [venta].[DivisaModificacion]
 	@COD_ISO      CHAR(3),
 	@Pais         VARCHAR(50)     = NULL,
 	@ValorEnPesos DECIMAL(12,3)   = NULL
@@ -128,7 +128,7 @@ AS
 	WHERE COD_ISO = @COD_ISO;
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Divisa_Delete]
+CREATE OR ALTER PROCEDURE [venta].[DivisaBaja]
 	@COD_ISO CHAR(3)
 AS
 	DELETE FROM [venta].[Divisa]
@@ -137,14 +137,14 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Insert]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaAlta]
 	@Nombre VARCHAR(100)
 AS
 	INSERT INTO [venta].[TipoEntrada](Nombre)
 	VALUES(@Nombre)
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Update]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaModificacion]
 	@ID     INT,
 	@Nombre VARCHAR(100) = NULL
 AS
@@ -153,7 +153,7 @@ AS
 	WHERE ID = @ID;
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntrada_Delete]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaBaja]
 	@ID INT
 AS
 	DELETE FROM [venta].[TipoEntrada]
@@ -162,7 +162,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA PARQUE
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Insert]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaParqueAlta]
 	@ID_AreaProtegida BIGINT,
 	@ID_TipoEntrada   INT,
 	@Precio           DECIMAL(12,2)
@@ -171,7 +171,7 @@ AS
 	VALUES(@ID_AreaProtegida, @ID_TipoEntrada, @Precio)
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Update]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaParqueModificacion]
 	@ID               INT,
 	@ID_AreaProtegida BIGINT         = NULL,
 	@ID_TipoEntrada   INT            = NULL,
@@ -185,7 +185,7 @@ AS
 	WHERE ID = @ID;
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_TipoEntradaParque_Delete]
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaParqueBaja]
 	@ID INT
 AS
 	DELETE FROM [venta].[TipoEntradaParque]
@@ -194,7 +194,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: COMPROBANTE
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Insert]
+CREATE OR ALTER PROCEDURE [venta].[ComprobanteAlta]
 	@ID_PuntoDeVenta INT,
 	@COD_ISO_Divisa  CHAR(3),
 	@MedioDePago     VARCHAR(20),
@@ -207,7 +207,7 @@ AS
 	SET @IDComprobante = SCOPE_IDENTITY()
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Update]
+CREATE OR ALTER PROCEDURE [venta].[ComprobanteModificacion]
 	@ID              INT,
 	@ID_PuntoDeVenta INT          = NULL,
 	@COD_ISO_Divisa  CHAR(3)     = NULL,
@@ -225,7 +225,7 @@ AS
 	WHERE ID = @ID;
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Comprobante_Delete]
+CREATE OR ALTER PROCEDURE [venta].[ComprobanteBaja]
 	@ID INT
 AS
 	DELETE FROM [venta].[Comprobante]
@@ -234,7 +234,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: ENTRADA
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Insert]
+CREATE OR ALTER PROCEDURE [venta].[EntradaAlta]
 	@ID_TipoEntradaParque INT,
 	@ID_Comprobante       INT,
 	@FechaHora            DATETIME,
@@ -244,7 +244,7 @@ AS
 	VALUES(@ID_TipoEntradaParque, @ID_Comprobante, @FechaHora, @PrecioCobrado)
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Update]
+CREATE OR ALTER PROCEDURE [venta].[EntradaModificacion]
 	@ID                   INT,
 	@ID_TipoEntradaParque INT          = NULL,
 	@ID_Comprobante       INT          = NULL,
@@ -260,7 +260,7 @@ AS
 	WHERE ID = @ID;
 GO
 
-CREATE OR ALTER PROCEDURE [venta].[SP_Entrada_Delete]
+CREATE OR ALTER PROCEDURE [venta].[EntradaBaja]
 	@ID INT
 AS
 	DELETE FROM [venta].[Entrada]

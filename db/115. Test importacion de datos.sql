@@ -21,23 +21,23 @@ DECLARE @RutaAreas VARCHAR(MAX) = 'C:\SQLImport\WDPA_WDOECM_Jun2026_Public_ARG_c
 DECLARE @RutaCentroides VARCHAR(MAX) = 'C:\SQLImport\centroides\geojson_shapefile_1.csv';
 
 PRINT('Caso exitoso/repetible: importar provincias dos veces');
-EXEC parque.SP_importarActualizarProvincias @sourceData = @RutaProvincias;
-EXEC parque.SP_importarActualizarProvincias @sourceData = @RutaProvincias;
+EXEC parque.ProvinciaImportarActualizar @sourceData = @RutaProvincias;
+EXEC parque.ProvinciaImportarActualizar @sourceData = @RutaProvincias;
 
 SELECT TOP 10 ID, Nombre
 FROM parque.Provincia
 ORDER BY ID;
 
 PRINT('Caso exitoso/repetible: importar areas protegidas dos veces');
-EXEC parque.SP_importarActualizarAreasProtegidas @sourceData = @RutaAreas;
-EXEC parque.SP_importarActualizarAreasProtegidas @sourceData = @RutaAreas;
+EXEC parque.AreaProtegidaImportarActualizar @sourceData = @RutaAreas;
+EXEC parque.AreaProtegidaImportarActualizar @sourceData = @RutaAreas;
 
 SELECT TOP 10 ID, TipoArea, Nombre, Superficie
 FROM parque.AreaProtegida
 ORDER BY ID;
 
 PRINT('Caso exitoso/repetible: importar centroides y vincular coordenadas');
-EXEC parque.SP_ImportarCentroides @sourceData = @RutaCentroides;
+EXEC parque.CentroideImportar @sourceData = @RutaCentroides;
 
 SELECT TOP 10 ID, Nombre, Latitud, Longitud
 FROM parque.AreaProtegida
@@ -46,7 +46,7 @@ ORDER BY ID;
 
 PRINT('Caso fallido: ruta inexistente');
 BEGIN TRY
-	EXEC parque.SP_importarActualizarProvincias @sourceData = N'C:\ruta\inexistente\provincias.json';
+	EXEC parque.ProvinciaImportarActualizar @sourceData = N'C:\ruta\inexistente\provincias.json';
 END TRY
 BEGIN CATCH
 	SELECT ERROR_NUMBER() AS NumeroError, ERROR_MESSAGE() AS MensajeObtenido;

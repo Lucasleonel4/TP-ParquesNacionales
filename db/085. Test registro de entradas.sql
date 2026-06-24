@@ -24,15 +24,15 @@ DECLARE @IDComprobante INT;
 DECLARE @Antes INT;
 
 IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @IDParque)
-	EXEC parque.SP_AreaProtegida_Insert @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Actividad', @Superficie = 1000;
+	EXEC parque.AreaProtegidaAlta @ID = @IDParque, @TipoArea = 'Parque Nacional', @Nombre = 'Parque Test Actividad', @Superficie = 1000;
 
 IF NOT EXISTS (SELECT 1 FROM actividad.TipoActividad WHERE Nombre = 'Trekking Test')
-	EXEC actividad.SP_TipoActividad_Insert @Nombre = 'Trekking Test';
+	EXEC actividad.TipoActividadAlta @Nombre = 'Trekking Test';
 
 SELECT @IDTipoActividad = ID FROM actividad.TipoActividad WHERE Nombre = 'Trekking Test';
 
 IF NOT EXISTS (SELECT 1 FROM actividad.Actividad WHERE ID_AreaProtegida = @IDParque AND Nombre = 'Sendero Test')
-	EXEC actividad.SP_Actividad_Insert @ID_AreaProtegida = @IDParque, @ID_TipoActividad = @IDTipoActividad, @Nombre = 'Sendero Test', @Duracion = 120, @Costo = 1500, @CupoMaximo = 5;
+	EXEC actividad.ActividadAlta @ID_AreaProtegida = @IDParque, @ID_TipoActividad = @IDTipoActividad, @Nombre = 'Sendero Test', @Duracion = 120, @Costo = 1500, @CupoMaximo = 5;
 
 SELECT @IDActividad = ID FROM actividad.Actividad WHERE ID_AreaProtegida = @IDParque AND Nombre = 'Sendero Test';
 
@@ -43,18 +43,18 @@ BEGIN
 	FROM actividad.InscripcionActividad
 	WHERE ID_Actividad = @IDActividad;
 
-	EXEC actividad.SP_InscripcionActividad_Delete @ID = @IDInscripcionBorrar;
+	EXEC actividad.InscripcionActividadBaja @ID = @IDInscripcionBorrar;
 END
 
 IF NOT EXISTS (SELECT 1 FROM parque.PuntoDeVenta WHERE ID_AreaProtegida = @IDParque AND Descripcion = 'Caja Actividad Test')
-	EXEC parque.SP_PuntoDeVenta_Insert @ID_AreaProtegida = @IDParque, @Descripcion = 'Caja Actividad Test';
+	EXEC parque.PuntoDeVentaAlta @ID_AreaProtegida = @IDParque, @Descripcion = 'Caja Actividad Test';
 
 SELECT @IDPuntoVenta = ID FROM parque.PuntoDeVenta WHERE ID_AreaProtegida = @IDParque AND Descripcion = 'Caja Actividad Test';
 
 IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'ARS')
-	EXEC venta.SP_Divisa_Insert @COD_ISO = 'ARS', @Pais = 'Argentina', @ValorEnPesos = 1;
+	EXEC venta.DivisaAlta @COD_ISO = 'ARS', @Pais = 'Argentina', @ValorEnPesos = 1;
 
-EXEC venta.SP_Comprobante_Insert
+EXEC venta.ComprobanteAlta
 	@ID_PuntoDeVenta = @IDPuntoVenta,
 	@COD_ISO_Divisa = 'ARS',
 	@MedioDePago = 'Efectivo',
@@ -63,7 +63,7 @@ EXEC venta.SP_Comprobante_Insert
 	@IDComprobante = @IDComprobante OUTPUT;
 
 PRINT('Caso exitoso: registro de actividad paga');
-EXEC actividad.SP_Negocio_RegistrarActividad
+EXEC actividad.ActividadRegistrar
 	@ID_AreaProtegida = @IDParque,
 	@ID_Actividad = @IDActividad,
 	@ID_Comprobante = @IDComprobante,
@@ -77,7 +77,7 @@ GROUP BY ID_Actividad, ID_Comprobante;
 
 PRINT('Caso fallido: actividad paga sin comprobante');
 BEGIN TRY
-	EXEC actividad.SP_Negocio_RegistrarActividad
+	EXEC actividad.ActividadRegistrar
 		@ID_AreaProtegida = @IDParque,
 		@ID_Actividad = @IDActividad,
 		@ID_Comprobante = NULL,
@@ -92,7 +92,7 @@ SELECT @Antes = COUNT(*) FROM actividad.InscripcionActividad WHERE ID_Actividad 
 
 PRINT('Caso fallido: multiples validaciones y evidencia de rollback');
 BEGIN TRY
-	EXEC actividad.SP_Negocio_RegistrarActividad
+	EXEC actividad.ActividadRegistrar
 		@ID_AreaProtegida = -1,
 		@ID_Actividad = -1,
 		@ID_Comprobante = -1,

@@ -17,7 +17,7 @@ USE com2900;
 GO
 
 -- Importacion de Provincias desde JSON.
-CREATE OR ALTER PROCEDURE [parque].[SP_importarActualizarProvincias]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaImportarActualizar]
 	@sourceData NVARCHAR(MAX)
 AS
 BEGIN
@@ -88,7 +88,7 @@ END
 GO
 
 -- Importacion de Areas Protegidas desde CSV.
-CREATE OR ALTER PROCEDURE [parque].[SP_importarActualizarAreasProtegidas]
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaImportarActualizar]
 	@sourceData VARCHAR(MAX)
 AS
 BEGIN
@@ -177,7 +177,7 @@ END
 GO
 
 -- Importacion de centroides y vinculacion directa con areas protegidas.
-CREATE OR ALTER PROCEDURE [parque].[SP_ImportarCentroides]
+CREATE OR ALTER PROCEDURE [parque].[CentroideImportar]
 	@sourceData VARCHAR(MAX)
 AS
 BEGIN
@@ -252,17 +252,17 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_EliminarTablaTemporalCentroides] AS
+CREATE OR ALTER PROCEDURE [parque].[CentroideTemporalEliminar] AS
 BEGIN
 	SET NOCOUNT ON;
 	PRINT('INFO: La importacion de centroides usa tabla temporal local y no requiere limpieza manual.');
 END;
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_VincularCentroidesAreas] AS
+CREATE OR ALTER PROCEDURE [parque].[CentroideAreaVincular] AS
 BEGIN
 	SET NOCOUNT ON;
-	PRINT('INFO: La vinculacion de centroides se realiza directamente en parque.SP_ImportarCentroides.');
+	PRINT('INFO: La vinculacion de centroides se realiza directamente en parque.CentroideImportar.');
 END
 GO
 

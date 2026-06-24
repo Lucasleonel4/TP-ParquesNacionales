@@ -18,10 +18,10 @@ USE com2900;
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'concesion')
 	BEGIN TRY
 		EXEC('CREATE SCHEMA concesion')
-		PRINT('OK: esquema concesion creado exitosamente')
+		PRINT('OK: esquema concesion creado exitosamente');
 	END TRY
 	BEGIN CATCH
-		PRINT('ERROR: No se pudo crear el esquema concesion')
+		PRINT('ERROR: No se pudo crear el esquema concesion');
 		RETURN
 	END CATCH
 ELSE PRINT ('INFO: el esquema concesion ya existe');
@@ -36,7 +36,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ActividadFiscal' AND schem
 		);
 		PRINT('OK: tabla ActividadFiscal creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla ActividadFiscal ya existe')
+ELSE PRINT('INFO: tabla ActividadFiscal ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Empresa' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -48,7 +48,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Empresa' AND schema_id = S
 		);
 		PRINT('OK: tabla Empresa creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Empresa ya existe')
+ELSE PRINT('INFO: tabla Empresa ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoConcesion' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -62,7 +62,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoConcesion' AND schema_
 		);
 		PRINT('OK: tabla TipoConcesion creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla TipoConcesion ya existe')
+ELSE PRINT('INFO: tabla TipoConcesion ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ActividadFiscalInscriptaEmpresa' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -76,7 +76,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ActividadFiscalInscriptaEm
 		);
 		PRINT('OK: tabla ActividadFiscalInscriptaEmpresa creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla ActividadFiscalInscriptaEmpresa ya existe')
+ELSE PRINT('INFO: tabla ActividadFiscalInscriptaEmpresa ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Concesion' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -96,7 +96,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Concesion' AND schema_id =
 		);
 		PRINT('OK: tabla Concesion creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Concesion ya existe')
+ELSE PRINT('INFO: tabla Concesion ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'FacturaConcesion' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -112,7 +112,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'FacturaConcesion' AND sche
 		);
 		PRINT('OK: tabla FacturaConcesion creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla FacturaConcesion ya existe')
+ELSE PRINT('INFO: tabla FacturaConcesion ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PagoConcesion' AND schema_id = SCHEMA_ID('concesion'))
 	BEGIN
@@ -127,7 +127,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PagoConcesion' AND schema_
 		);
 		PRINT('OK: tabla PagoConcesion creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla PagoConcesion ya existe')
+ELSE PRINT('INFO: tabla PagoConcesion ya existe');
 
 GO
 
@@ -135,11 +135,11 @@ GO
 -- Stored Procedures ABM para concesion.ActividadFiscal
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_ActividadFiscal_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscal_Alta;
+IF OBJECT_ID('concesion.ActividadFiscalAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscal_Alta
+CREATE PROCEDURE concesion.ActividadFiscalAlta
 	@Nombre      VARCHAR(100)
 AS
 BEGIN
@@ -158,11 +158,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_ActividadFiscal_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscal_Baja;
+IF OBJECT_ID('concesion.ActividadFiscalBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscal_Baja
+CREATE PROCEDURE concesion.ActividadFiscalBaja
 	@ID          INT
 AS
 BEGIN
@@ -190,11 +190,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_ActividadFiscal_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscal_Modificacion;
+IF OBJECT_ID('concesion.ActividadFiscalModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscal_Modificacion
+CREATE PROCEDURE concesion.ActividadFiscalModificacion
 	@ID          INT,
 	@Nombre      VARCHAR(100)
 AS
@@ -223,11 +223,11 @@ GO
 -- Stored Procedures ABM para concesion.Empresa
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_Empresa_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Empresa_Alta;
+IF OBJECT_ID('concesion.EmpresaAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.EmpresaAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_Empresa_Alta
+CREATE PROCEDURE concesion.EmpresaAlta
 	@CUIT    BIGINT,
 	@Nombre  VARCHAR(150)
 AS
@@ -245,11 +245,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_Empresa_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Empresa_Baja;
+IF OBJECT_ID('concesion.EmpresaBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.EmpresaBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_Empresa_Baja
+CREATE PROCEDURE concesion.EmpresaBaja
 	@CUIT    BIGINT
 AS
 BEGIN
@@ -277,11 +277,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_Empresa_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Empresa_Modificacion;
+IF OBJECT_ID('concesion.EmpresaModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.EmpresaModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_Empresa_Modificacion
+CREATE PROCEDURE concesion.EmpresaModificacion
 	@CUIT    BIGINT,
 	@Nombre  VARCHAR(150)
 AS
@@ -304,11 +304,11 @@ GO
 -- Stored Procedures ABM para concesion.TipoConcesion
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_TipoConcesion_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_TipoConcesion_Alta;
+IF OBJECT_ID('concesion.TipoConcesionAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.TipoConcesionAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_TipoConcesion_Alta
+CREATE PROCEDURE concesion.TipoConcesionAlta
 	@ID_ActividadFiscal  INT,
 	@Nombre              VARCHAR(100)
 AS
@@ -334,11 +334,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_TipoConcesion_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_TipoConcesion_Baja;
+IF OBJECT_ID('concesion.TipoConcesionBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.TipoConcesionBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_TipoConcesion_Baja
+CREATE PROCEDURE concesion.TipoConcesionBaja
 	@ID          INT
 AS
 BEGIN
@@ -360,11 +360,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_TipoConcesion_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_TipoConcesion_Modificacion;
+IF OBJECT_ID('concesion.TipoConcesionModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.TipoConcesionModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_TipoConcesion_Modificacion
+CREATE PROCEDURE concesion.TipoConcesionModificacion
 	@ID                  INT,
 	@ID_ActividadFiscal  INT,
 	@Nombre              VARCHAR(100)
@@ -405,11 +405,11 @@ GO
 -- Stored Procedures ABM para concesion.ActividadFiscalInscriptaEmpresa
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Alta;
+IF OBJECT_ID('concesion.ActividadFiscalInscriptaEmpresaAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalInscriptaEmpresaAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Alta
+CREATE PROCEDURE concesion.ActividadFiscalInscriptaEmpresaAlta
 	@CUIT_Empresa        BIGINT,
 	@ID_ActividadFiscal  INT,
 	@Principal           BIT = 0
@@ -448,11 +448,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Baja;
+IF OBJECT_ID('concesion.ActividadFiscalInscriptaEmpresaBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalInscriptaEmpresaBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Baja
+CREATE PROCEDURE concesion.ActividadFiscalInscriptaEmpresaBaja
 	@CUIT_Empresa        BIGINT,
 	@ID_ActividadFiscal  INT
 AS
@@ -471,11 +471,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion;
+IF OBJECT_ID('concesion.ActividadFiscalInscriptaEmpresaModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ActividadFiscalInscriptaEmpresaModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_ActividadFiscalInscriptaEmpresa_Modificacion
+CREATE PROCEDURE concesion.ActividadFiscalInscriptaEmpresaModificacion
 	@CUIT_Empresa        BIGINT,
 	@ID_ActividadFiscal  INT,
 	@Principal           BIT = NULL
@@ -508,11 +508,11 @@ GO
 -- Stored Procedures ABM para concesion.Concesion
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_Concesion_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Concesion_Alta;
+IF OBJECT_ID('concesion.ConcesionAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ConcesionAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_Concesion_Alta
+CREATE PROCEDURE concesion.ConcesionAlta
 	@ID_AreaProtegida    BIGINT,
 	@CUIT_Empresa        BIGINT,
 	@ID_TipoConcesion    INT,
@@ -556,11 +556,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_Concesion_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Concesion_Baja;
+IF OBJECT_ID('concesion.ConcesionBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ConcesionBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_Concesion_Baja
+CREATE PROCEDURE concesion.ConcesionBaja
 	@ID          INT
 AS
 BEGIN
@@ -582,11 +582,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_Concesion_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_Concesion_Modificacion;
+IF OBJECT_ID('concesion.ConcesionModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.ConcesionModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_Concesion_Modificacion
+CREATE PROCEDURE concesion.ConcesionModificacion
 	@ID                  INT,
 	@ID_AreaProtegida    BIGINT         = NULL,
 	@CUIT_Empresa        BIGINT         = NULL,
@@ -645,11 +645,11 @@ GO
 -- Stored Procedures ABM para concesion.FacturaConcesion
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_FacturaConcesion_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_FacturaConcesion_Alta;
+IF OBJECT_ID('concesion.FacturaConcesionAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.FacturaConcesionAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_FacturaConcesion_Alta
+CREATE PROCEDURE concesion.FacturaConcesionAlta
 	@ID_Concesion        INT,
 	@FechaEmision        DATE,
 	@FechaVencimiento    DATE,
@@ -685,11 +685,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_FacturaConcesion_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_FacturaConcesion_Baja;
+IF OBJECT_ID('concesion.FacturaConcesionBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.FacturaConcesionBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_FacturaConcesion_Baja
+CREATE PROCEDURE concesion.FacturaConcesionBaja
 	@ID          INT
 AS
 BEGIN
@@ -711,11 +711,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_FacturaConcesion_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_FacturaConcesion_Modificacion;
+IF OBJECT_ID('concesion.FacturaConcesionModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.FacturaConcesionModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_FacturaConcesion_Modificacion
+CREATE PROCEDURE concesion.FacturaConcesionModificacion
 	@ID                  INT,
 	@ID_Concesion        INT            = NULL,
 	@FechaEmision        DATE           = NULL,
@@ -751,11 +751,11 @@ GO
 -- Stored Procedures ABM para concesion.PagoConcesion
 -- ============================================================================
 
-IF OBJECT_ID('concesion.sp_PagoConcesion_Alta', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_PagoConcesion_Alta;
+IF OBJECT_ID('concesion.PagoConcesionAlta', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.PagoConcesionAlta;
 GO
 
-CREATE PROCEDURE concesion.sp_PagoConcesion_Alta
+CREATE PROCEDURE concesion.PagoConcesionAlta
 	@ID_Factura    INT,
 	@FechaPago     DATE,
 	@MontoPagado   DECIMAL(20,2)
@@ -784,11 +784,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_PagoConcesion_Baja', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_PagoConcesion_Baja;
+IF OBJECT_ID('concesion.PagoConcesionBaja', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.PagoConcesionBaja;
 GO
 
-CREATE PROCEDURE concesion.sp_PagoConcesion_Baja
+CREATE PROCEDURE concesion.PagoConcesionBaja
 	@ID          INT
 AS
 BEGIN
@@ -804,11 +804,11 @@ BEGIN
 END;
 GO
 
-IF OBJECT_ID('concesion.sp_PagoConcesion_Modificacion', 'P') IS NOT NULL
-	DROP PROCEDURE concesion.sp_PagoConcesion_Modificacion;
+IF OBJECT_ID('concesion.PagoConcesionModificacion', 'P') IS NOT NULL
+	DROP PROCEDURE concesion.PagoConcesionModificacion;
 GO
 
-CREATE PROCEDURE concesion.sp_PagoConcesion_Modificacion
+CREATE PROCEDURE concesion.PagoConcesionModificacion
 	@ID              INT,
 	@ID_Factura      INT            = NULL,
 	@FechaPago       DATE           = NULL,

@@ -16,7 +16,7 @@
 USE com2900;
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_Negocio_AsignarGuiaActividad]
+CREATE OR ALTER PROCEDURE [actividad].[GuiaActividadAsignar]
 	@ID_Actividad        INT,
 	@CUIL_GuiaAutorizado BIGINT,
 	@FechaReferencia     DATE = NULL
@@ -91,7 +91,7 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION;
 
-		EXEC actividad.SP_GuiaAsignadoTour_Insert
+		EXEC actividad.GuiaAsignadoTourAlta
 			@ID_Actividad = @ID_Actividad,
 			@CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado;
 
