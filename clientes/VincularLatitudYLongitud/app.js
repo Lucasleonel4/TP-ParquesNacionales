@@ -40,7 +40,7 @@ async function ProcesarYActualizarAreas(){
                     longitud: latlon.longitud 
                 };
                 
-                //await actualizarLatitudLongitud(parametros);
+                await actualizarLatitudLongitud(parametros);
                 console.log(`Se actualizó: ${buscar}`);
             } else {
                 console.warn(`No se actulizó '${buscar}' por falta de coordenadas.`);
@@ -52,6 +52,8 @@ async function ProcesarYActualizarAreas(){
         console.log("Espera de 250ms...");
         await sleep(250);
     }
+    //const areasProtegidasActualizadas = await obtenerAreasProtegidas();
+    //console.table(areasProtegidasActualizadas);
 }
 
 ProcesarYActualizarAreas();
