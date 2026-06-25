@@ -22,7 +22,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'personal')
 	END TRY
 	BEGIN CATCH
 		PRINT('ERROR: No se pudo crear el esquema personal');
-		RETURN
+		THROW;
 	END CATCH
 ELSE PRINT ('INFO: el esquema personal ya existe');
 

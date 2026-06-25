@@ -17,12 +17,12 @@ USE com2900;
 
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'venta')
 	BEGIN TRY
-		EXEC('CREATE SCHEMA venta')
+		EXEC('CREATE SCHEMA venta');
 		PRINT('OK: esquema venta creado exitosamente');
 	END TRY
 	BEGIN CATCH
 		PRINT('ERROR: No se pudo crear el esquema venta');
-		RETURN
+		THROW;
 	END CATCH
 ELSE PRINT ('INFO: el esquema venta ya existe');
 
@@ -338,5 +338,4 @@ GO
 		RETURN @Precio;
 	END;
 	GO
-
 
