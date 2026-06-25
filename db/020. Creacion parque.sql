@@ -165,6 +165,11 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaConsulta]
+AS
+	SELECT Nombre, TipoArea, Latitud, Longitud
+	FROM [parque].[AreaProtegida]
+GO
 -- PROCEDIMIENTOS ALMACENADOS ABM: PUNTO DE VENTA
 
 CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaAlta]
