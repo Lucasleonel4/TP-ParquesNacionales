@@ -1,12 +1,14 @@
-/*
+﻿/*
+* Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Muñoz, Emanuel Américo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
+* Fecha: 23/06/2026
  * Script: 020. Creacion parque
  * Descripción: Crea el esquema parque, sus tablas y los procedimientos almacenados ABM
 */
@@ -16,13 +18,13 @@ USE com2900;
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'parque')
 	BEGIN TRY
 		EXEC('CREATE SCHEMA parque')
-		PRINT('OK: esquema parque creado exitosamente')
+		PRINT('OK: esquema parque creado exitosamente');
 	END TRY
 	BEGIN CATCH
-		PRINT('ERROR: No se pudo crear el esquema parque')
-		RETURN
+		PRINT('ERROR: No se pudo crear el esquema parque');
+		THROW
 	END CATCH
-ELSE PRINT('INFO: el esquema parque ya existe')
+ELSE PRINT('INFO: el esquema parque ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Provincia' AND schema_id = SCHEMA_ID('parque'))
 	BEGIN
@@ -33,7 +35,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Provincia' AND schema_id =
 		);
 		PRINT('OK: tabla Provincia creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Provincia ya existe')
+ELSE PRINT('INFO: tabla Provincia ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'AreaProtegida' AND schema_id = SCHEMA_ID('parque'))
 	BEGIN
@@ -53,7 +55,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'AreaProtegida' AND schema_
 		);
 		PRINT('OK: tabla AreaProtegida creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla AreaProtegida ya existe')
+ELSE PRINT('INFO: tabla AreaProtegida ya existe');
 
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PuntoDeVenta' AND schema_id = SCHEMA_ID('parque'))
@@ -68,7 +70,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PuntoDeVenta' AND schema_i
 		);
 		PRINT('OK: tabla PuntoDeVenta creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla PuntoDeVenta ya existe')
+ELSE PRINT('INFO: tabla PuntoDeVenta ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ProvinciaContieneParque' AND schema_id = SCHEMA_ID('parque'))
 	BEGIN
@@ -83,12 +85,12 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ProvinciaContieneParque' A
 		);
 		PRINT('OK: tabla ProvinciaContieneParque creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla ProvinciaContieneParque ya existe')
+ELSE PRINT('INFO: tabla ProvinciaContieneParque ya existe');
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: PROVINCIA
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_Provincia_Insert]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaAlta]
 	@ID      INT,
 	@Nombre  VARCHAR(200)
 AS
@@ -96,7 +98,7 @@ AS
 	VALUES(@ID, @Nombre)
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_Provincia_Update]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaModificacion]
 	@ID      INT,
 	@Nombre  VARCHAR(200) = NULL
 AS
@@ -105,7 +107,7 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_Provincia_Delete]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaBaja]
 	@ID INT
 AS
 	DELETE FROM [parque].[Provincia]
@@ -114,7 +116,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: AREA PROTEGIDA
 
-CREATE OR ALTER PROCEDURE [parque].[SP_AreaProtegida_Insert]
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaAlta]
 	@ID              BIGINT,
 	@TipoArea        VARCHAR(50),
 	@Nombre          VARCHAR(100),
@@ -130,7 +132,7 @@ AS
 	VALUES(@ID, @TipoArea, @Nombre, @Superficie, @Info_General, @Info_Operativa, @Calle_Entrada, @Nro_Entrada, @Latitud, @Longitud)
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_AreaProtegida_Update]
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaModificacion]
 	@ID              BIGINT,
 	@TipoArea        VARCHAR(50)    = NULL,
 	@Nombre          VARCHAR(100)   = NULL,
@@ -156,16 +158,21 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_AreaProtegida_Delete]
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaBaja]
 	@ID BIGINT
 AS
 	DELETE FROM [parque].[AreaProtegida]
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaConsulta]
+AS
+	SELECT ID, Nombre, TipoArea, Latitud, Longitud
+	FROM [parque].[AreaProtegida]
+GO
 -- PROCEDIMIENTOS ALMACENADOS ABM: PUNTO DE VENTA
 
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Insert]
+CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaAlta]
 	@ID_AreaProtegida BIGINT,
 	@Descripcion      VARCHAR(100) = NULL
 AS
@@ -173,7 +180,7 @@ AS
 	VALUES(@ID_AreaProtegida, @Descripcion)
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Update]
+CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaModificacion]
 	@ID               INT,
 	@ID_AreaProtegida BIGINT       = NULL,
 	@Descripcion      VARCHAR(100) = NULL
@@ -185,16 +192,22 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_PuntoDeVenta_Delete]
+CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaBaja]
 	@ID INT
 AS
 	DELETE FROM [parque].[PuntoDeVenta]
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaConsulta]
+AS
+	SELECT ID, ID_AreaProtegida, Descripcion
+	FROM [parque].[PuntoDeVenta]
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: PROVINCIA CONTIENE PARQUE
 
-CREATE OR ALTER PROCEDURE [parque].[SP_ProvinciaContieneParque_Insert]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaContieneParqueAlta]
 	@ID_Provincia     INT,
 	@ID_AreaProtegida BIGINT
 AS
@@ -202,10 +215,16 @@ AS
 	VALUES(@ID_Provincia, @ID_AreaProtegida)
 GO
 
-CREATE OR ALTER PROCEDURE [parque].[SP_ProvinciaContieneParque_Delete]
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaContieneParqueBaja]
 	@ID_Provincia     INT,
 	@ID_AreaProtegida BIGINT
 AS
 	DELETE FROM [parque].[ProvinciaContieneParque]
 	WHERE ID_Provincia = @ID_Provincia AND ID_AreaProtegida = @ID_AreaProtegida
+GO
+
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaContieneParqueConsulta]
+AS
+	SELECT ID_Provincia, ID_AreaProtegida
+	FROM [parque].[ProvinciaContieneParque]
 GO

@@ -1,12 +1,14 @@
-/*
+﻿/*
+* Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Muñoz, Emanuel Américo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
+* Fecha: 23/06/2026
  * Script: 040. Creacion personal
  * Descripción: Crea el esquema personal, sus tablas y los procedimientos almacenados ABM para todas las tablas del esquema
 */
@@ -16,10 +18,10 @@ USE com2900;
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'personal')
 	BEGIN TRY
 		EXEC('CREATE SCHEMA personal')
-		PRINT('OK: esquema personal creado exitosamente')
+		PRINT('OK: esquema personal creado exitosamente');
 	END TRY
 	BEGIN CATCH
-		PRINT('ERROR: No se pudo crear el esquema personal')
+		PRINT('ERROR: No se pudo crear el esquema personal');
 		RETURN
 	END CATCH
 ELSE PRINT ('INFO: el esquema personal ya existe');
@@ -36,7 +38,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaAutorizado' AND schema
 		);
 		PRINT('OK: tabla GuiaAutorizado creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla GuiaAutorizado ya existe')
+ELSE PRINT('INFO: tabla GuiaAutorizado ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TituloAcademico' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -52,7 +54,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TituloAcademico' AND schem
 		);
 		PRINT('OK: tabla TituloAcademico creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla TituloAcademico ya existe')
+ELSE PRINT('INFO: tabla TituloAcademico ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'HabilitacionGuia' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -65,7 +67,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'HabilitacionGuia' AND sche
 		);
 		PRINT('OK: tabla HabilitacionGuia creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla HabilitacionGuia ya existe')
+ELSE PRINT('INFO: tabla HabilitacionGuia ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'EspecialidadGuia' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -78,7 +80,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'EspecialidadGuia' AND sche
 		);
 		PRINT('OK: tabla EspecialidadGuia creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla EspecialidadGuia ya existe')
+ELSE PRINT('INFO: tabla EspecialidadGuia ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConTitulo' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -93,7 +95,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConTitulo' AND schema_
 		);
 		PRINT('OK: tabla GuiaConTitulo creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla GuiaConTitulo ya existe')
+ELSE PRINT('INFO: tabla GuiaConTitulo ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConHabilitacion' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -109,7 +111,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConHabilitacion' AND s
 		);
 		PRINT('OK: tabla GuiaConHabilitacion creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla GuiaConHabilitacion ya existe')
+ELSE PRINT('INFO: tabla GuiaConHabilitacion ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConEspecialidad' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -124,7 +126,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaConEspecialidad' AND s
 		);
 		PRINT('OK: tabla GuiaConEspecialidad creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla GuiaConEspecialidad ya existe')
+ELSE PRINT('INFO: tabla GuiaConEspecialidad ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Guardaparques' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -141,7 +143,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Guardaparques' AND schema_
 		);
 		PRINT('OK: tabla Guardaparques creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Guardaparques ya existe')
+ELSE PRINT('INFO: tabla Guardaparques ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ContratoTrabajo' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -158,7 +160,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ContratoTrabajo' AND schem
 		);
 		PRINT('OK: tabla ContratoTrabajo creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla ContratoTrabajo ya existe')
+ELSE PRINT('INFO: tabla ContratoTrabajo ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PermisoDeTrabajo' AND schema_id = SCHEMA_ID('personal'))
 	BEGIN
@@ -175,14 +177,14 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PermisoDeTrabajo' AND sche
 		);
 		PRINT('OK: tabla PermisoDeTrabajo creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
+ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe');
 
 -- GUIA AUTORIZADO OPERACIONES - SIN PROBAR:
 		
 		-- GUIA AUTORIZADO: INSERT
 	GO
 
-			CREATE OR ALTER PROCEDURE [personal].[SP_GuiaAutorizado_Insert]
+			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoAlta]
 				@CUIL		BIGINT,
 				@Nombre		VARCHAR(100),
 				@Apellido	VARCHAR(100),
@@ -200,7 +202,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 			GO
 
 		-- GUIA AUTORIZADO: UPDATE
-			CREATE OR ALTER PROCEDURE [personal].[SP_GuiaAutorizado_Update]
+			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoModificacion]
 				@CUIL		BIGINT,
 				@Nombre		VARCHAR(100) = NULL,
 				@Apellido	VARCHAR(100) = NULL,
@@ -222,7 +224,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 			GO
 
 		-- GUIA AUTORIZADO: DELETE
-			CREATE OR ALTER PROCEDURE [personal].[SP_GuiaAutorizado_Delete]
+			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoBaja]
 				@CUIL BIGINT
 			AS
 			BEGIN
@@ -239,7 +241,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 	-- TITULO ACADEMICO OPERACIONES - SIN PROBAR: 
 		
 			-- TITULO ACADEMICO: INSERT
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Insert]
+				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoAlta]
 					@Nombre          VARCHAR(100),
 					@Entidad_Otorga  VARCHAR(100),
 					@Tipo			 VARCHAR(50),
@@ -257,7 +259,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- TITULO ACADEMICO: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Update]
+				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoModificacion]
 					@ID				 INT,
 					@Nombre          VARCHAR(100) = NULL,
 					@Entidad_Otorga  VARCHAR(100) = NULL,
@@ -281,7 +283,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- TITULO ACADEMICO: DELETE
-				CREATE OR ALTER PROCEDURE [personal].[SP_TituloAcademico_Delete]
+				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoBaja]
 					@ID INT
 				AS
 				BEGIN
@@ -298,7 +300,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 		-- HABILITACION OPERACIONES - SIN PROBAR
 			
 			-- HABILITACION: INSERT
-				CREATE OR ALTER PROCEDURE [personal].[SP_HabilitacionGuia_Insert]
+				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaAlta]
 					@Nombre      VARCHAR(50),
 					@Descripcion VARCHAR(200)
 				AS
@@ -314,7 +316,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- HABILITACION: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[SP_HabilitacionGuia_Update]
+				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaModificacion]
 					@ID          INT,
 					@Nombre      VARCHAR(50)	= NULL,
 					@Descripcion VARCHAR(200)	= NULL 
@@ -334,7 +336,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- HABILITACION: DELETE
-				CREATE OR ALTER PROCEDURE [personal].[SP_HabilitacionGuia_Delete]
+				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaBaja]
 					@ID INT
 				AS
 				BEGIN
@@ -352,7 +354,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 		-- ESPECIALIDAD OPERACIONES - SIN PROBAR
 			
 			-- ESPECIALIDAD: Insert
-				CREATE OR ALTER PROCEDURE [personal].[SP_EspecialidadGuia_Insert]
+				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaAlta]
 					@Nombre      VARCHAR(100),
 					@Descripcion VARCHAR(200)
 				AS
@@ -368,7 +370,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- ESPECIALIDAD: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[SP_EspecialidadGuia_Update]
+				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaModificacion]
 					@ID          INT,
 					@Nombre      VARCHAR(100)        = NULL,
 					@Descripcion VARCHAR(200)        = NULL
@@ -388,7 +390,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 				GO
 
 			-- ESPECIALIDAD: Delete
-				CREATE OR ALTER PROCEDURE [personal].[SP_EspecialidadGuia_Delete]
+				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaBaja]
 					@ID INT
 				AS
 				BEGIN
@@ -407,7 +409,7 @@ ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe')
 -- ========================================
 
 -- GUIA CON TITULO: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Insert]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConTituloAlta]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_TituloAcademico  INT,
 	@FechaObtenido       DATE
@@ -424,7 +426,7 @@ END
 GO
 
 -- GUIA CON TITULO: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Update]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConTituloModificacion]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_TituloAcademico  INT,
 	@FechaObtenido       DATE = NULL
@@ -444,7 +446,7 @@ END
 GO
 
 -- GUIA CON TITULO: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConTitulo_Delete]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConTituloBaja]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_TituloAcademico  INT
 AS
@@ -465,7 +467,7 @@ GO
 -- ========================================
 
 -- GUIA CON HABILITACION: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Insert]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConHabilitacionAlta]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_HabilitacionGuia INT,
 	@FechaObtenido       DATE,
@@ -483,7 +485,7 @@ END
 GO
 
 -- GUIA CON HABILITACION: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Update]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConHabilitacionModificacion]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_HabilitacionGuia INT,
 	@FechaObtenido       DATE = NULL,
@@ -505,7 +507,7 @@ END
 GO
 
 -- GUIA CON HABILITACION: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConHabilitacion_Delete]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConHabilitacionBaja]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_HabilitacionGuia INT
 AS
@@ -526,7 +528,7 @@ GO
 -- ========================================
 
 -- GUIA CON ESPECIALIDAD: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Insert]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConEspecialidadAlta]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_EspecialidadGuia INT,
 	@FechaObtenida       DATE
@@ -543,7 +545,7 @@ END
 GO
 
 -- GUIA CON ESPECIALIDAD: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Update]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConEspecialidadModificacion]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_EspecialidadGuia INT,
 	@FechaObtenida       DATE = NULL
@@ -563,7 +565,7 @@ END
 GO
 
 -- GUIA CON ESPECIALIDAD: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_GuiaConEspecialidad_Delete]
+CREATE OR ALTER PROCEDURE [personal].[GuiaConEspecialidadBaja]
 	@CUIL_GuiaAutorizado BIGINT,
 	@ID_EspecialidadGuia INT
 AS
@@ -584,7 +586,7 @@ GO
 -- ========================================
 
 -- GUARDAPARQUES: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Insert]
+CREATE OR ALTER PROCEDURE [personal].[GuardaparquesAlta]
 	@CUIL            BIGINT,
 	@Nombre          VARCHAR(100),
 	@Apellido        VARCHAR(100),
@@ -605,7 +607,7 @@ END
 GO
 
 -- GUARDAPARQUES: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Update]
+CREATE OR ALTER PROCEDURE [personal].[GuardaparquesModificacion]
 	@CUIL            BIGINT       = NULL,
 	@Nombre          VARCHAR(100) = NULL,
 	@Apellido        VARCHAR(100) = NULL,
@@ -633,7 +635,7 @@ END
 GO
 
 -- GUARDAPARQUES: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_Guardaparques_Delete]
+CREATE OR ALTER PROCEDURE [personal].[GuardaparquesBaja]
 	@CUIL BIGINT
 AS
 BEGIN
@@ -652,7 +654,7 @@ GO
 -- ========================================
 
 -- CONTRATO TRABAJO: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Insert]
+CREATE OR ALTER PROCEDURE [personal].[ContratoTrabajoAlta]
 	@ID_AreaProtegida  BIGINT,
 	@CUIL_Guardaparques BIGINT,
 	@FechaInicio       DATE,
@@ -670,7 +672,7 @@ END
 GO
 
 -- CONTRATO TRABAJO: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Update]
+CREATE OR ALTER PROCEDURE [personal].[ContratoTrabajoModificacion]
 	@ID                  INT          = NULL,
 	@ID_AreaProtegida    BIGINT       = NULL,
 	@CUIL_Guardaparques  BIGINT       = NULL,
@@ -694,7 +696,7 @@ END
 GO
 
 -- CONTRATO TRABAJO: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_ContratoTrabajo_Delete]
+CREATE OR ALTER PROCEDURE [personal].[ContratoTrabajoBaja]
 	@ID INT
 AS
 BEGIN
@@ -713,7 +715,7 @@ GO
 -- ========================================
 
 -- PERMISO DE TRABAJO: INSERT
-CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Insert]
+CREATE OR ALTER PROCEDURE [personal].[PermisoDeTrabajoAlta]
 	@ID_AreaProtegida    BIGINT,
 	@CUIL_GuiaAutorizado BIGINT,
 	@FechaInicio         DATE,
@@ -731,7 +733,7 @@ END
 GO
 
 -- PERMISO DE TRABAJO: UPDATE
-CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Update]
+CREATE OR ALTER PROCEDURE [personal].[PermisoDeTrabajoModificacion]
 	@ID                    INT          = NULL,
 	@ID_AreaProtegida      BIGINT       = NULL,
 	@CUIL_GuiaAutorizado   BIGINT       = NULL,
@@ -755,7 +757,7 @@ END
 GO
 
 -- PERMISO DE TRABAJO: DELETE
-CREATE OR ALTER PROCEDURE [personal].[SP_PermisoDeTrabajo_Delete]
+CREATE OR ALTER PROCEDURE [personal].[PermisoDeTrabajoBaja]
 	@ID INT
 AS
 BEGIN
@@ -768,3 +770,5 @@ BEGIN
 	END CATCH
 END
 GO
+
+

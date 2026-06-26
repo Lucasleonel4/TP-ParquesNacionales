@@ -1,12 +1,14 @@
-/*
+﻿/*
+* Universidad: Universidad Nacional de La Matanza
 * Materia: Base de Datos Aplicadas
 * Comisión: 2900 (Martes noche)
 * Grupo: 12
 * Integrantes:
 *  - Costilla, Lucas Leonel
-*  - Mancilla Muñoz, Emanuel Américo
+*  - Mancilla Muñoz, Emmanuel Américo
 *  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
+* Fecha: 23/06/2026
 * Script: 050. Creacion actividad
 * Descripción: Crea el esquema actividad, sus tablas y los procedimientos almacenados ABM
 */
@@ -16,10 +18,10 @@ USE com2900;
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'actividad')
 	BEGIN TRY
 		EXEC('CREATE SCHEMA actividad')
-		PRINT('OK: esquema actividad creado exitosamente')
+		PRINT('OK: esquema actividad creado exitosamente');
 	END TRY
 	BEGIN CATCH
-		PRINT('ERROR: No se pudo crear el esquema actividad')
+		PRINT('ERROR: No se pudo crear el esquema actividad');
 		RETURN
 	END CATCH
 ELSE PRINT ('INFO: el esquema actividad ya existe');
@@ -33,7 +35,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'TipoActividad' AND schema_
 		);
 		PRINT('OK: tabla TipoActividad creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla TipoActividad ya existe')
+ELSE PRINT('INFO: tabla TipoActividad ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Actividad' AND schema_id = SCHEMA_ID('actividad'))
 	BEGIN
@@ -53,7 +55,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'Actividad' AND schema_id =
 		);
 		PRINT('OK: tabla Actividad creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla Actividad ya existe')
+ELSE PRINT('INFO: tabla Actividad ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InscripcionActividad' AND schema_id = SCHEMA_ID('actividad'))
 	BEGIN
@@ -70,7 +72,7 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InscripcionActividad' AND 
 		);
 		PRINT('OK: tabla InscripcionActividad creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla InscripcionActividad ya existe')
+ELSE PRINT('INFO: tabla InscripcionActividad ya existe');
 
 IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaAsignadoTour' AND schema_id = SCHEMA_ID('actividad'))
 	BEGIN
@@ -84,19 +86,19 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'GuiaAsignadoTour' AND sche
 		);
 		PRINT('OK: tabla GuiaAsignadoTour creada exitosamente');
 	END
-ELSE PRINT('INFO: tabla GuiaAsignadoTour ya existe')
+ELSE PRINT('INFO: tabla GuiaAsignadoTour ya existe');
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO ACTIVIDAD
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Insert]
+CREATE OR ALTER PROCEDURE [actividad].[TipoActividadAlta]
 	@Nombre VARCHAR(50)
 AS
 	INSERT INTO [actividad].[TipoActividad](Nombre)
 	VALUES(@Nombre)
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Update]
+CREATE OR ALTER PROCEDURE [actividad].[TipoActividadModificacion]
 	@ID     INT,
 	@Nombre VARCHAR(50) = NULL
 AS
@@ -105,7 +107,7 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_TipoActividad_Delete]
+CREATE OR ALTER PROCEDURE [actividad].[TipoActividadBaja]
 	@ID INT
 AS
 	DELETE FROM [actividad].[TipoActividad]
@@ -114,7 +116,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: ACTIVIDAD
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Insert]
+CREATE OR ALTER PROCEDURE [actividad].[ActividadAlta]
 	@ID_AreaProtegida BIGINT,
 	@ID_TipoActividad INT,
 	@Nombre           VARCHAR(50),
@@ -126,7 +128,7 @@ AS
 	VALUES(@ID_AreaProtegida, @ID_TipoActividad, @Nombre, @Duracion, @Costo, @CupoMaximo, @CupoMaximo)
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Update]
+CREATE OR ALTER PROCEDURE [actividad].[ActividadModificacion]
 	@ID                 INT,
 	@ID_AreaProtegida   BIGINT         = NULL,
 	@ID_TipoActividad   INT            = NULL,
@@ -148,7 +150,7 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_Actividad_Delete]
+CREATE OR ALTER PROCEDURE [actividad].[ActividadBaja]
 	@ID INT
 AS
 	DELETE FROM [actividad].[Actividad]
@@ -157,7 +159,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: INSCRIPCION ACTIVIDAD
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Insert]
+CREATE OR ALTER PROCEDURE [actividad].[InscripcionActividadAlta]
 	@ID_Actividad    INT,
 	@ID_Comprobante  INT        = NULL,
 	@FechaHora       DATETIME   = NULL,
@@ -167,7 +169,7 @@ AS
 	VALUES(@ID_Actividad, @ID_Comprobante, @FechaHora, @PrecioCobrado)
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Update]
+CREATE OR ALTER PROCEDURE [actividad].[InscripcionActividadModificacion]
 	@ID                INT,
 	@ID_Actividad      INT            = NULL,
 	@ID_Comprobante    INT            = NULL,
@@ -183,7 +185,7 @@ AS
 	WHERE ID = @ID
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_InscripcionActividad_Delete]
+CREATE OR ALTER PROCEDURE [actividad].[InscripcionActividadBaja]
 	@ID INT
 AS
 	DELETE FROM [actividad].[InscripcionActividad]
@@ -192,7 +194,7 @@ GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: GUIA ASIGNADO TOUR
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_GuiaAsignadoTour_Insert]
+CREATE OR ALTER PROCEDURE [actividad].[GuiaAsignadoTourAlta]
 	@ID_Actividad        INT,
 	@CUIL_GuiaAutorizado BIGINT
 AS
@@ -200,15 +202,13 @@ AS
 	VALUES(@ID_Actividad, @CUIL_GuiaAutorizado)
 GO
 
-CREATE OR ALTER PROCEDURE [actividad].[SP_GuiaAsignadoTour_Delete]
+CREATE OR ALTER PROCEDURE [actividad].[GuiaAsignadoTourBaja]
 	@ID_Actividad        INT,
 	@CUIL_GuiaAutorizado BIGINT
 AS
 	DELETE FROM [actividad].[GuiaAsignadoTour]
 	WHERE ID_Actividad = @ID_Actividad AND CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
 GO
-
-
 
 -- ============================================================
 -- FUNCIONES
