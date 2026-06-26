@@ -199,6 +199,12 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[PuntoDeVentaConsulta]
+AS
+	SELECT ID, ID_AreaProtegida, Descripcion
+	FROM [parque].[PuntoDeVenta]
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: PROVINCIA CONTIENE PARQUE
 
 CREATE OR ALTER PROCEDURE [parque].[ProvinciaContieneParqueAlta]
@@ -217,3 +223,8 @@ AS
 	WHERE ID_Provincia = @ID_Provincia AND ID_AreaProtegida = @ID_AreaProtegida
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaContieneParqueConsulta]
+AS
+	SELECT ID_Provincia, ID_AreaProtegida
+	FROM [parque].[ProvinciaContieneParque]
+GO

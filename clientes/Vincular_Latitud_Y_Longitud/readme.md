@@ -22,12 +22,12 @@ La consulta a la API devuelve los centroides de los parques nacionales. Además 
 
 ## Como debe ser el Archivo .ENV
 El archivo .ENV deberá tener los valores (con ejemplos):
-    DB_USER: sa
-    DB_PASSWORD: 202604@Password123
-    DB_SERVER: localhost
-    DB_DATABASE: com2900
-    DB_PORT: 1433
-    GEOAPIFY_APIKey: 4e8354sadfsdf12334fadfsd
+- DB_USER: sa
+- DB_PASSWORD: 202604@Password123
+- DB_SERVER: localhost
+- DB_DATABASE: com2900
+- DB_PORT: 1433
+- GEOAPIFY_APIKey: 4e8354sadfsdf12334fadfsd
 
 ## Como usar la herramienta
 1. Se debe tener node instalado.
