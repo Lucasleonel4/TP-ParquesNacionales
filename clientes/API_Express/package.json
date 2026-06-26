@@ -1,0 +1,19 @@
+{
+  "name": "api_test_bd_parques",
+  "version": "1.0.0",
+  "description": "Creación de API para manejar operaciones locales sobre la base de datos en sql server.",
+  "license": "ISC",
+  "author": "lucas",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mssql": "^12.6.0",
+    "nodemon": "^3.1.14"
+  }
+}
