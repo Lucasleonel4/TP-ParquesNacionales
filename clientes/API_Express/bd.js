@@ -39,20 +39,25 @@ const poolConnect = pool.connect()
 
 
 // FUNCION PARA EJECUTAR UN PROCEDIMIENTO ALMACENADO
-async function ejecutarSP(nombreSP, parametros = {}){
+async function ejecutarSP(nombreSP, parametros = {}, outputParams = {}){
     try {
         await poolConnect;
 
         const request = pool.request();
 
-        //Agrega los parametros concatenando pares clave-valor
+        //Agrega los parametros de entrada concatenando pares clave-valor
         Object.keys(parametros).forEach(key=>{
             request.input(key, parametros[key]);
         });
 
+        // Agrega los parámetros de salida concatenando pares clave-valor
+        Object.keys(outputParams).forEach(key => {
+            request.output(key, outputParams[key]); // tipo de dato
+        });
+
         const resultado = await request.execute(nombreSP);
 
-        return resultado.recordset || [];
+        return resultado.recordset || []; // el output se esta descartando... porque se devuelve recordset no ouput
 
     } catch (error) {
         console.error(`Error al ejecutar SP ${nombreSP}: `, error.message);

@@ -114,6 +114,14 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [parque].[ProvinciaConsulta]
+	@ID INT = NULL
+AS
+	SELECT ID, Nombre
+	FROM [parque].[Provincia]
+	WHERE ID = COALESCE(@ID, ID)
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: AREA PROTEGIDA
 
 CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaAlta]
@@ -168,7 +176,7 @@ GO
 CREATE OR ALTER PROCEDURE [parque].[AreaProtegidaConsulta]
 	@ID BIGINT = NULL
 AS
-	SELECT Nombre, TipoArea, Latitud, Longitud
+	SELECT ID, Nombre, TipoArea, Latitud, Longitud
 	FROM [parque].[AreaProtegida]
 	WHERE ID = COALESCE(@ID, ID)
 GO

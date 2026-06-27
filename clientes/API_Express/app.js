@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.get('/', (req, res)=>{res.send('Conectado a la API de Parques Nacionales');});
 
-app.use('/parque',      parqueRoutes);
+app.use('/parque',       parqueRoutes);
 app.use('/personal',     personalRoutes);
 app.use('/venta',        ventaRoutes);
 app.use('/actividad',    actividadRoutes);
