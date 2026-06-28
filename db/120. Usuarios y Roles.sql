@@ -119,13 +119,45 @@ GO
 	GO
 
 -- [consultas] -> CONSULTAS SOLO
-	GRANT SELECT ON SCHEMA::[parque]	TO consultas
-	GRANT SELECT ON SCHEMA::[venta]		TO consultas
-	GRANT SELECT ON SCHEMA::[actividad] TO consultas
-	GRANT SELECT ON SCHEMA::[concesion] TO consultas
-	GRANT SELECT ON SCHEMA::[personal]	TO consultas
-	GO
+	GRANT SELECT ON SCHEMA::[parque] TO consultas
+		GRANT EXECUTE ON OBJECT::[parque].[AreaProtegidaConsulta]			TO consultas
+		GRANT EXECUTE ON OBJECT::[parque].[ProvinciaConsulta]				TO consultas
+		GRANT EXECUTE ON OBJECT::[parque].[ProvinciaContieneParqueConsulta] TO consultas
 
+	GRANT SELECT ON SCHEMA::[venta] TO consultas
+		GRANT EXECUTE ON OBJECT::[venta].[DivisaConsulta]					TO consultas
+		GRANT EXECUTE ON OBJECT::[venta].[TipoEntradaConsulta]				TO consultas
+		GRANT EXECUTE ON OBJECT::[venta].[TipoEntradaParqueConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[venta].[ComprobanteConsulta]				TO consultas
+		GRANT EXECUTE ON OBJECT::[venta].[EntradaConsulta]					TO consultas
+
+	GRANT SELECT ON SCHEMA::[actividad] TO consultas
+		GRANT EXECUTE ON OBJECT::[actividad].[TipoActividadConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[actividad].[ActividadConsulta]			TO consultas
+		GRANT EXECUTE ON OBJECT::[actividad].[InscripcionActividadConsulta] TO consultas
+		GRANT EXECUTE ON OBJECT::[actividad].[GuiaAsignadoTourConsulta]		TO consultas
+
+	GRANT SELECT ON SCHEMA::[personal]	TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[GuiaAutorizadoConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[TituloAcademicoConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[HabilitacionGuiaConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[EspecialidadGuiaConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[GuiaConTituloConsulta]			TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[GuiaConHabilitacionConsulta]	TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[GuiaConEspecialidadConsulta]	TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[GuardaparquesConsulta]			TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[ContratoTrabajoConsulta]		TO consultas
+		GRANT EXECUTE ON OBJECT::[personal].[PermisoDeTrabajoConsulta]		TO consultas
+
+	GRANT SELECT ON SCHEMA::[concesion] TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[ActividadFiscalConsulta]					TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[EmpresaConsulta]							TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[TipoConcesionConsulta]					TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[ActividadFiscalInscriptaEmpresaConsulta]	TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[ConcesionConsulta]						TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[FacturaConcesionConsulta]					TO consultas
+		GRANT EXECUTE ON OBJECT::[concesion].[PagoConcesionConsulta]					TO consultas
+	GO
 -- [gestionArea] -> GESTIÓN DE ÁREAS 
 	GRANT SELECT  ON SCHEMA::[parque] TO gestionArea
 	GRANT EXECUTE ON SCHEMA::[parque] TO gestionArea

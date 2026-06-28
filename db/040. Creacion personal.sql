@@ -179,230 +179,161 @@ IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'PermisoDeTrabajo' AND sche
 	END
 ELSE PRINT('INFO: tabla PermisoDeTrabajo ya existe');
 
--- GUIA AUTORIZADO OPERACIONES - SIN PROBAR:
-		
-		-- GUIA AUTORIZADO: INSERT
-	GO
+-- PROCEDIMIENTOS ALMACENADOS ABM: GUIA AUTORIZADO
+GO
+CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoAlta]
+	@CUIL		BIGINT,
+	@Nombre		VARCHAR(100),
+	@Apellido	VARCHAR(100),
+	@Autorizado BIT
+AS
+	INSERT INTO [personal].[GuiaAutorizado](CUIL, Nombre, Apellido, Autorizado)
+	VALUES (@CUIL, @Nombre, @Apellido, @Autorizado)
+GO
 
-			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoAlta]
-				@CUIL		BIGINT,
-				@Nombre		VARCHAR(100),
-				@Apellido	VARCHAR(100),
-				@Autorizado BIT
-			AS
-			BEGIN
-				BEGIN TRY -- HABRIA QUE VER SI VALIDAR EL CUIL.
-					INSERT INTO [personal].[GuiaAutorizado](CUIL, Nombre, Apellido, Autorizado)
-					VALUES (@CUIL, @Nombre, @Apellido, @Autorizado)
-				END TRY
-				BEGIN CATCH
-					THROW;
-				END CATCH
-			END
-			GO
+CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoModificacion]
+	@CUIL		BIGINT,
+	@Nombre		VARCHAR(100) = NULL,
+	@Apellido	VARCHAR(100) = NULL,
+	@Autorizado BIT			 = NULL
+AS
+UPDATE [personal].[GuiaAutorizado]
+SET
+	Nombre		= ISNULL(@Nombre, Nombre),
+	Apellido	= ISNULL(@Apellido, Apellido),
+	Autorizado	= ISNULL(@Autorizado, Autorizado)
+WHERE CUIL = @CUIL
+GO
 
-		-- GUIA AUTORIZADO: UPDATE
-			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoModificacion]
-				@CUIL		BIGINT,
-				@Nombre		VARCHAR(100) = NULL,
-				@Apellido	VARCHAR(100) = NULL,
-				@Autorizado BIT			 = NULL
-			AS
-			BEGIN
-				BEGIN TRY
-					UPDATE [personal].[GuiaAutorizado]
-					SET
-						Nombre		= ISNULL(@Nombre, Nombre),
-						Apellido	= ISNULL(@Apellido, Apellido),
-						Autorizado	= ISNULL(@Autorizado, Autorizado)
-					WHERE CUIL = @CUIL
-				END TRY
-				BEGIN CATCH
-					THROW;
-				END CATCH
-			END
-			GO
+CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoBaja]
+	@CUIL BIGINT
+AS
+	DELETE FROM [personal].[GuiaAutorizado]
+	WHERE CUIL = @CUIL
+GO
 
-		-- GUIA AUTORIZADO: DELETE
-			CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoBaja]
-				@CUIL BIGINT
-			AS
-			BEGIN
-				BEGIN TRY
-					DELETE FROM [personal].[GuiaAutorizado]
-					WHERE CUIL = @CUIL
-				END TRY
-				BEGIN CATCH
-					THROW;
-				END CATCH
-			END
-			GO
+CREATE OR ALTER PROCEDURE [personal].[GuiaAutorizadoConsulta]
+	@CUIL BIGINT = NULL
+AS
+	SELECT * FROM [personal].[GuiaAutorizado]
+	WHERE CUIL = COALESCE(@CUIL,CUIL)
+GO
 
-	-- TITULO ACADEMICO OPERACIONES - SIN PROBAR: 
-		
-			-- TITULO ACADEMICO: INSERT
-				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoAlta]
-					@Nombre          VARCHAR(100),
-					@Entidad_Otorga  VARCHAR(100),
-					@Tipo			 VARCHAR(50),
-					@Area			 VARCHAR(50)
-				AS
-				BEGIN
-					BEGIN TRY
-						INSERT INTO [personal].[TituloAcademico](Nombre, Entidad_Otorga, Tipo, Area)
-						VALUES (@Nombre, @Entidad_Otorga, @Tipo, @Area)
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END
-				GO
+-- PROCEDIMIENTOS ALMACENADOS ABM: TITULO ACADEMICO
 
-			-- TITULO ACADEMICO: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoModificacion]
-					@ID				 INT,
-					@Nombre          VARCHAR(100) = NULL,
-					@Entidad_Otorga  VARCHAR(100) = NULL,
-					@Tipo			 VARCHAR(50)  = NULL,
-					@Area			 VARCHAR(50)  = NULL
-				AS
-				BEGIN
-					BEGIN TRY
-						UPDATE [personal].[TituloAcademico]
-						SET
-							Nombre			= ISNULL(@Nombre,Nombre),
-							Entidad_Otorga	= ISNULL(@Entidad_Otorga,Entidad_Otorga),
-							Tipo			= ISNULL(@Tipo, Tipo),
-							Area			= ISNULL(@Area, Area)
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END
-				GO
+CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoAlta]
+	@Nombre          VARCHAR(100),
+	@Entidad_Otorga  VARCHAR(100),
+	@Tipo			 VARCHAR(50),
+	@Area			 VARCHAR(50)
+AS
+	INSERT INTO [personal].[TituloAcademico](Nombre, Entidad_Otorga, Tipo, Area)
+	VALUES (@Nombre, @Entidad_Otorga, @Tipo, @Area)
+GO
 
-			-- TITULO ACADEMICO: DELETE
-				CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoBaja]
-					@ID INT
-				AS
-				BEGIN
-					BEGIN TRY
-						DELETE FROM [personal].[TituloAcademico]
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END
-				GO
-		
-		-- HABILITACION OPERACIONES - SIN PROBAR
-			
-			-- HABILITACION: INSERT
-				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaAlta]
-					@Nombre      VARCHAR(50),
-					@Descripcion VARCHAR(200)
-				AS
-				BEGIN
-					BEGIN TRY
-						INSERT INTO [personal].[HabilitacionGuia](Nombre, Descripcion)
-						VALUES (@Nombre, @Descripcion)
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END 
-				GO
+CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoModificacion]
+	@ID				 INT,
+	@Nombre          VARCHAR(100) = NULL,
+	@Entidad_Otorga  VARCHAR(100) = NULL,
+	@Tipo			 VARCHAR(50)  = NULL,
+	@Area			 VARCHAR(50)  = NULL
+AS
+	UPDATE [personal].[TituloAcademico]
+	SET
+		Nombre			= ISNULL(@Nombre,Nombre),
+		Entidad_Otorga	= ISNULL(@Entidad_Otorga,Entidad_Otorga),
+		Tipo			= ISNULL(@Tipo, Tipo),
+		Area			= ISNULL(@Area, Area)
+	WHERE ID = @ID
+GO
 
-			-- HABILITACION: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaModificacion]
-					@ID          INT,
-					@Nombre      VARCHAR(50)	= NULL,
-					@Descripcion VARCHAR(200)	= NULL 
-				AS
-				BEGIN
-					BEGIN TRY
-						UPDATE [personal].[HabilitacionGuia]
-						SET 
-							Nombre		= ISNULL(@Nombre, Nombre),
-							Descripcion	= ISNULL(@Descripcion, Descripcion)
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END 
-				GO
+CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoBaja]
+	@ID INT
+AS
+	DELETE FROM [personal].[TituloAcademico]
+	WHERE ID = @ID
+GO
 
-			-- HABILITACION: DELETE
-				CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaBaja]
-					@ID INT
-				AS
-				BEGIN
-					BEGIN TRY
-						DELETE FROM [personal].[HabilitacionGuia]
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END 
-				GO
+CREATE OR ALTER PROCEDURE [personal].[TituloAcademicoConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [personal].[TituloAcademico]
+	WHERE ID = COALESCE(@ID, ID)
+GO
 
 
-		-- ESPECIALIDAD OPERACIONES - SIN PROBAR
-			
-			-- ESPECIALIDAD: Insert
-				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaAlta]
-					@Nombre      VARCHAR(100),
-					@Descripcion VARCHAR(200)
-				AS
-				BEGIN
-					BEGIN TRY
-						INSERT INTO [personal].[EspecialidadGuia](Nombre, Descripcion)
-						VALUES(@Nombre, @Descripcion)
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END 
-				GO
+-- PROCEDIMIENTOS ALMACENADOS ABM: HABILITACION
 
-			-- ESPECIALIDAD: UPDATE
-				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaModificacion]
-					@ID          INT,
-					@Nombre      VARCHAR(100)        = NULL,
-					@Descripcion VARCHAR(200)        = NULL
-				AS
-				BEGIN
-					BEGIN TRY
-						UPDATE [personal].[EspecialidadGuia]
-						SET
-							Nombre		= ISNULL(@Nombre, Nombre),
-							Descripcion	= ISNULL(@Descripcion, Descripcion)
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END 
-				GO
+CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaAlta]
+	@Nombre      VARCHAR(50),
+	@Descripcion VARCHAR(200)
+AS
+	INSERT INTO [personal].[HabilitacionGuia](Nombre, Descripcion)
+	VALUES (@Nombre, @Descripcion)
 
-			-- ESPECIALIDAD: Delete
-				CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaBaja]
-					@ID INT
-				AS
-				BEGIN
-					BEGIN TRY
-						DELETE FROM [personal].[EspecialidadGuia]
-						WHERE ID = @ID
-					END TRY
-					BEGIN CATCH
-						THROW;
-					END CATCH
-				END
-				GO
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaModificacion]
+	@ID          INT,
+	@Nombre      VARCHAR(50)	= NULL,
+	@Descripcion VARCHAR(200)	= NULL 
+AS
+	UPDATE [personal].[HabilitacionGuia]
+	SET 
+		Nombre		= ISNULL(@Nombre, Nombre),
+		Descripcion	= ISNULL(@Descripcion, Descripcion)
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaBaja]
+	@ID INT
+AS
+	DELETE FROM [personal].[HabilitacionGuia]
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[HabilitacionGuiaConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [personal].[HabilitacionGuia]
+	WHERE ID = COALESCE(@ID,ID)
+GO
+
+-- PROCEDIMIENTOS ALMACENADOS ABM: ESPECIALIDAD
+
+CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaAlta]
+	@Nombre      VARCHAR(100),
+	@Descripcion VARCHAR(200)
+AS
+	INSERT INTO [personal].[EspecialidadGuia](Nombre, Descripcion)
+	VALUES(@Nombre, @Descripcion)
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaModificacion]
+	@ID          INT,
+	@Nombre      VARCHAR(100)        = NULL,
+	@Descripcion VARCHAR(200)        = NULL
+AS
+	UPDATE [personal].[EspecialidadGuia]
+	SET
+		Nombre		= ISNULL(@Nombre, Nombre),
+		Descripcion	= ISNULL(@Descripcion, Descripcion)
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaBaja]
+	@ID INT
+AS
+	DELETE FROM [personal].[EspecialidadGuia]
+	WHERE ID = @ID
+GO
+
+CREATE OR ALTER PROCEDURE [personal].[EspecialidadGuiaConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [personal].[EspecialidadGuia]
+	WHERE ID = COALESCE(@ID, ID)
+GO
 
 -- ========================================
 -- GUIA CON TITULO OPERACIONES
@@ -460,6 +391,14 @@ BEGIN
 		THROW;
 	END CATCH
 END
+GO
+
+-- GUIA CON TITULO: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[GuiaConTituloConsulta]
+	@CUIL_GuiaAutorizado BIGINT = NULL
+AS
+	SELECT * FROM [personal].[GuiaConTitulo]
+	WHERE CUIL_GuiaAutorizado = COALESCE(@CUIL_GuiaAutorizado, CUIL_GuiaAutorizado)
 GO
 
 -- ========================================
@@ -523,6 +462,15 @@ BEGIN
 END
 GO
 
+-- GUIA CON HABILITACIÓN: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[GuiaConHabilitacionConsulta]
+	@CUIL_GuiaAutorizado BIGINT = NULL
+AS
+	SELECT * FROM [personal].[GuiaConHabilitacion]
+	WHERE CUIL_GuiaAutorizado = COALESCE(@CUIL_GuiaAutorizado, CUIL_GuiaAutorizado)
+GO
+
+
 -- ========================================
 -- GUIA CON ESPECIALIDAD OPERACIONES
 -- ========================================
@@ -580,6 +528,15 @@ BEGIN
 	END CATCH
 END
 GO
+
+-- GUIA CON ESPECIALIDAD: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[GuiaConEspecialidadConsulta]
+	@CUIL_GuiaAutorizado BIGINT = NULL
+AS
+	SELECT * FROM [personal].[GuiaConEspecialidad]
+	WHERE CUIL_GuiaAutorizado = COALESCE(@CUIL_GuiaAutorizado,CUIL_GuiaAutorizado)
+GO
+
 
 -- ========================================
 -- GUARDAPARQUES OPERACIONES
@@ -649,6 +606,15 @@ BEGIN
 END
 GO
 
+-- GUARDAPARQUES: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[GuardaparquesConsulta]
+	@CUIL BIGINT = NULL
+AS
+	SELECT * FROM [personal].[Guardaparques]
+	WHERE CUIL = COALESCE(@CUIL,CUIL)
+GO
+
+
 -- ========================================
 -- CONTRATO TRABAJO OPERACIONES
 -- ========================================
@@ -708,6 +674,14 @@ BEGIN
 		THROW;
 	END CATCH
 END
+GO
+
+-- CONTRATO DE TRABAJO: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[ContratoTrabajoConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [personal].[ContratoTrabajo]
+	WHERE ID = COALESCE(@ID, ID)
 GO
 
 -- ========================================
@@ -771,4 +745,10 @@ BEGIN
 END
 GO
 
-
+-- PERMISO DE TRABAJO: CONSULTA
+CREATE OR ALTER PROCEDURE [personal].[PermisoDeTrabajoConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [personal].[PermisoDeTrabajo]
+	WHERE ID = COALESCE(@ID, ID)
+GO

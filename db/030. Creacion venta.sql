@@ -135,6 +135,13 @@ AS
 	WHERE COD_ISO = @COD_ISO;
 GO
 
+CREATE OR ALTER PROCEDURE [venta].[DivisaConsulta]
+	@COD_ISO CHAR(3) = NULL
+AS
+	SELECT * FROM [venta].[Divisa]
+	WHERE COD_ISO = COALESCE(@COD_ISO,COD_ISO);
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA
 
 CREATE OR ALTER PROCEDURE [venta].[TipoEntradaAlta]
@@ -159,6 +166,14 @@ AS
 	DELETE FROM [venta].[TipoEntrada]
 	WHERE ID = @ID;
 GO
+
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [venta].[TipoEntrada]
+	WHERE ID = COALESCE(@ID, ID)
+GO
+
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: TIPO DE ENTRADA PARQUE
 
@@ -190,6 +205,13 @@ CREATE OR ALTER PROCEDURE [venta].[TipoEntradaParqueBaja]
 AS
 	DELETE FROM [venta].[TipoEntradaParque]
 	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[TipoEntradaParqueConsulta]
+	@ID	INT = NULL
+AS
+	SELECT * FROM [venta].[TipoEntradaParque]
+	WHERE ID = COALESCE(@ID, ID)
 GO
 
 -- PROCEDIMIENTOS ALMACENADOS ABM: COMPROBANTE
@@ -232,6 +254,13 @@ AS
 	WHERE ID = @ID;
 GO
 
+CREATE OR ALTER PROCEDURE [venta].[ComprobanteConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [venta].[Comprobante] 
+	WHERE ID = COALESCE(@ID,ID)
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: ENTRADA
 
 CREATE OR ALTER PROCEDURE [venta].[EntradaAlta]
@@ -265,6 +294,13 @@ CREATE OR ALTER PROCEDURE [venta].[EntradaBaja]
 AS
 	DELETE FROM [venta].[Entrada]
 	WHERE ID = @ID;
+GO
+
+CREATE OR ALTER PROCEDURE [venta].[EntradaConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [venta].[Entrada]
+	WHERE ID = COALESCE(@ID, ID)
 GO
 
 -- ============================================================

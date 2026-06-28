@@ -7,10 +7,13 @@ router.get('/', (req, res)=>{
     res.send('Apartado de Ventas');
 })
 
-// ABL Divisa con SP ACTUALES
+
+// ============================================================================
+// ABL Divisa
+// ============================================================================
 
     router.get('/divisa', async (req, res, next) => {
-        const divisas = await ejecutarSP('[venta].[DivisaConsulta]', {});
+        const divisas = (await ejecutarSP('[venta].[DivisaConsulta]', {})).recordset;
         
         if (!divisas || divisas.length === 0) {
             const error = new Error('No se encuentran divisas registradas.');
@@ -22,7 +25,7 @@ router.get('/', (req, res)=>{
 
     router.get('/divisa/:id', async (req, res, next) => {
 
-        const divisa = await ejecutarSP('[venta].[DivisaConsulta]', {COD_ISO: req.params.id});
+        const divisa = (await ejecutarSP('[venta].[DivisaConsulta]', {COD_ISO: req.params.id})).recordset;
 
         if (!divisa || divisa.length === 0) {
             const error = new Error('No se encuentra la divisa.');
@@ -69,10 +72,12 @@ router.get('/', (req, res)=>{
     });
 
 
-// ABL Tipo de Entrada con SP ACTUALES
+// ============================================================================
+// ABL TipoEntrada
+// ============================================================================
 
     router.get('/tipoentrada', async (req, res, next) => {
-        const tipos = await ejecutarSP('[venta].[TipoEntradaConsulta]', {});
+        const tipos = (await ejecutarSP('[venta].[TipoEntradaConsulta]', {})).recordset;
         
         if (!tipos || tipos.length === 0) {
             const error = new Error('No se encuentran tipos de entrada registrados.');
@@ -91,7 +96,7 @@ router.get('/', (req, res)=>{
                 return next(error);
         }
 
-        const tipo = await ejecutarSP('[venta].[TipoEntradaConsulta]', { ID: id});
+        const tipo = (await ejecutarSP('[venta].[TipoEntradaConsulta]', { ID: id})).recordset;
 
         if (!tipo || tipo.length === 0) {
             const error = new Error('No se encuentra el tipo de entrada.');
@@ -138,10 +143,12 @@ router.get('/', (req, res)=>{
     });
 
 
-// ABL Tipo de Entrada Parque con SP ACTUALES
+// ============================================================================
+// ABL TipoEntradaParque
+// ============================================================================
 
     router.get('/tipoentradaparque', async (req, res, next) => {
-        const registros = await ejecutarSP('[venta].[TipoEntradaParqueConsulta]', {});
+        const registros = (await ejecutarSP('[venta].[TipoEntradaParqueConsulta]', {})).recordset;
         
         if (!registros || registros.length === 0) {
             const error = new Error('No se encuentran registros de tipos de entrada por parque.');
@@ -160,7 +167,7 @@ router.get('/', (req, res)=>{
                 return next(error);
         }
 
-        const registro = await ejecutarSP('[venta].[TipoEntradaParqueConsulta]', { ID: id });
+        const registro = (await ejecutarSP('[venta].[TipoEntradaParqueConsulta]', { ID: id })).recordset;
 
         if (!registro || registro.length === 0) {
             const error = new Error('No se encuentra el registro de tipo de entrada por parque.');
@@ -207,10 +214,12 @@ router.get('/', (req, res)=>{
     });
 
 
-// ABL Comprobante con SP ACTUALES
+// ============================================================================
+// ABL Comprobante
+// ============================================================================
 
     router.get('/comprobante', async (req, res, next) => {
-        const comprobantes = await ejecutarSP('[venta].[ComprobanteConsulta]', {});
+        const comprobantes = (await ejecutarSP('[venta].[ComprobanteConsulta]', {})).recordset;
         
         if (!comprobantes || comprobantes.length === 0) {
             const error = new Error('No se encuentran comprobantes registrados.');
@@ -229,7 +238,7 @@ router.get('/', (req, res)=>{
                 return next(error);
         }
 
-        const comprobante = await ejecutarSP('[venta].[ComprobanteConsulta]', { ID: id });
+        const comprobante = (await ejecutarSP('[venta].[ComprobanteConsulta]', { ID: id })).recordset;
 
         if (!comprobante || comprobante.length === 0) {
             const error = new Error('No se encuentra el comprobante.');
@@ -248,12 +257,12 @@ router.get('/', (req, res)=>{
 
         const nuevoComprobante = req.body;
         
-        const resultado = await ejecutarSP('[venta].[ComprobanteAlta]', nuevoComprobante,{IDComprobante:0});
-        //const idGenerado = resultado.output ? resultado.output.IDComprobante : null;
+        const resultado = (await ejecutarSP('[venta].[ComprobanteAlta]', nuevoComprobante,{IDComprobante:0}));
+        const idGenerado = resultado.output ? parseInt(resultado.output.IDComprobante) : null;
 
         res.status(201).json({ 
             message: 'Comprobante creado.', 
-            //id: idGenerado 
+            id: idGenerado 
         });
     });
 
@@ -266,7 +275,6 @@ router.get('/', (req, res)=>{
 
         const comprobanteModificado = req.body;
         await ejecutarSP('[venta].[ComprobanteModificacion]', comprobanteModificado);
-        console.log(comprobanteModificado);
         res.status(200).json({ message: 'Comprobante actualizado.' });
     });
 
@@ -279,15 +287,16 @@ router.get('/', (req, res)=>{
 
         const bajaDatos = req.body;
         await ejecutarSP('[venta].[ComprobanteBaja]', bajaDatos);
-        console.log(bajaDatos);
         res.status(200).json({ message: 'Comprobante eliminado.' });
     });
 
 
-// ABL Entrada con SP ACTUALES
+// ============================================================================
+// ABL Entrada
+// ============================================================================
 
     router.get('/entrada', async (req, res, next) => {
-        const entradas = await ejecutarSP('[venta].[EntradaConsulta]', {});
+        const entradas = (await ejecutarSP('[venta].[EntradaConsulta]', {})).recordset;
         
         if (!entradas || entradas.length === 0) {
             const error = new Error('No se encuentran entradas registradas.');
@@ -301,12 +310,12 @@ router.get('/', (req, res)=>{
         const id = parseInt(req.params.id);
 
         if (typeof id !== "number" || !Number.isInteger(id)){
-                const error = new Error('No se ingresó un id válido.');
-                error.status = 400;
-                return next(error);
+            const error = new Error('No se ingresó un id válido.');
+            error.status = 400;
+            return next(error);
         }
 
-        const entrada = await ejecutarSP('[venta].[EntradaConsulta]', { ID: id });
+        const entrada = (await ejecutarSP('[venta].[EntradaConsulta]', { ID: id })).recordset;
 
         if (!entrada || entrada.length === 0) {
             const error = new Error('No se encuentra la entrada.');
@@ -326,7 +335,6 @@ router.get('/', (req, res)=>{
 
         const nuevaEntrada = req.body;
         await ejecutarSP('[venta].[EntradaAlta]', nuevaEntrada);
-        console.log(nuevaEntrada);
         res.status(201).json({ message: 'Entrada creada.' });
     });
 
@@ -339,7 +347,6 @@ router.get('/', (req, res)=>{
 
         const entradaModificada = req.body;
         await ejecutarSP('[venta].[EntradaModificacion]', entradaModificada);
-        console.log(entradaModificada);
         res.status(200).json({ message: 'Entrada actualizada.' });
     });
 
@@ -352,7 +359,6 @@ router.get('/', (req, res)=>{
 
         const bajaDatos = req.body;
         await ejecutarSP('[venta].[EntradaBaja]', bajaDatos);
-        console.log(bajaDatos);
         res.status(200).json({ message: 'Entrada eliminada.' });
     });
 

@@ -7,10 +7,13 @@ router.get('/', (req, res)=>{
     res.send('Apartado de Areas Protegidas');
 })
 
-// ABL Areas Protegidas con SP actuales
+
+// ============================================================================
+// ABL AreasProtegidas
+// ============================================================================
 
     router.get('/areaprotegida', async (req, res)=>{
-        const areasprotegidas = await ejecutarSP('[parque].[AreaProtegidaConsulta]',{});
+        const areasprotegidas = (await ejecutarSP('[parque].[AreaProtegidaConsulta]',{})).recordset;
 
         if(!areasprotegidas){
             const error = new Error('No se encuentran areas protegidas para mostrar.');
@@ -29,7 +32,7 @@ router.get('/', (req, res)=>{
             return next(error);
          }
         
-        const areasprotegida = await ejecutarSP('[parque].[AreaProtegidaConsulta]',{ID: id}); 
+        const areasprotegida = (await ejecutarSP('[parque].[AreaProtegidaConsulta]',{ID: id})).recordset; 
         if(!areasprotegida || areasprotegida.length == 0){
             const error = new Error('No se encuentra el área protegida.');
             error.status = 404;
@@ -49,7 +52,6 @@ router.get('/', (req, res)=>{
 
         const nuevaArea = req.body;
         await ejecutarSP('[parque].[AreaProtegidaAlta]', nuevaArea);
-        console.log(nuevaArea);
         res.status(201).json({ message: 'Area creada.' });
     });
 
@@ -63,7 +65,6 @@ router.get('/', (req, res)=>{
 
         const nuevaArea = req.body;
         await ejecutarSP('[parque].[AreaProtegidaModificacion]', nuevaArea);
-        console.log(nuevaArea);
         res.status(200).json({ message: 'Area actualizada.' });
     });
     
@@ -77,15 +78,16 @@ router.get('/', (req, res)=>{
 
         const bajaDatos = req.body;
         await ejecutarSP('[parque].[AreaProtegidaBaja]', bajaDatos);
-        console.log(bajaDatos);
         res.status(200).json({ message: 'Area eliminada.' });
     });
 
 
-// ABL Punto de Venta con SP Actuales
+// ============================================================================
+// ABL PuntoDeVenta
+// ============================================================================
 
     router.get('/puntodeventa', async (req, res, next) => {
-        const puntos = await ejecutarSP('[parque].[PuntoDeVentaConsulta]', {});
+        const puntos = (await ejecutarSP('[parque].[PuntoDeVentaConsulta]', {})).recordset;
         
         if (!puntos || puntos.length === 0) {
             const error = new Error('No se encuentran puntos de venta.');
@@ -105,7 +107,7 @@ router.get('/', (req, res)=>{
             return next(error);
          }
 
-        const punto = await ejecutarSP('[parque].[PuntoDeVentaConsulta]', {ID: id});
+        const punto = (await ejecutarSP('[parque].[PuntoDeVentaConsulta]', {ID: id})).recordset;
         
         if (!punto || punto.length === 0) {
             const error = new Error('No se encuentra el punto de venta para mostrar.');
@@ -124,7 +126,6 @@ router.get('/', (req, res)=>{
 
         const nuevoPunto = req.body;
         await ejecutarSP('[parque].[PuntoDeVentaAlta]', nuevoPunto);
-        console.log(nuevoPunto);
         res.status(201).json({ message: 'Punto de venta creado.' });
     });
 
@@ -137,7 +138,6 @@ router.get('/', (req, res)=>{
 
         const puntoModificado = req.body;
         await ejecutarSP('[parque].[PuntoDeVentaModificacion]', puntoModificado);
-        console.log(puntoModificado);
         res.status(200).json({ message: 'Punto de venta actualizado.' });
     });
 
@@ -150,16 +150,17 @@ router.get('/', (req, res)=>{
 
         const bajaDatos = req.body;
         await ejecutarSP('[parque].[PuntoDeVentaBaja]', bajaDatos);
-        console.log(bajaDatos);
         res.status(200).json({ message: 'Punto de venta eliminado.' });
     });
 
 
-// ABL Provincia con SP Actuales
+// ============================================================================
+// ABL Provincia
+// ============================================================================
 
     router.get('/provincia', async (req, res, next) =>{
 
-        const provincias = await ejecutarSP('[parque].[ProvinciaConsulta]',{});
+        const provincias = (await ejecutarSP('[parque].[ProvinciaConsulta]',{})).recordset;
         
         if(!provincias || provincias.length == 0){
             const error = new Error('No se encuentran provincias para mostrar.');
@@ -180,7 +181,7 @@ router.get('/', (req, res)=>{
             return next(error);
          }
 
-        const provincia = await ejecutarSP('[parque].[ProvinciaConsula]',{ID: id});
+        const provincia = (await ejecutarSP('[parque].[ProvinciaConsula]',{ID: id})).recordset;
     
         if(!provincia || provincia.length == 0){
             const error = new Error('No se encuentra la provincia.');
@@ -227,10 +228,12 @@ router.get('/', (req, res)=>{
     });
 
 
-// ABL Provincia contiene Parque, con SP Actuales (Posiblemente no se use)
+// ============================================================================
+// ABL ProvinciaContieneParque (Posiblemente no se usen)
+// ============================================================================
 
     router.get('/provinciacontieneparque', async (req, res, next) => {
-        const registros = await ejecutarSP('[parque].[ProvinciaContieneParqueConsulta]', {});
+        const registros = (await ejecutarSP('[parque].[ProvinciaContieneParqueConsulta]', {})).recordset;
         
         if (!registros || registros.length === 0) {
             const error = new Error('No se encuentran registros de provincias con parques.');
@@ -249,7 +252,6 @@ router.get('/', (req, res)=>{
 
         const nuevoRegistro = req.body;
         await ejecutarSP('[parque].[ProvinciaContieneParqueAlta]', nuevoRegistro);
-        console.log(nuevoRegistro);
         res.status(201).json({ message: 'Relación provincia-parque creada.' });
     });
 
@@ -262,7 +264,6 @@ router.get('/', (req, res)=>{
 
         const bajaDatos = req.body;
         await ejecutarSP('[parque].[ProvinciaContieneParqueBaja]', bajaDatos);
-        console.log(bajaDatos);
         res.status(200).json({ message: 'Relación provincia-parque eliminada.' });
     });
     

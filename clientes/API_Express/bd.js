@@ -56,8 +56,9 @@ async function ejecutarSP(nombreSP, parametros = {}, outputParams = {}){
         });
 
         const resultado = await request.execute(nombreSP);
-
-        return resultado.recordset || []; // el output se esta descartando... porque se devuelve recordset no ouput
+        
+        return resultado;
+        //return resultado.recordset || []; // el output se esta descartando... porque se devuelve recordset no ouput
 
     } catch (error) {
         console.error(`Error al ejecutar SP ${nombreSP}: `, error.message);

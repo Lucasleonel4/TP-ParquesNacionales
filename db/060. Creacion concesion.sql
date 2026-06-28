@@ -219,6 +219,13 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE [concesion].[ActividadFiscalConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [concesion].[ActividadFiscal]
+	WHERE ID = COALESCE(@ID, ID)
+GO
+
 -- ============================================================================
 -- Stored Procedures ABM para concesion.Empresa
 -- ============================================================================
@@ -298,6 +305,13 @@ BEGIN
 	SET Nombre = ISNULL(@Nombre, Nombre)
 	WHERE CUIT = @CUIT;
 END;
+GO
+
+CREATE OR ALTER PROCEDURE [concesion].[EmpresaConsulta]
+	@CUIT BIGINT = NULL
+AS
+	SELECT * FROM [concesion].[Empresa]
+	WHERE CUIT = COALESCE(@CUIT,CUIT)
 GO
 
 -- ============================================================================
@@ -401,6 +415,13 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE [concesion].[TipoConcesionConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [concesion].[TipoConcesion]
+	WHERE ID = COALESCE(@ID,ID)
+GO
+
 -- ============================================================================
 -- Stored Procedures ABM para concesion.ActividadFiscalInscriptaEmpresa
 -- ============================================================================
@@ -502,6 +523,13 @@ BEGIN
 	SET Principal = ISNULL(@Principal, Principal)
 	WHERE CUIT_Empresa = @CUIT_Empresa AND ID_ActividadFiscal = @ID_ActividadFiscal;
 END;
+GO
+
+CREATE OR ALTER PROCEDURE [concesion].[ActividadFiscalInscriptaEmpresaConsulta]
+	@CUIT_Empresa BIGINT = NULL
+AS
+	SELECT * FROM [concesion].[ActividadFiscalInscriptaEmpresa]
+	WHERE CUIT_Empresa = COALESCE(@CUIT_Empresa,CUIT_Empresa)
 GO
 
 -- ============================================================================
@@ -641,6 +669,14 @@ BEGIN
 END;
 GO
 
+
+CREATE OR ALTER PROCEDURE [concesion].[ConcesionConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [concesion].[Concesion]
+	WHERE ID = COALESCE(@ID,ID)
+GO
+
 -- ============================================================================
 -- Stored Procedures ABM para concesion.FacturaConcesion
 -- ============================================================================
@@ -747,6 +783,13 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE [concesion].[FacturaConcesionConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [concesion].[FacturaConcesion]
+	WHERE ID = COALESCE(@ID,ID)
+GO
+
 -- ============================================================================
 -- Stored Procedures ABM para concesion.PagoConcesion
 -- ============================================================================
@@ -838,4 +881,10 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE [concesion].[PagoConcesionConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [concesion].[PagoConcesion]
+	WHERE ID = COALESCE(@ID,ID)
+GO
 

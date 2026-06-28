@@ -114,6 +114,13 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [actividad].[TipoActividadConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [actividad].[TipoActividad]
+	WHERE ID = COALESCE(@ID, ID)
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: ACTIVIDAD
 
 CREATE OR ALTER PROCEDURE [actividad].[ActividadAlta]
@@ -157,6 +164,13 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [actividad].[ActividadConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [actividad].[Actividad]
+	WHERE ID = COALESCE(@ID, ID)
+GO
+
 -- PROCEDIMIENTOS ALMACENADOS ABM: INSCRIPCION ACTIVIDAD
 
 CREATE OR ALTER PROCEDURE [actividad].[InscripcionActividadAlta]
@@ -192,6 +206,12 @@ AS
 	WHERE ID = @ID
 GO
 
+CREATE OR ALTER PROCEDURE [actividad].[InscripcionActividadConsulta]
+	@ID INT = NULL
+AS
+	SELECT * FROM [actividad].[InscripcionActividad]
+	WHERE ID = COALESCE(@ID,ID)
+GO
 -- PROCEDIMIENTOS ALMACENADOS ABM: GUIA ASIGNADO TOUR
 
 CREATE OR ALTER PROCEDURE [actividad].[GuiaAsignadoTourAlta]
@@ -209,6 +229,14 @@ AS
 	DELETE FROM [actividad].[GuiaAsignadoTour]
 	WHERE ID_Actividad = @ID_Actividad AND CUIL_GuiaAutorizado = @CUIL_GuiaAutorizado
 GO
+
+CREATE OR ALTER PROCEDURE [actividad].[GuiaAsignadoTourConsulta]
+	@ID_Actividad INT = NULL
+AS
+	SELECT * FROM [actividad].[GuiaAsignadoTour]
+	WHERE ID_Actividad = COALESCE(@ID_Actividad, ID_Actividad)
+GO	
+
 
 -- ============================================================
 -- FUNCIONES

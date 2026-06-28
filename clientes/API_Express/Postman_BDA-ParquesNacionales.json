@@ -1,0 +1,3389 @@
+{
+  "info": {
+    "_postman_id": "e98b2697-8ecb-4205-9d2f-44cc8aeb5ae1",
+    "name": "BDA - Parques Nacionales",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47050181"
+  },
+  "item": [
+    {
+      "name": "ABL - Área Protegida",
+      "item": [
+        {
+          "name": "Área Protegida",
+          "item": [
+            {
+              "name": "GET - Áreas Protegidas",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/areaprotegida",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "areaprotegida"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_BID - Áreas Protegidas",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/areaprotegida/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "areaprotegida",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Áreas Protegidas",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"TipoArea\": \"Parque Nacional\",\r\n    \"Nombre\": \"Perito Moreno - Nuevo\",\r\n    \"Superficie\": 10000,\r\n    \"Info_General\": \"\",\r\n    \"Info_Operativa\": \"\",\r\n    \"Latitud\": -0.50,\r\n    \"Longitud\": 0.10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/areaprotegida",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "areaprotegida"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT - Áreas Protegidas",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"TipoArea\": \"Parque Nacional\",\r\n    \"Nombre\": \"Perito Moreno\",\r\n    \"Superficie\": 10000,\r\n    \"Info_General\": \"\",\r\n    \"Info_Operativa\": \"\",\r\n    \"Latitud\": 10,\r\n    \"Longitud\": -10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/areaprotegida",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "areaprotegida"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Áreas Protegidas",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/areaprotegida",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "areaprotegida"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Punto de Venta",
+          "item": [
+            {
+              "name": "GET - Punto de Venta",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/puntodeventa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "puntodeventa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_BID - Punto de Venta",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/puntodeventa/3",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "puntodeventa",
+                    "3"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST - Punto de Venta",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_AreaProtegida\":3,\r\n    \"Descripcion\": \"Primer punto de venta, cerca a centro médico.\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/puntodeventa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "puntodeventa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT - Punto de Venta",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"ID_AreaProtegida\":4,\r\n    \"Descripcion\": \"Primer punto de venta, cerca a centro médico.\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/puntodeventa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "puntodeventa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE - Punto de Venta",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/puntodeventa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "puntodeventa"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Provincia",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/provincia",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provincia"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/provincia/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provincia",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 1,\r\n    \"Nombre\": \"Provincia de Buenos Aires\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/provincia",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provincia"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 1,\r\n    \"Nombre\": \"Provincia de Buenos Aires, Argentina\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/provincia",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provincia"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/provincia",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provincia"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Provincia Contiene Parque",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/parque/provinciacontieneparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provinciacontieneparque"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_Provincia\": 1,\r\n    \"ID_AreaProtegida\": 3\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/provinciacontieneparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provinciacontieneparque"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_Provincia\": 1,\r\n    \"ID_AreaProtegida\":3\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/parque/provinciacontieneparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "parque",
+                    "provinciacontieneparque"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ABL - Venta",
+      "item": [
+        {
+          "name": "Divisa",
+          "item": [
+            {
+              "name": "GET",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 1,\r\n    \"Nombre\": \"Provincia de Buenos Aires\"\r\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/divisa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "divisa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/divisa/USD",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "divisa",
+                    "USD"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"COD_ISO\": \"USD\",\r\n    \"PAIS\": \"EEUU\",\r\n    \"ValorEnPesos\": 3000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/divisa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "divisa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"COD_ISO\": \"USD\",\r\n    \"PAIS\": \"Estados Unidos de América\",\r\n    \"ValorEnPesos\": 3000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/divisa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "divisa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"COD_ISO\": \"EUR\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/divisa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "divisa"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Tipo de Entrada",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentrada/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentrada",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"Nombre\": \"Alumno\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"Nombre\": \"Maestros\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentrada"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Tipo de Entrada Parque",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentradaparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentradaparque"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentradaparque/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentradaparque",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_AreaProtegida\": 3,\r\n    \"ID_TipoEntrada\": 2,\r\n    \"Precio\": 2000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentradaparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentradaparque"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 3,\r\n    \"Precio\": 200000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentradaparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentradaparque"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/tipoentradaparque",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "tipoentradaparque"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Comprobante",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/comprobante",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "comprobante"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/comprobante/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "comprobante",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_PuntoDeVenta\": 3,\r\n    \"COD_ISO_Divisa\": \"USD\",\r\n    \"MedioDePago\": \"Efectivo\", \r\n    \"FechaHora\":  \"2026-12-05\",\r\n    \"Total\": 50000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/comprobante",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "comprobante"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"ID_PuntoDeVenta\": 3,\r\n    \"COD_ISO_Divisa\": \"USD\",\r\n    \"MedioDePago\": \"Transferencia\", \r\n    \"FechaHora\":  \"2026-12-15\",\r\n    \"Total\": 5000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/comprobante",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "comprobante"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/comprobante",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "comprobante"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Entrada",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/entrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "entrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/venta/entrada/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "entrada",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_TipoEntradaParque\":1,\r\n    \"ID_Comprobante\":2, \r\n    \"FechaHora\": \"2026-12-05\", \r\n    \"PrecioCobrado\": 5000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/entrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "entrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"ID_TipoEntradaParque\":1,\r\n    \"ID_Comprobante\":2, \r\n    \"FechaHora\": \"2026-12-05\", \r\n    \"PrecioCobrado\": 8000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/entrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "entrada"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/venta/entrada",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "venta",
+                    "entrada"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Negocio",
+          "item": [
+            {
+              "name": "Venta de Entradas de Mismo Tipo",
+              "item": [
+                {
+                  "name": "GET",
+                  "request": {
+                    "method": "GET",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET_ID",
+                  "request": {
+                    "method": "GET",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "POST",
+                  "request": {
+                    "method": "POST",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT",
+                  "request": {
+                    "method": "PUT",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "DELETE",
+                  "request": {
+                    "method": "DELETE",
+                    "header": []
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Venta de Entradas y Actividad por Lote",
+              "item": [
+                {
+                  "name": "GET",
+                  "request": {
+                    "method": "GET",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "GET_ID",
+                  "request": {
+                    "method": "GET",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "POST",
+                  "request": {
+                    "method": "POST",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "PUT",
+                  "request": {
+                    "method": "PUT",
+                    "header": []
+                  },
+                  "response": []
+                },
+                {
+                  "name": "DELETE",
+                  "request": {
+                    "method": "DELETE",
+                    "header": []
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ABL - Actividad",
+      "item": [
+        {
+          "name": "Tipo de Actividad",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/tipoactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "tipoactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/tipoactividad/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "tipoactividad",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"Nombre\": \"Excusión\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/tipoactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "tipoactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"Nombre\": \"Tour\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/tipoactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "tipoactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/tipoactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "tipoactividad"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Actividad",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/actividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "actividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/actividad/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "actividad",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_AreaProtegida\":3,\r\n    \"ID_TipoActividad\":1,\r\n    \"Nombre\": \"Excusión recreativa al parque de los deseos.\",\r\n    \"Duracion\": 1,\r\n    \"Costo\": 10000,\r\n    \"CupoMaximo\": 20\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/actividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "actividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    \"ID_AreaProtegida\":3,\r\n    \"ID_TipoActividad\":1,\r\n    \"Nombre\": \"Excusión recreativa al parque de la perdición.\",\r\n    \"Duracion\": 1,\r\n    \"Costo\": 10000,\r\n    \"CupoMaximo\": 20,\r\n    \"CupoLibre\":20\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/actividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "actividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/actividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "actividad"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Inscripción Actividad",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/inscripcionactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "inscripcionactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/inscripcionactividad/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "inscripcionactividad",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_Actividad\": 1,\r\n    \"ID_Comprobante\": 2,\r\n    \"FechaHora\": \"2026-06-27T14:30:00\",\r\n    \"PrecioCobrado\": 30000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/inscripcionactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "inscripcionactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 1,\r\n    \"ID_Actividad\": 1,\r\n    \"ID_Comprobante\": 1,\r\n    \"FechaHora\": null,\r\n    \"PrecioCobrado\": null\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/inscripcionactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "inscripcionactividad"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/inscripcionactividad",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "inscripcionactividad"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Guía Asignado al Tour",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/guiaasignadotour",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "guiaasignadotour"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/actividad/guiaasignadotour/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "guiaasignadotour",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_Actividad\": 1,\r\n    \"CUIL_GuiaAutorizado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/guiaasignadotour",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "guiaasignadotour"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_Actividad\":1,\r\n    \"CUIL_GuiaAutorizado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/actividad/guiaasignadotour",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "actividad",
+                    "guiaasignadotour"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Negocio - Registro Actividad",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": []
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ABL - Personal",
+      "item": [
+        {
+          "name": "Guía Autorizado",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/guiaautorizado",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guiaautorizado"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/guiaautorizado/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guiaautorizado",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\": 1,\r\n    \"Nombre\": \"Juan Carlos\",\r\n    \"Apellido\": \"Perez\",\r\n    \"Autorizado\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guiaautorizado",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guiaautorizado"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\": 1,\r\n    \"Nombre\": \"Juan Carlos\",\r\n    \"Apellido\": \"Perez\",\r\n    \"Autorizado\": 0\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guiaautorizado",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guiaautorizado"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guiaautorizado",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guiaautorizado"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Guardaparques",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/guardaparques",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guardaparques"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/guardaparques/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guardaparques",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\":1,\r\n    \"Nombre\": \"Matias Ezequiel\",\r\n    \"Apellido\": \"Ramirez\",\r\n    \"FechaNacimiento\": \"2000-06-27T14:30:00\",\r\n    \"FechaIngreso\": \"2026-06-27T16:30:00\",\r\n    \"FechaEgreso\": null,\r\n    \"MotivoEgreso\": null\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guardaparques",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guardaparques"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\":1,\r\n    //\"Nombre\": \"Matias Ezequiel\",\r\n    //\"Apellido\": \"Ramirez\",\r\n    //\"FechaNacimiento\": \"2000-06-27T14:30:00\",\r\n    //\"FechaIngreso\": \"2026-06-27T16:30:00\",\r\n    \"FechaEgreso\": \"2026-06-27T16:30:00\",\r\n    \"MotivoEgreso\": \"Rediccion de personal\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guardaparques",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guardaparques"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"CUIL\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/guardaparques",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "guardaparques"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Contrato de Trabajo",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/contratotrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "contratotrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/contratotrabajo/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "contratotrabajo",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_AreaProtegida\": 3,\r\n    \"CUIL_Guardaparques\":1,\r\n    \"FechaInicio\": \"2026-01-27T16:30:00\",\r\n    \"FechaFin\": \"2026-11-27T16:30:00\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/contratotrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "contratotrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    //\"ID_AreaProtegida\": 3,\r\n    //\"CUIL_Guardaparques\":1,\r\n    //\"FechaInicio\": \"2026-01-27T16:30:00\",\r\n    \"FechaFin\": \"2026-12-27T16:30:00\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/contratotrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "contratotrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/contratotrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "contratotrabajo"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Permiso de Trabajo",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/permisodetrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "permisodetrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/personal/permisodetrabajo/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "permisodetrabajo",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID_AreaProtegida\": 3,\r\n    \"CUIL_GuiaAutorizado\": 1,\r\n    \"FechaInicio\": \"2026-06-27T16:30:00\",\r\n    \"FechaFin\": \"2026-11-27T16:30:00\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/permisodetrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "permisodetrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":1,\r\n    //\"ID_AreaProtegida\": 3,\r\n    //\"CUIL_GuiaAutorizado\": 1,\r\n    //\"FechaInicio\": \"2026-06-27T16:30:00\",\r\n    \"FechaFin\": \"2026-12-27T16:30:00\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/permisodetrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "permisodetrabajo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ID\":2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/personal/permisodetrabajo",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "personal",
+                    "permisodetrabajo"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Plantilla",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": []
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ABL - Concesión",
+      "item": [
+        {
+          "name": "Actividad Fiscal",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscal",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscal"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscal/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscal",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"Nombre\": \"Turismo Rural\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscal",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscal"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1,\r\n  \"Nombre\": \"Turismo Ecológico\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscal",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscal"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscal",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscal"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Empresa",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/empresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "empresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/empresa/30708965432",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "empresa",
+                    "30708965432"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT\": 30708965432,\r\n  \"Nombre\": \"EcoTurismo SA\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/empresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "empresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT\": 30708965432,\r\n  \"Nombre\": \"EcoTurismo Sustentable SA\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/empresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "empresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT\": 30708965432\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/empresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "empresa"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Tipo Concesión",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/tipoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "tipoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/tipoconcesion/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "tipoconcesion",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID_ActividadFiscal\": 1,\r\n  \"Nombre\": \"Concesión de Turismo\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/tipoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "tipoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1,\r\n  \"ID_ActividadFiscal\": 1,\r\n  \"Nombre\": \"Concesión de Turismo Sustentable\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/tipoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "tipoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/tipoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "tipoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Actividad Fiscal Inscripta Empresa",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscalinscriptaempresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscalinscriptaempresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscalinscriptaempresa/30708965432",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscalinscriptaempresa",
+                    "30708965432"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT_Empresa\": 30708965432,\r\n  \"ID_ActividadFiscal\": 1,\r\n  \"Principal\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscalinscriptaempresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscalinscriptaempresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT_Empresa\": 30708965432,\r\n  \"ID_ActividadFiscal\": 1,\r\n  \"Principal\": false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscalinscriptaempresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscalinscriptaempresa"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"CUIT_Empresa\": 30708965432,\r\n  \"ID_ActividadFiscal\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/actividadfiscalinscriptaempresa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "actividadfiscalinscriptaempresa"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Concesión",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/concesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "concesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/concesion/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "concesion",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID_AreaProtegida\": 3,\r\n  \"CUIT_Empresa\": 30708965432,\r\n  \"ID_TipoConcesion\": 2,\r\n  \"FechaInicio\": \"2026-07-01\",\r\n  \"FechaFin\": \"2027-07-01\",\r\n  \"Canon\": 150000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/concesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "concesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1,\r\n  \"FechaFin\": \"2028-07-01\",\r\n  \"Canon\": 200000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/concesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "concesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/concesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "concesion"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Factura Concesión",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/facturaconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "facturaconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/facturaconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "facturaconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID_Concesion\": 1,\r\n  \"FechaEmision\": \"2026-07-01\",\r\n  \"FechaVencimiento\": \"2026-07-31\",\r\n  \"MontoEsperado\": 50000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/facturaconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "facturaconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1,\r\n  \"FechaVencimiento\": \"2026-08-15\",\r\n  \"MontoEsperado\": 60000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/facturaconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "facturaconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/facturaconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "facturaconcesion"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Pago Concesión",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/pagoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "pagoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:4000/concesion/pagoconcesion/1",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "pagoconcesion",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID_Factura\": 1,\r\n  \"FechaPago\": \"2026-07-05\",\r\n  \"MontoPagado\": 50000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/pagoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "pagoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 1,\r\n  \"MontoPagado\": 55000.00\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/pagoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "pagoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"ID\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:4000/concesion/pagoconcesion",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "4000",
+                  "path": [
+                    "concesion",
+                    "pagoconcesion"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ABL - Plantilla",
+      "item": [
+        {
+          "name": "Plantilla",
+          "item": [
+            {
+              "name": "GET",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "GET_ID",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "POST",
+              "request": {
+                "method": "POST",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "PUT",
+              "request": {
+                "method": "PUT",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "DELETE",
+              "request": {
+                "method": "DELETE",
+                "header": []
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
