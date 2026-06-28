@@ -1,7 +1,9 @@
 require('dotenv').config();
+const { cerrarConexion } = require('./bd');
 
 const express = require('express');
 const app     = express();
+const cors    = require('cors');
 const PORT    = process.env.PORT || 4000;
 
 const parqueRoutes      = require('./routes/parqueRoutes');
@@ -10,7 +12,13 @@ const ventaRoutes       = require('./routes/ventaRoutes');
 const actividadRoutes   = require('./routes/actividadRoutes');
 const concesionRoutes   = require('./routes/concesionRoutes');
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Para poder recibir como objeto lo que envia un formulario html
 
 app.get('/', (req, res)=>{res.send('Conectado a la API de Parques Nacionales');});
 
@@ -37,3 +45,14 @@ app.use((err, req, res, next) => {
 app.listen(PORT, ()=>{
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 })
+
+// Cierre del Pool y Conexion a la BD
+const apagadoAPI = async () => {
+  console.log('\n====================================');
+    console.log('Se está apagando el servidor...');
+    await cerrarConexion(); 
+    console.log('Conexión cerrada correctamente.');
+    console.log('====================================');
+    process.exit(0);
+};
+process.on('SIGINT', apagadoAPI);

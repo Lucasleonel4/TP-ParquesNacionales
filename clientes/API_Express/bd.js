@@ -93,7 +93,7 @@ async function cerrarConexion(){
 
     try {
         await pool.close();
-        console.log('Pool de conexiones cerrado');
+        console.log('Pool de conexiones cerrado.');
     } catch (error) {
       console.error('Error al cerrar el pool de conexiones: ', error.message);  
     }
