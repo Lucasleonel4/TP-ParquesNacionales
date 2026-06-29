@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 080. Registro de actividades
@@ -102,5 +101,4 @@ BEGIN
 	END CATCH
 END
 GO
-
 

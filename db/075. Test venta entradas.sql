@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 075. Test venta de entradas
@@ -220,5 +219,4 @@ SELECT
 	@InscripcionesAntes AS InscripcionesAntes,
 	(SELECT COUNT(*) FROM actividad.InscripcionActividad) AS InscripcionesDespues;
 GO
-
 

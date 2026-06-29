@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 28/06/2026
 * Script: 135. Test integracion APIs

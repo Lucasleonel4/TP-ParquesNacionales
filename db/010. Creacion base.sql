@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 010. Creacion base
@@ -23,5 +22,4 @@ IF NOT EXISTS(SELECT 1 FROM sys.databases WHERE name = 'com2900')
 		THROW;
 	END CATCH;
 ELSE PRINT('INFO: base de datos 2900 ya existe');
-
 

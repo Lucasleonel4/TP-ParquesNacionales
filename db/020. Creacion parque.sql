@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
  * Script: 020. Creacion parque

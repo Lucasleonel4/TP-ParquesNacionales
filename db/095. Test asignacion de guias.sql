@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 095. Test asignacion de guias
@@ -92,5 +91,4 @@ END CATCH;
 SELECT @Antes AS AsignacionesAntes, COUNT(*) AS AsignacionesDespues
 FROM actividad.GuiaAsignadoTour;
 GO
-
 

@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 085. Test registro de actividades
@@ -107,5 +106,4 @@ SELECT @Antes AS InscripcionesAntes, COUNT(*) AS InscripcionesDespues
 FROM actividad.InscripcionActividad
 WHERE ID_Actividad = @IDActividad;
 GO
-
 

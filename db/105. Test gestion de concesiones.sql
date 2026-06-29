@@ -6,7 +6,6 @@
 * Integrantes:
 *  - Costilla, Lucas Leonel
 *  - Mancilla Muñoz, Emmanuel Américo
-*  - Perla, Gustavo
 *  - Ruiz Carletti, Emiliano
 * Fecha: 23/06/2026
 * Script: 105. Test gestion de concesiones
@@ -95,5 +94,4 @@ SELECT
 	@FacturasAntes AS FacturasAntes,
 	(SELECT COUNT(*) FROM concesion.FacturaConcesion) AS FacturasDespues;
 GO
-
 

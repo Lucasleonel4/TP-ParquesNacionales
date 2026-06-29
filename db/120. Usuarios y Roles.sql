@@ -7,7 +7,6 @@
 *  - Mancilla Muñoz, Emmanuel Américo
 *  - Ruiz Carletti, Emiliano
 *  - Costilla, Lucas Leonel
-*  - Perla, Gustavo
 * Fecha: 26/06/2026
 * Script: 120. Usuarios y Roles
 * Descripción: Se crean usuarios y se les asignan responsabilidades (admin, importador, consultas, personal, pdv [punto de venta])
