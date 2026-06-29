@@ -117,6 +117,24 @@
            <AssociatedConnUserName>sa</AssociatedConnUserName>
            <FullPath>115. Test importacion de datos.sql</FullPath>
          </FileNode>
+        <FileNode Name="120. Usuarios y Roles.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>120. Usuarios y Roles.sql</FullPath>
+         </FileNode>
+        <FileNode Name="130. Integracion APIs.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>130. Integracion APIs.sql</FullPath>
+         </FileNode>
+        <FileNode Name="135. Test integracion APIs.sql">
+           <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-ELT4ETA\SQLEXPRESS:False:sa</AssociatedConnectionMoniker>
+           <AssociatedConnSrvName>DESKTOP-ELT4ETA\SQLEXPRESS</AssociatedConnSrvName>
+           <AssociatedConnUserName>sa</AssociatedConnUserName>
+           <FullPath>135. Test integracion APIs.sql</FullPath>
+         </FileNode>
       </Items>
     </LogicalFolder>
     <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
