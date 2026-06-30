@@ -15,11 +15,11 @@ Parques Nacionales**.
 | -------- | ---------------: | ----------- |
 | 3        | 16-06-2026       | APROBADO    |
 | 4        | 09-06-2026       | APROBADO    |
-| 5        | 23-06-2026       | Eliminar los prefijos SP    |
-| 6        | 30-06-2026       | Por revisar |
-| 7        | 30-06-2026       | Por revisar |
-| 8        | 30-06-2026       | Por revisar |
-| 9        | 30-06-2026       | Por revisar |
+| 5        | 23-06-2026       | APROBADO    |
+| 6        | 30-06-2026       | APROBADO |
+| 7        | 30-06-2026       | APROBADO |
+| 8        | 30-06-2026       | APROBADO |
+| 9        | 30-06-2026       | APROBADO |
 
  ### Documentos varios  
 - [Actividad](./docs/TP-Miel.pdf) 

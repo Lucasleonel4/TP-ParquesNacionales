@@ -52,8 +52,8 @@ async function ProcesarYActualizarAreas(){
         console.log("Espera de 250ms...");
         await sleep(250);
     }
-    //const areasProtegidasActualizadas = await obtenerAreasProtegidas();
-    //console.table(areasProtegidasActualizadas);
+    const areasProtegidasActualizadas = await obtenerAreasProtegidas();
+    console.table(areasProtegidasActualizadas);
 }
 
 ProcesarYActualizarAreas();
