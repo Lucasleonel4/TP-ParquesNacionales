@@ -197,7 +197,7 @@ GO
 -- ADMINISTRADOR
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'administrador')
 	BEGIN
-		CREATE LOGIN administrador WITH PASSWORD = 'Password@Administrador';
+		CREATE LOGIN administrador WITH PASSWORD = 'Admin!x9#Kq2$vL';
 		PRINT('OK: Login "administrador" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "administrador" ya existe');
@@ -206,7 +206,7 @@ GO
 -- IMPORTADOR DE ÁREAS
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'importadorAreas')
 	BEGIN
-		CREATE LOGIN importadorAreas WITH PASSWORD = 'Password@ImportadorAreas';
+		CREATE LOGIN importadorAreas WITH PASSWORD = 'Import!m7#Wp4$nR';
 		PRINT('OK: Login "importadorAreas" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "importadorAreas" ya existe');
@@ -215,7 +215,7 @@ GO
 -- CONSULTAS SOLO
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'consultas')
 	BEGIN
-		CREATE LOGIN consultas WITH PASSWORD = 'Password@Consultas';
+		CREATE LOGIN consultas WITH PASSWORD = 'Consult!c3#Yt8$zF';
 		PRINT('OK: Login "consultas" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "consultas" ya existe');
@@ -224,7 +224,7 @@ GO
 -- GESTIÓN DE ÁREAS PROTEGIDAS
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionArea')
 	BEGIN
-		CREATE LOGIN gestionArea WITH PASSWORD = 'Password@gestionArea';
+		CREATE LOGIN gestionArea WITH PASSWORD = 'GestArea!g5#Hm1$jX';
 		PRINT('OK: Login "gestionArea" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "gestionArea" ya existe');
@@ -233,7 +233,7 @@ GO
 -- GESTIÓN DE VENTAS
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionVenta')
 	BEGIN
-		CREATE LOGIN gestionVenta WITH PASSWORD = 'Password@GestionVenta';
+		CREATE LOGIN gestionVenta WITH PASSWORD = 'GestVent!v2#Bn6$kD';
 		PRINT('OK: Login "gestionVenta" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "gestionVenta" ya existe');
@@ -242,7 +242,7 @@ GO
 -- GESTIÓN DE ACTIVIDADES
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionActividad')
 	BEGIN
-		CREATE LOGIN gestionActividad WITH PASSWORD = 'Password@GestionActividad';
+		CREATE LOGIN gestionActividad WITH PASSWORD = 'GestAct!a4#Rp9$mW';
 		PRINT('OK: Login "gestionActividad" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "gestionActividad" ya existe');
@@ -251,7 +251,7 @@ GO
 -- GESTIÓN DE CONCESIONES
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionConcesion')
 	BEGIN
-		CREATE LOGIN gestionConcesion WITH PASSWORD = 'Password@GestionConcesion';
+		CREATE LOGIN gestionConcesion WITH PASSWORD = 'GestConc!o8#Lq3$tY';
 		PRINT('OK: Login "gestionConcesion" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "gestionConcesion" ya existe');
@@ -260,7 +260,7 @@ GO
 -- GESTIÓN DE PERSONAL
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionPersonal')
 	BEGIN
-		CREATE LOGIN gestionPersonal WITH PASSWORD = 'Password@GestionPersonal';
+		CREATE LOGIN gestionPersonal WITH PASSWORD = 'GestPers!p7#Nx2$cV';
 		PRINT('OK: Login "gestionPersonal" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "gestionPersonal" ya existe');
@@ -269,7 +269,7 @@ GO
 -- PUNTO DE VENTA OPERACIONES
 	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'operacionPDV')
 	BEGIN
-		CREATE LOGIN operacionPDV WITH PASSWORD = 'Password@OperacionPDV';
+		CREATE LOGIN operacionPDV WITH PASSWORD = 'OpPDV!d6#Zr5$wJ';
 		PRINT('OK: Login "operacionPDV" creado exitosamente');
 	END
 	ELSE PRINT('INFO: Login "operacionPDV" ya existe');
