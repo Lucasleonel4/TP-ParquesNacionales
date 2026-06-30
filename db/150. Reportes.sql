@@ -193,7 +193,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE reporte.ConcesionesDeudorasXml
+CREATE OR ALTER PROCEDURE reporte.ConcesionesDeudorasDetalle
 	@FechaCorte DATE = NULL
 AS
 BEGIN
@@ -202,28 +202,104 @@ BEGIN
 	SET @FechaCorte = ISNULL(@FechaCorte, CONVERT(DATE, GETDATE()));
 
 	SELECT
-		C.ID AS [@idConcesion],
-		AP.Nombre AS [Parque],
-		E.CUIT AS [Empresa/@cuit],
-		E.Nombre AS [Empresa],
-		TC.Nombre AS [ServicioPrestado],
-		COUNT(F.ID) AS [FacturasVencidas],
-		SUM(F.MontoEsperado - ISNULL(P.Pagado, 0)) AS [MontoAdeudado],
-		MIN(F.FechaVencimiento) AS [VencimientoMasAntiguo],
-		DATEDIFF(MONTH, MIN(F.FechaVencimiento), @FechaCorte) AS [MesesAtraso]
+		C.ID       AS ID_Concesion,
+		AP.Nombre  AS Parque,
+		E.CUIT,
+		E.Nombre   AS Empresa,
+		TC.Nombre  AS ServicioPrestado,
+		F.ID       AS ID_Factura,
+		F.FechaVencimiento,
+		F.MontoEsperado,
+		ISNULL(P.Pagado, 0) AS MontoPagado,
+		F.MontoEsperado - ISNULL(P.Pagado, 0) AS Pendiente
 	FROM concesion.FacturaConcesion F
 	JOIN concesion.Concesion C ON C.ID = F.ID_Concesion
 	JOIN concesion.Empresa E ON E.CUIT = C.CUIT_Empresa
 	JOIN concesion.TipoConcesion TC ON TC.ID = C.ID_TipoConcesion
 	JOIN parque.AreaProtegida AP ON AP.ID = C.ID_AreaProtegida
 	OUTER APPLY (
-		SELECT SUM(P.MontoPagado) AS Pagado
-		FROM concesion.PagoConcesion P
-		WHERE P.ID_Factura = F.ID
+		SELECT SUM(Pg.MontoPagado) AS Pagado
+		FROM concesion.PagoConcesion Pg
+		WHERE Pg.ID_Factura = F.ID
 	) P
 	WHERE F.FechaVencimiento < @FechaCorte
 	  AND F.MontoEsperado > ISNULL(P.Pagado, 0)
-	GROUP BY C.ID, AP.Nombre, E.CUIT, E.Nombre, TC.Nombre
+	ORDER BY C.ID, F.FechaVencimiento;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE reporte.ConcesionesDeudorasXml
+	@FechaCorte DATE = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SET @FechaCorte = ISNULL(@FechaCorte, CONVERT(DATE, GETDATE()));
+
+	WITH FacturasDetalle AS (
+		SELECT
+			F.ID              AS ID_Factura,
+			F.ID_Concesion,
+			F.FechaVencimiento,
+			F.MontoEsperado,
+			ISNULL(P.Pagado, 0) AS MontoPagado,
+			F.MontoEsperado - ISNULL(P.Pagado, 0) AS Pendiente
+		FROM concesion.FacturaConcesion F
+		OUTER APPLY (
+			SELECT SUM(Pg.MontoPagado) AS Pagado
+			FROM concesion.PagoConcesion Pg
+			WHERE Pg.ID_Factura = F.ID
+		) P
+		WHERE F.FechaVencimiento < @FechaCorte
+		  AND F.MontoEsperado > ISNULL(P.Pagado, 0)
+	),
+	ConcesionesResumen AS (
+		SELECT
+			C.ID       AS ID_Concesion,
+			AP.Nombre  AS Parque,
+			E.CUIT,
+			E.Nombre   AS Empresa,
+			TC.Nombre  AS ServicioPrestado
+		FROM FacturasDetalle FD
+		JOIN concesion.Concesion C ON C.ID = FD.ID_Concesion
+		JOIN concesion.Empresa E ON E.CUIT = C.CUIT_Empresa
+		JOIN concesion.TipoConcesion TC ON TC.ID = C.ID_TipoConcesion
+		JOIN parque.AreaProtegida AP ON AP.ID = C.ID_AreaProtegida
+		GROUP BY C.ID, AP.Nombre, E.CUIT, E.Nombre, TC.Nombre
+	)
+	SELECT
+		CR.ID_Concesion AS [@idConcesion],
+		CR.Parque,
+		CR.Empresa AS [Empresa/@nombre],
+		CR.CUIT AS [Empresa/@cuit],
+		CR.ServicioPrestado,
+		(
+			SELECT COUNT(*) FROM FacturasDetalle FD WHERE FD.ID_Concesion = CR.ID_Concesion
+		) AS [FacturasVencidas],
+		(
+			SELECT SUM(FD.Pendiente) FROM FacturasDetalle FD WHERE FD.ID_Concesion = CR.ID_Concesion
+		) AS [MontoAdeudado],
+		(
+			SELECT MIN(FD.FechaVencimiento) FROM FacturasDetalle FD WHERE FD.ID_Concesion = CR.ID_Concesion
+		) AS [VencimientoMasAntiguo],
+		(
+			SELECT DATEDIFF(MONTH, MIN(FD.FechaVencimiento), @FechaCorte)
+			FROM FacturasDetalle FD WHERE FD.ID_Concesion = CR.ID_Concesion
+		) AS [MesesAtraso],
+		(
+			SELECT
+				FD.ID_Factura        AS [@id],
+				FD.FechaVencimiento,
+				FD.MontoEsperado,
+				FD.MontoPagado,
+				FD.Pendiente
+			FROM FacturasDetalle FD
+			WHERE FD.ID_Concesion = CR.ID_Concesion
+			ORDER BY FD.FechaVencimiento
+			FOR XML PATH('Factura'), TYPE
+		) AS [DetalleFacturas]
+	FROM ConcesionesResumen CR
+	ORDER BY CR.ID_Concesion
 	FOR XML PATH('ConcesionDeudora'), ROOT('ConcesionesDeudoras'), TYPE;
 END;
 GO
@@ -237,27 +313,50 @@ BEGIN
 	IF @Anio IS NULL OR @Anio < 2000
 		THROW 50001, 'El año debe ser mayor o igual a 2000.', 1;
 
+	WITH Visitas AS (
+		SELECT
+			AP.Nombre AS Parque,
+			MONTH(E.FechaHora) AS Mes
+		FROM venta.Entrada E
+		JOIN venta.TipoEntradaParque TEP ON TEP.ID = E.ID_TipoEntradaParque
+		JOIN parque.AreaProtegida AP ON AP.ID = TEP.ID_AreaProtegida
+		WHERE YEAR(E.FechaHora) = @Anio
+	),
+	PivotData AS (
+		SELECT
+			Parque,
+			[1] AS Enero,
+			[2] AS Febrero,
+			[3] AS Marzo,
+			[4] AS Abril,
+			[5] AS Mayo,
+			[6] AS Junio,
+			[7] AS Julio,
+			[8] AS Agosto,
+			[9] AS Septiembre,
+			[10] AS Octubre,
+			[11] AS Noviembre,
+			[12] AS Diciembre
+		FROM Visitas
+		PIVOT (COUNT(Mes) FOR Mes IN ([1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12])) P
+	)
 	SELECT
-		AP.Nombre AS Parque,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 1 THEN 1 ELSE 0 END) AS Enero,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 2 THEN 1 ELSE 0 END) AS Febrero,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 3 THEN 1 ELSE 0 END) AS Marzo,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 4 THEN 1 ELSE 0 END) AS Abril,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 5 THEN 1 ELSE 0 END) AS Mayo,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 6 THEN 1 ELSE 0 END) AS Junio,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 7 THEN 1 ELSE 0 END) AS Julio,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 8 THEN 1 ELSE 0 END) AS Agosto,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 9 THEN 1 ELSE 0 END) AS Septiembre,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 10 THEN 1 ELSE 0 END) AS Octubre,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 11 THEN 1 ELSE 0 END) AS Noviembre,
-		SUM(CASE WHEN MONTH(E.FechaHora) = 12 THEN 1 ELSE 0 END) AS Diciembre,
-		COUNT(*) AS TotalAnual
-	FROM venta.Entrada E
-	JOIN venta.TipoEntradaParque TEP ON TEP.ID = E.ID_TipoEntradaParque
-	JOIN parque.AreaProtegida AP ON AP.ID = TEP.ID_AreaProtegida
-	WHERE YEAR(E.FechaHora) = @Anio
-	GROUP BY AP.Nombre
-	ORDER BY AP.Nombre;
+		Parque,
+		ISNULL(Enero, 0) AS Enero,
+		ISNULL(Febrero, 0) AS Febrero,
+		ISNULL(Marzo, 0) AS Marzo,
+		ISNULL(Abril, 0) AS Abril,
+		ISNULL(Mayo, 0) AS Mayo,
+		ISNULL(Junio, 0) AS Junio,
+		ISNULL(Julio, 0) AS Julio,
+		ISNULL(Agosto, 0) AS Agosto,
+		ISNULL(Septiembre, 0) AS Septiembre,
+		ISNULL(Octubre, 0) AS Octubre,
+		ISNULL(Noviembre, 0) AS Noviembre,
+		ISNULL(Diciembre, 0) AS Diciembre,
+		ISNULL(Enero, 0) + ISNULL(Febrero, 0) + ISNULL(Marzo, 0) + ISNULL(Abril, 0) + ISNULL(Mayo, 0) + ISNULL(Junio, 0) + ISNULL(Julio, 0) + ISNULL(Agosto, 0) + ISNULL(Septiembre, 0) + ISNULL(Octubre, 0) + ISNULL(Noviembre, 0) + ISNULL(Diciembre, 0) AS TotalAnual
+	FROM PivotData
+	ORDER BY Parque;
 END;
 GO
 

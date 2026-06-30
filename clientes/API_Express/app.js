@@ -11,6 +11,7 @@ const personalRoutes    = require('./routes/personalRoutes');
 const ventaRoutes       = require('./routes/ventaRoutes');
 const actividadRoutes   = require('./routes/actividadRoutes');
 const concesionRoutes   = require('./routes/concesionRoutes');
+const reporteRoutes     = require('./routes/reporteRoutes');
 
 app.use(cors({
     origin: '*',
@@ -27,6 +28,7 @@ app.use('/venta',        ventaRoutes);
 app.use('/actividad',    actividadRoutes);
 app.use('/personal',     personalRoutes);
 app.use('/concesion',    concesionRoutes);
+app.use('/reporte',      reporteRoutes);
 
 app.use((req, res, next) => {
   const error = new Error(`Ruta no encontrada: ${req.originalUrl}`);
