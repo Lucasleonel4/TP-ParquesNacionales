@@ -51,9 +51,6 @@
         <FileNode Name="115. Test importacion de datos.sql">
            <FullPath>115. Test importacion de datos.sql</FullPath>
          </FileNode>
-        <FileNode Name="120. Usuarios y Roles.sql">
-           <FullPath>120. Usuarios y Roles.sql</FullPath>
-         </FileNode>
         <FileNode Name="130. Integracion APIs.sql">
            <FullPath>130. Integracion APIs.sql</FullPath>
          </FileNode>
@@ -68,6 +65,12 @@
          </FileNode>
         <FileNode Name="155. Test reportes.sql">
            <FullPath>155. Test reportes.sql</FullPath>
+         </FileNode>
+        <FileNode Name="160. Encriptacion de Campos.sql">
+           <FullPath>160. Encriptacion de Campos.sql</FullPath>
+         </FileNode>
+        <FileNode Name="170. Usuarios y Roles.sql">
+           <FullPath>170. Usuarios y Roles.sql</FullPath>
          </FileNode>
       </Items>
     </LogicalFolder>

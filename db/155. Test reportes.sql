@@ -141,7 +141,7 @@ ELSE
 GO
 
 PRINT('Test XML: ParquesConConcesionesXml con filtro por ID');
-EXEC reporte.ParquesConConcesionesXml @ID_AreaProtegida = 1;
+EXEC reporte.ParquesConConcesionesXml @ID_AreaProtegida = 910001;
 GO
 
 PRINT('Reporte 3 detalle: concesiones deudoras (factura a factura)');

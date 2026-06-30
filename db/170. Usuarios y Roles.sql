@@ -7,8 +7,8 @@
 *  - Mancilla Muñoz, Emmanuel Américo
 *  - Ruiz Carletti, Emiliano
 *  - Costilla, Lucas Leonel
-* Fecha: 26/06/2026
-* Script: 120. Usuarios y Roles
+* Fecha: 30/06/2026
+* Script: 170. Usuarios y Roles
 * Descripción: Se crean usuarios y se les asignan responsabilidades (admin, importador, consultas, personal, pdv [punto de venta])
 */
 
@@ -115,6 +115,7 @@ GO
 	GRANT EXECUTE ON OBJECT::[parque].[CentroideImportar]				TO importadorAreas
 	GRANT EXECUTE ON OBJECT::[parque].[AreaProtegidaConsulta]		    TO importadorAreas
 	GRANT EXECUTE ON OBJECT::[parque].[AreaProtegidaModificacion]		TO importadorAreas
+	GRANT EXECUTE ON SCHEMA::[integracion]								TO importadorAreas
 	GO
 
 -- [consultas] -> CONSULTAS SOLO
@@ -156,6 +157,8 @@ GO
 		GRANT EXECUTE ON OBJECT::[concesion].[ConcesionConsulta]						TO consultas
 		GRANT EXECUTE ON OBJECT::[concesion].[FacturaConcesionConsulta]					TO consultas
 		GRANT EXECUTE ON OBJECT::[concesion].[PagoConcesionConsulta]					TO consultas
+
+	GRANT EXECUTE ON SCHEMA::[reporte] TO consultas
 	GO
 -- [gestionArea] -> GESTIÓN DE ÁREAS 
 	GRANT SELECT  ON SCHEMA::[parque] TO gestionArea
@@ -191,217 +194,11 @@ GO
 
 
 -- ============================================================
--- CREACION DE LOGINS
+-- NOTA SOBRE LOGINS Y USUARIOS
 -- ============================================================
-
--- ADMINISTRADOR
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'administrador')
-	BEGIN
-		CREATE LOGIN administrador WITH PASSWORD = 'Admin!x9#Kq2$vL';
-		PRINT('OK: Login "administrador" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "administrador" ya existe');
-	GO
-
--- IMPORTADOR DE ÁREAS
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'importadorAreas')
-	BEGIN
-		CREATE LOGIN importadorAreas WITH PASSWORD = 'Import!m7#Wp4$nR';
-		PRINT('OK: Login "importadorAreas" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "importadorAreas" ya existe');
-	GO
-
--- CONSULTAS SOLO
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'consultas')
-	BEGIN
-		CREATE LOGIN consultas WITH PASSWORD = 'Consult!c3#Yt8$zF';
-		PRINT('OK: Login "consultas" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "consultas" ya existe');
-	GO
-
--- GESTIÓN DE ÁREAS PROTEGIDAS
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionArea')
-	BEGIN
-		CREATE LOGIN gestionArea WITH PASSWORD = 'GestArea!g5#Hm1$jX';
-		PRINT('OK: Login "gestionArea" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "gestionArea" ya existe');
-	GO
-
--- GESTIÓN DE VENTAS
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionVenta')
-	BEGIN
-		CREATE LOGIN gestionVenta WITH PASSWORD = 'GestVent!v2#Bn6$kD';
-		PRINT('OK: Login "gestionVenta" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "gestionVenta" ya existe');
-	GO
-
--- GESTIÓN DE ACTIVIDADES
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionActividad')
-	BEGIN
-		CREATE LOGIN gestionActividad WITH PASSWORD = 'GestAct!a4#Rp9$mW';
-		PRINT('OK: Login "gestionActividad" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "gestionActividad" ya existe');
-	GO
-
--- GESTIÓN DE CONCESIONES
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionConcesion')
-	BEGIN
-		CREATE LOGIN gestionConcesion WITH PASSWORD = 'GestConc!o8#Lq3$tY';
-		PRINT('OK: Login "gestionConcesion" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "gestionConcesion" ya existe');
-	GO
-
--- GESTIÓN DE PERSONAL
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'gestionPersonal')
-	BEGIN
-		CREATE LOGIN gestionPersonal WITH PASSWORD = 'GestPers!p7#Nx2$cV';
-		PRINT('OK: Login "gestionPersonal" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "gestionPersonal" ya existe');
-	GO
-
--- PUNTO DE VENTA OPERACIONES
-	IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE TYPE = 'S' AND NAME = 'operacionPDV')
-	BEGIN
-		CREATE LOGIN operacionPDV WITH PASSWORD = 'OpPDV!d6#Zr5$wJ';
-		PRINT('OK: Login "operacionPDV" creado exitosamente');
-	END
-	ELSE PRINT('INFO: Login "operacionPDV" ya existe');
-	GO
-
-
--- ============================================================
--- CREACION DE USERS
--- ============================================================
-
--- ADMINISTRADOR
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'administradorUser')
-	BEGIN
-		CREATE USER administradorUser FOR LOGIN administrador;
-		PRINT('OK: User "administradorUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "administradorUser" ya existe');
-	GO
-
--- IMPORTADOR DE ÁREAS
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'importadorAreasUser')
-	BEGIN
-		CREATE USER importadorAreasUser FOR LOGIN importadorAreas;
-		PRINT('OK: User "importadorAreasUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "importadorAreasUser" ya existe');
-	GO
-
--- CONSULTAS SOLO
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'consultasUser')
-	BEGIN
-		CREATE USER consultasUser FOR LOGIN consultas;
-		PRINT('OK: User "consultasUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "consultasUser" ya existe');
-	GO
-
--- GESTIÓN DE ÁREAS PROTEGIDAS
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'gestionAreaUser')
-	BEGIN
-		CREATE USER gestionAreaUser FOR LOGIN gestionArea;
-		PRINT('OK: User "gestionAreaUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "gestionAreaUser" ya existe');
-	GO
-
--- GESTIÓN DE VENTAS
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'gestionVentaUser')
-	BEGIN
-		CREATE USER gestionVentaUser FOR LOGIN gestionVenta;
-		PRINT('OK: User "gestionVentaUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "gestionVentaUser" ya existe');
-	GO
-
--- GESTIÓN DE ACTIVIDADES
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'gestionActividadUser')
-	BEGIN
-		CREATE USER gestionActividadUser FOR LOGIN gestionActividad;
-		PRINT('OK: User "gestionActividadUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "gestionActividadUser" ya existe');
-	GO
-
--- GESTIÓN DE CONCESIONES
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'gestionConcesionUser')
-	BEGIN
-		CREATE USER gestionConcesionUser FOR LOGIN gestionConcesion;
-		PRINT('OK: User "gestionConcesionUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "gestionConcesionUser" ya existe');
-	GO
-
--- GESTIÓN DE PERSONAL
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'gestionPersonalUser')
-	BEGIN
-		CREATE USER gestionPersonalUser FOR LOGIN gestionPersonal;
-		PRINT('OK: User "gestionPersonalUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "gestionPersonalUser" ya existe');
-	GO
-
--- PUNTO DE VENTA OPERACIONES
-	IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE TYPE = 'S' AND NAME = 'operacionPDVUser')
-	BEGIN
-		CREATE USER operacionPDVUser FOR LOGIN operacionPDV;
-		PRINT('OK: User "operacionPDVUser" creado exitosamente');
-	END
-	ELSE PRINT('INFO: User "operacionPDVUser" ya existe');
-	GO
-
-
--- ============================================================
--- VINCULAR ROL CON USUARIOS
--- ============================================================
-
--- ADMINISTRADOR
-	ALTER ROLE administrador ADD MEMBER administradorUser;
-	GO
-
--- IMPORTADOR DE ÁREAS
-	ALTER ROLE importadorAreas ADD MEMBER importadorAreasUser;
-	GO
-
--- CONSULTAS SOLO
-	ALTER ROLE consultas ADD MEMBER consultasUser;
-	GO
-
--- GESTIÓN DE ÁREAS PROTEGIDAS
-	ALTER ROLE gestionArea ADD MEMBER gestionAreaUser;
-	GO
-
--- GESTIÓN DE VENTAS
-	ALTER ROLE gestionVenta ADD MEMBER gestionVentaUser;
-	GO
-
--- GESTIÓN DE ACTIVIDADES
-	ALTER ROLE gestionActividad ADD MEMBER gestionActividadUser;
-	GO
-
--- GESTIÓN DE CONCESIONES
-	ALTER ROLE gestionConcesion ADD MEMBER gestionConcesionUser;
-	GO
-
--- GESTIÓN DE PERSONAL
-	ALTER ROLE gestionPersonal ADD MEMBER gestionPersonalUser;
-	GO
-
--- PUNTO DE VENTA OPERACIONES
-	ALTER ROLE operacionPDV ADD MEMBER operacionPDVUser;
-	GO
-
+-- Por seguridad del repositorio publico, este script no versiona contrasenas ni crea logins con claves fijas.
+-- Los roles y permisos quedan definidos en la base. En un ambiente real, el DBA debe crear los logins/usuarios
+-- correspondientes y asociarlos a estos roles con ALTER ROLE ... ADD MEMBER.
 /*
 CONCEPTOS GENERALES:
 	- LOGIN:	Permite acceder al servidor (p.ej.: localhost\\sqlexpress) pero no otorga permisos de consulta o manipulación de ninguna bd (ej.: com2900). Puede tener solo 1 (un) usuario asociado.

@@ -135,6 +135,14 @@ BEGIN
 		VALUES (source.COD_ISO, source.Pais, source.ValorEnPesos);
 END;
 
+IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'ARS')
+	INSERT INTO venta.Divisa(COD_ISO, Pais, ValorEnPesos)
+	VALUES ('ARS', 'Argentina', 1);
+
+IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'USD')
+	INSERT INTO venta.Divisa(COD_ISO, Pais, ValorEnPesos)
+	VALUES ('USD', 'Estados Unidos', 1200);
+
 DECLARE @TiposEntradaSeed TABLE (Nombre VARCHAR(100) PRIMARY KEY);
 INSERT INTO @TiposEntradaSeed(Nombre)
 VALUES ('Residente Seed'), ('Extranjero Seed'), ('Estudiante Seed');
