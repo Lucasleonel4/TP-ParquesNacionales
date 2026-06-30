@@ -1,0 +1,48 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: parques-sqlserver
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD:-StrongP@ssw0rd}
+      MSSQL_PID: Express
+    ports:
+      - '1433:1433'
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: /opt/mssql-tools18/bin/sqlcmd -C -U sa -P '${DB_PASSWORD:-StrongP@ssw0rd}' -Q 'SELECT 1' || exit 1
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api:
+    build:
+      context: ./clientes/API_Express
+      dockerfile: Dockerfile
+    container_name: parques-api
+    environment:
+      DB_USER: sa
+      DB_PASSWORD: ${DB_PASSWORD:-StrongP@ssw0rd}
+      DB_SERVER: sqlserver
+      DB_DATABASE: com2900
+      DB_PORT: 1433
+      PORT: 4000
+    ports:
+      - '4000:4000'
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: parques-metabase
+    ports:
+      - '3000:3000'
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+volumes:
+  sqlserver-data:
