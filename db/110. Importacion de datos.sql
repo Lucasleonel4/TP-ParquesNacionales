@@ -29,7 +29,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: OPENROWSET BULK requiere la ruta del archivo dentro de la sentencia.
-		DECLARE @SQLDin VARCHAR(MAX) = N'
+		DECLARE @SQLDin NVARCHAR(MAX) = N'
 			INSERT INTO #TempProvincia (ID, Nombre)
 			SELECT ID, Nombre
 			FROM OPENROWSET (
@@ -115,7 +115,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: BULK INSERT no acepta una variable simple como ruta del archivo.
-		DECLARE @SQLDin VARCHAR(MAX) = N'
+		DECLARE @SQLDin NVARCHAR(MAX) = N'
 			BULK INSERT #TempAreasProtegidas
 			FROM ''' + REPLACE(@sourceData, '''', '''''') + N'''
 			WITH (
@@ -204,7 +204,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: BULK INSERT no acepta una variable simple como ruta del archivo.
-		DECLARE @SQLDin VARCHAR(MAX) = N'
+		DECLARE @SQLDin NVARCHAR(MAX) = N'
 			BULK INSERT #TempCentroides
 			FROM ''' + REPLACE(@sourceData, '''', '''''') + N'''
 			WITH (
