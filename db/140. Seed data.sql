@@ -83,13 +83,57 @@ WHERE NOT EXISTS (
 	  AND PV.Descripcion = 'Boleteria Seed'
 );
 
-PRINT('Seed: divisas, tipos de entrada y precios por parque');
+PRINT('Seed: divisas desde API BCRA');
 
-IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'ARS')
-	INSERT INTO venta.Divisa(COD_ISO, Pais, ValorEnPesos) VALUES ('ARS', 'Argentina', 1);
+DECLARE @BcraUrl NVARCHAR(500) = N'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones';
+DECLARE @BcraResponse NVARCHAR(MAX);
 
-IF NOT EXISTS (SELECT 1 FROM venta.Divisa WHERE COD_ISO = 'USD')
-	INSERT INTO venta.Divisa(COD_ISO, Pais, ValorEnPesos) VALUES ('USD', 'Estados Unidos', 1200);
+BEGIN TRY
+	EXEC integracion.ApiHttpGet
+		@Url = @BcraUrl,
+		@Response = @BcraResponse OUTPUT;
+END TRY
+BEGIN CATCH
+	PRINT('WARNING: No se pudo consultar la API del BCRA. ' + ERROR_MESSAGE());
+END CATCH;
+
+IF @BcraResponse IS NOT NULL
+BEGIN
+	DECLARE @BcraDetalle TABLE (
+		COD_ISO        CHAR(3),
+		Pais           VARCHAR(50),
+		ValorEnPesos   DECIMAL(18,4)
+	);
+
+	INSERT INTO @BcraDetalle(COD_ISO, Pais, ValorEnPesos)
+	SELECT
+		LEFT(d.[codigoMoneda], 3),
+		LEFT(d.[descripcion], 50),
+		d.[tipoCotizacion]
+	FROM OPENJSON(@BcraResponse, N'$.results.detalle')
+	WITH (
+		codigoMoneda   VARCHAR(10)  '$.codigoMoneda',
+		descripcion    VARCHAR(200) '$.descripcion',
+		tipoPase       DECIMAL(18,4) '$.tipoPase',
+		tipoCotizacion DECIMAL(18,4) '$.tipoCotizacion'
+	) d;
+
+	MERGE venta.Divisa AS target
+	USING (
+		SELECT
+			COD_ISO,
+			Pais,
+			CASE WHEN ValorEnPesos = 0 THEN 1 ELSE ValorEnPesos END AS ValorEnPesos
+		FROM @BcraDetalle
+	) AS source ON target.COD_ISO = source.COD_ISO
+	WHEN MATCHED THEN
+		UPDATE SET
+			target.Pais = source.Pais,
+			target.ValorEnPesos = source.ValorEnPesos
+	WHEN NOT MATCHED BY TARGET THEN
+		INSERT (COD_ISO, Pais, ValorEnPesos)
+		VALUES (source.COD_ISO, source.Pais, source.ValorEnPesos);
+END;
 
 DECLARE @TiposEntradaSeed TABLE (Nombre VARCHAR(100) PRIMARY KEY);
 INSERT INTO @TiposEntradaSeed(Nombre)
