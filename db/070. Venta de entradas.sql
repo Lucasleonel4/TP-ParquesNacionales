@@ -29,7 +29,7 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 	DECLARE	@IDComprobante			INT;
 	DECLARE @IDTipoEntradaParque	INT;
 	DECLARE @Precio					DECIMAL(12,2);
@@ -142,7 +142,7 @@ GO
 		SET NOCOUNT ON;
 		SET XACT_ABORT ON;
 
-		DECLARE @Errores NVARCHAR(MAX) = N'';
+		DECLARE @Errores VARCHAR(MAX) = N'';
 		DECLARE @IDComprobante       INT;
 		DECLARE @Total               DECIMAL(12,2) = 0;
 		DECLARE @ID_TipoEntrada      INT;
@@ -316,7 +316,7 @@ GO
 		BEGIN
 			BEGIN TRY
 				
-					DECLARE @Errores NVARCHAR(MAX) = N'';
+					DECLARE @Errores VARCHAR(MAX) = N'';
 					DECLARE @IDComprobante       INT
 					DECLARE @Total               DECIMAL(12,2) = 0
 					DECLARE @ID_TipoEntrada      INT

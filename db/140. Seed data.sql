@@ -85,7 +85,7 @@ WHERE NOT EXISTS (
 
 PRINT('Seed: divisas desde API BCRA');
 
-DECLARE @BcraUrl NVARCHAR(500) = N'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones';
+DECLARE @BcraUrl VARCHAR(500) = N'https://api.bcra.gob.ar/estadisticascambiarias/v1.0/Cotizaciones';
 DECLARE @BcraResponse NVARCHAR(MAX);
 
 BEGIN TRY

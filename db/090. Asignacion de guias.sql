@@ -24,7 +24,7 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 	DECLARE @ID_AreaProtegida BIGINT;
 	DECLARE @Autorizado BIT;
 	DECLARE @FechaControl DATE = ISNULL(@FechaReferencia, CONVERT(DATE, GETDATE()));

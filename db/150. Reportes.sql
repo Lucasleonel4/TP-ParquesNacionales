@@ -27,7 +27,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 
 	IF @Agrupacion NOT IN ('SEMANA', 'MES', 'ANIO')
 		SET @Errores += N'- La agrupacion debe ser SEMANA, MES o ANIO.' + CHAR(13) + CHAR(10);
@@ -72,7 +72,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 
 	IF @Agrupacion NOT IN ('SEMANA', 'MES', 'ANIO')
 		SET @Errores += N'- La agrupacion debe ser SEMANA, MES o ANIO.' + CHAR(13) + CHAR(10);

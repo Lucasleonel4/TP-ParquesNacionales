@@ -550,7 +550,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 
 	IF NOT EXISTS (SELECT 1 FROM parque.AreaProtegida WHERE ID = @ID_AreaProtegida)
 		SET @Errores += N'- El area protegida no existe.' + CHAR(13) + CHAR(10);
@@ -625,7 +625,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 	DECLARE @FechaInicioFinal DATE;
 	DECLARE @FechaFinFinal DATE;
 
@@ -693,7 +693,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 
 	IF NOT EXISTS (SELECT 1 FROM concesion.Concesion WHERE ID = @ID_Concesion)
 		SET @Errores += N'- La concesion no existe.' + CHAR(13) + CHAR(10);
@@ -805,7 +805,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 
 	IF NOT EXISTS (SELECT 1 FROM concesion.FacturaConcesion WHERE ID = @ID_Factura)
 		SET @Errores += N'- La factura no existe.' + CHAR(13) + CHAR(10);

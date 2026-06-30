@@ -17,7 +17,7 @@ GO
 
 -- Importacion de Provincias desde JSON.
 CREATE OR ALTER PROCEDURE [parque].[ProvinciaImportarActualizar]
-	@sourceData NVARCHAR(MAX)
+	@sourceData VARCHAR(MAX)
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -29,7 +29,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: OPENROWSET BULK requiere la ruta del archivo dentro de la sentencia.
-		DECLARE @SQLDin NVARCHAR(MAX) = N'
+		DECLARE @SQLDin VARCHAR(MAX) = N'
 			INSERT INTO #TempProvincia (ID, Nombre)
 			SELECT ID, Nombre
 			FROM OPENROWSET (
@@ -115,7 +115,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: BULK INSERT no acepta una variable simple como ruta del archivo.
-		DECLARE @SQLDin NVARCHAR(MAX) = N'
+		DECLARE @SQLDin VARCHAR(MAX) = N'
 			BULK INSERT #TempAreasProtegidas
 			FROM ''' + REPLACE(@sourceData, '''', '''''') + N'''
 			WITH (
@@ -204,7 +204,7 @@ BEGIN
 		);
 
 		-- SQL dinamico necesario: BULK INSERT no acepta una variable simple como ruta del archivo.
-		DECLARE @SQLDin NVARCHAR(MAX) = N'
+		DECLARE @SQLDin VARCHAR(MAX) = N'
 			BULK INSERT #TempCentroides
 			FROM ''' + REPLACE(@sourceData, '''', '''''') + N'''
 			WITH (

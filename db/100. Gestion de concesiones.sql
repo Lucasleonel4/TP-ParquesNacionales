@@ -31,7 +31,7 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-	DECLARE @Errores NVARCHAR(MAX) = N'';
+	DECLARE @Errores VARCHAR(MAX) = N'';
 	DECLARE @ID_ActividadFiscal INT;
 	DECLARE @ID_TipoConcesion INT;
 	DECLARE @ID_Concesion INT;
